@@ -5,9 +5,9 @@ import { HiMenu } from "react-icons/hi";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   const navItems = ["About", "Mission", "Timeline", "Contact"];
 
-  // Add scroll listener
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
       setIsScrolled(window.scrollY > 20);
@@ -18,47 +18,74 @@ function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-500 border-b ${
         isScrolled
-          ? "bg-cosmic-dark/80 backdrop-blur-lg shadow-lg"
-          : "bg-transparent"
+          ? "bg-cosmic-dark/90 backdrop-blur-xl border-white/5"
+          : "bg-transparent border-transparent"
       }`}
     >
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="h-20 flex items-center justify-between">
+          {/* Logo Section - Fixed width */}
           <motion.a
             href="/"
-            className="flex items-center space-x-2"
+            className="w-[140px] flex items-center gap-2 group"
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <IoRocketOutline className="text-2xl text-white" />
-            <span className="font-orbitron text-xl text-white">LAKSHYA</span>
+            <IoRocketOutline className="text-2xl text-white group-hover:rotate-12 transition-transform duration-300" />
+            <span className="font-orbitron text-lg text-white tracking-wide">
+              LAKSHYA
+            </span>
           </motion.a>
 
-          <div className="hidden md:flex items-center gap-8">
+          {/* Navigation Items - Each with fixed width */}
+          <div className="hidden md:flex items-center">
             {navItems.map((item) => (
-              <a
+              <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="relative font-quicksand text-sm text-white/80 hover:text-white transition-colors duration-200 px-1 py-2"
+                className="w-[120px] text-center relative group"
+                onHoverStart={() => setActiveItem(item)}
+                onHoverEnd={() => setActiveItem(null)}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <span className="relative z-10">{item}</span>
-                <span className="absolute inset-0 bg-white/10 rounded opacity-0 hover:opacity-100 transition-opacity duration-200" />
-              </a>
-            ))}
+                <span className="font-quicksand text-sm text-white/90 hover:text-white transition-colors duration-300">
+                  {item}
+                </span>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-5 py-2 rounded border border-white/20 bg-white/5 backdrop-blur-sm font-quicksand text-white text-sm hover:bg-white/10 transition-colors duration-200"
-            >
-              Connect
-            </motion.button>
+                {/* Animated underline */}
+                <motion.div
+                  className="absolute -bottom-1 left-1/2 h-[2px] bg-white"
+                  initial={{ width: 0, x: 20, opacity: 0 }}
+                  animate={{
+                    width: activeItem === item ? "60%" : 0,
+                    x: activeItem === item ? -30 : 20,
+                    opacity: activeItem === item ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+
+                {/* Hover background */}
+                <motion.div
+                  className="absolute inset-0 rounded-md bg-white/5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: activeItem === item ? 1 : 0 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </motion.a>
+            ))}
           </div>
 
-          <button className="md:hidden text-white">
-            <HiMenu className="text-2xl" />
-          </button>
+          {/* Mobile Menu Button */}
+          <motion.button
+            className="md:hidden w-[40px] h-[40px] flex items-center justify-center rounded-md border border-white/10 bg-white/5"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <HiMenu className="text-xl text-white" />
+          </motion.button>
         </div>
       </div>
     </motion.nav>
