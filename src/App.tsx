@@ -1,5 +1,13 @@
+import Navbar from "./components/layout/Navbar";
+import Hero from "./components/sections/Hero";
+
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <main className="min-h-screen bg- text-space-dark overflow-x-hidden">
+      <Navbar />
+      <Hero />
+    </main>
+  );
 }
 
 export default App;
