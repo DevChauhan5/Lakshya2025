@@ -48,6 +48,16 @@ export default {
         "star-pattern":
           "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
       },
+      letterSpacing: {
+        "widest-xl": "0.2em",
+      },
+      screens: {
+        xs: "400px",
+      },
+      minHeight: {
+        screen: "100vh",
+        "screen-small": "100svh",
+      },
     },
   },
   plugins: [],
