@@ -21,6 +21,7 @@ export default {
         float: "float 8s ease-in-out infinite",
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         glow: "glow 2s ease-in-out infinite",
+        "text-shimmer": "text-shimmer 2.5s ease-in-out infinite",
       },
       keyframes: {
         float: {
@@ -31,9 +32,21 @@ export default {
           "0%, 100%": { opacity: 1 },
           "50%": { opacity: 0.6 },
         },
+        "text-shimmer": {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left center",
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center",
+          },
+        },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "star-pattern":
+          "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
       },
     },
   },
