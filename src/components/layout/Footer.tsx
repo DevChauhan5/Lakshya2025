@@ -116,6 +116,22 @@ const Footer = () => {
             <span className="hidden sm:inline">|</span>
             <span>ALL RIGHTS RESERVED</span>
           </p>
+          <p className="mt-2">
+            <span>Developed with ❤️ by </span>
+            <a
+              href="https://www.linkedin.com/in/dev-chauhan-in"
+              className="text-cosmic-accent hover:underline"
+            >
+              Dev Chauhan
+            </a>
+            <span> & </span>
+            <a
+              href="https://www.linkedin.com/in/moksh-khanna-b84069325/"
+              className="text-cosmic-accent hover:underline"
+            >
+              Moksh
+            </a>
+          </p>
         </motion.div>
       </div>
     </footer>
