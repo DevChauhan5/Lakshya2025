@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
 import PageBackground from "./components/layout/PageBackground";
@@ -20,21 +20,15 @@ function App() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleEnter = () => {
-    console.log("Enter button clicked"); // Debug log
-    setShowPreloader(false); // First set this to ensure UI updates
-
-    // Then try to play audio
-    if (audioRef.current) {
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((error) => {
-          console.log("Audio playback error:", error);
-          // Continue with navigation even if audio fails
-        });
-    }
+    setTimeout(() => {
+      setShowPreloader(false);
+      if (audioRef.current) {
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch(console.error);
+      }
+    }, 800);
   };
 
   const toggleSound = () => {
@@ -60,24 +54,31 @@ function App() {
 
       <AnimatePresence mode="wait">
         {showPreloader ? (
-          <PreLoader onEnter={handleEnter} />
+          <PreLoader onEnter={handleEnter} key="preloader" />
         ) : (
-          <SmoothScroll>
-            <main className="relative min-h-screen overflow-x-hidden">
-              <PageBackground />
-              <div className="relative z-10">
-                <Navbar />
-                <Hero />
-                <About />
-                <Timeline />
-                <Events />
-                <Gallery />
-                <Sponsors />
-                <OurTeam />
-                <Footer />
-              </div>
-            </main>
-          </SmoothScroll>
+          <motion.div
+            key="main-content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <SmoothScroll>
+              <main className="relative min-h-screen overflow-x-hidden">
+                <PageBackground />
+                <div className="relative z-10">
+                  <Navbar />
+                  <Hero />
+                  <About />
+                  <Timeline />
+                  <Events />
+                  <Gallery />
+                  <Sponsors />
+                  <OurTeam />
+                  <Footer />
+                </div>
+              </main>
+            </SmoothScroll>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
