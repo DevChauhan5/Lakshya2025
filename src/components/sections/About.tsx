@@ -16,19 +16,20 @@ const About = () => {
 
   const features = [
     {
-      icon: <SiRocket className="text-2xl" />,
-      title: "Innovation Hub",
-      description: "Where groundbreaking ideas take flight",
+      icon: <SiRocket className="text-3xl" />,
+      title: "Tech Innovation",
+      description:
+        "Pioneering the future with cutting-edge technology showcase",
     },
     {
-      icon: <FaRegLightbulb className="text-2xl" />,
-      title: "Creative Platform",
-      description: "Showcase your talents and skills",
+      icon: <FaRegLightbulb className="text-3xl" />,
+      title: "Creative Excellence",
+      description: "Platform for brilliant minds to showcase innovative ideas",
     },
     {
-      icon: <IoSparkles className="text-2xl" />,
-      title: "Cultural Fusion",
-      description: "Blend of technology and artistry",
+      icon: <IoSparkles className="text-3xl" />,
+      title: "Cultural Nexus",
+      description: "Where technology meets art in spectacular harmony",
     },
   ];
 
@@ -36,35 +37,32 @@ const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="relative min-h-screen py-20 overflow-hidden"
+      className="relative min-h-screen py-32 overflow-hidden"
     >
       <motion.div
         style={{ y, opacity }}
         className="relative container mx-auto px-4 sm:px-6"
       >
-        <div className="max-w-6xl mx-auto">
-          {/* Header Section */}
+        <div className="max-w-7xl mx-auto">
+          {/* Enhanced Header Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <h2 className="inline-block font-orbitron text-3xl md:text-4xl font-bold text-white mb-4 relative">
-              About Lakshya
-              <motion.div
-                className="absolute -bottom-2 left-0 w-full h-1 bg-cosmic-accent/50"
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-              />
+            <span className="font-quicksand text-cosmic-accent text-sm uppercase tracking-[0.2em] mb-4 block">
+              About The Event
+            </span>
+            <h2 className="font-orbitron text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-cosmic-accent/80">
+              LAKSHYA 2025
             </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-cosmic-accent to-transparent mx-auto" />
           </motion.div>
 
           {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Column - Logo and Visual Elements */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -74,71 +72,75 @@ const About = () => {
               className="relative"
             >
               <div className="relative aspect-square max-w-md mx-auto">
-                {/* Logo Container with Glow Effect */}
+                {/* Modern Logo Container */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-cosmic-accent/10 to-transparent rounded-2xl backdrop-blur-sm border border-cosmic-accent/20" />
                 <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-cosmic-accent/20 to-cosmic-accent/10"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                />
-                <motion.div
-                  className="absolute inset-4 rounded-full border-2 border-cosmic-accent/30 backdrop-blur-sm"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
+                  className="relative p-8"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
                 >
-                  {/* Add your logo image here */}
                   <img
-                    src="/logo.svg" // Add your logo path
+                    src="/logo.svg"
                     alt="Lakshya Logo"
-                    className="w-full h-full object-contain p-8"
+                    className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.3)]"
                   />
                 </motion.div>
 
-                {/* Decorative Orbits */}
-                {[0, 1, 2].map((index) => (
-                  <motion.div
-                    key={index}
-                    className="absolute inset-0 rounded-full border border-cosmic-accent/20"
-                    style={{ scale: 1 + index * 0.1 }}
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 10 + index * 5,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
-                ))}
+                {/* Decorative Elements */}
+                <motion.div
+                  className="absolute -inset-4 border border-cosmic-accent/20 rounded-2xl"
+                  animate={{ opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
+                <motion.div
+                  className="absolute inset-0 bg-cosmic-accent/5 rounded-2xl blur-xl"
+                  animate={{ opacity: [0.5, 0.8, 0.5] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
               </div>
             </motion.div>
 
-            {/* Right Column - Content */}
+            {/* Right Column - Enhanced Content */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="space-y-8"
+              className="space-y-10"
             >
-              {/* Main Description */}
+              {/* Main Description with enhanced typography */}
               <div className="space-y-6">
-                <p className="font-quicksand text-lg text-cosmic-muted leading-relaxed">
-                  Lakshya'25 is not just an event; it's a cosmic celebration of
-                  innovation, creativity, and technological excellence. As VIT's
-                  flagship technical festival, we bring together brilliant minds
-                  from across the nation.
-                </p>
-                <p className="font-quicksand text-lg text-cosmic-muted leading-relaxed">
-                  This year's theme, "Euphoria: Orbit of Wonder," promises an
-                  unforgettable journey through cutting-edge technology,
-                  spectacular performances, and mind-bending competitions.
-                </p>
+                <motion.p
+                  className="font-quicksand text-xl md:text-2xl text-white/90 leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <span className="text-cosmic-accent">Lakshya'25</span> is
+                  Poornima Universiy's prestigious flagship technical festival
+                  that brings together the brightest minds and innovative
+                  spirits.
+                </motion.p>
+                <motion.p
+                  className="font-quicksand text-lg text-cosmic-muted leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
+                  This year's theme{" "}
+                  <span className="text-cosmic-accent font-medium">
+                    "Euphoria: Orbit of Wonder"
+                  </span>{" "}
+                  promises an unparalleled fusion of technology, creativity, and
+                  entertainment.
+                </motion.p>
               </div>
 
-              {/* Features Grid */}
-              <div className="grid sm:grid-cols-3 gap-6 mt-8">
+              {/* Enhanced Features Grid */}
+              <div className="grid sm:grid-cols-3 gap-6">
                 {features.map((feature, index) => (
                   <motion.div
                     key={index}
@@ -146,17 +148,18 @@ const About = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.2 }}
-                    className="group relative p-6 rounded-xl bg-white/5 border border-white/10 hover:border-cosmic-accent/50 transition-colors duration-300"
+                    className="group relative p-6 rounded-xl bg-gradient-to-b from-white/5 to-transparent border border-white/10 hover:border-cosmic-accent/50 transition-all duration-300"
+                    whileHover={{ y: -5 }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-b from-cosmic-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+                    <div className="absolute inset-0 bg-cosmic-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                     <div className="relative space-y-4">
-                      <span className="inline-block p-3 rounded-lg bg-cosmic-accent/20 text-cosmic-accent">
+                      <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-cosmic-accent/10 text-cosmic-accent group-hover:scale-110 transition-transform duration-300">
                         {feature.icon}
                       </span>
-                      <h3 className="font-orbitron text-white text-lg">
+                      <h3 className="font-orbitron text-white text-lg font-semibold">
                         {feature.title}
                       </h3>
-                      <p className="font-quicksand text-cosmic-muted text-sm">
+                      <p className="font-quicksand text-cosmic-muted/90 text-sm leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
