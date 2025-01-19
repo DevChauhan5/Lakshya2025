@@ -10,3 +10,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@layer utilities {
+  .backdrop-blur-preloader {
+    backdrop-filter: blur(8px);
+  }
+}
