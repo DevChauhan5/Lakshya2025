@@ -6,7 +6,7 @@ export default {
       colors: {
         cosmic: {
           DEFAULT: "#0F172A",
-          dark: "#020617",
+          dark: "#010408", // Darker space color
           light: "#1E293B",
           accent: "#38BDF8",
           muted: "#94A3B8",
