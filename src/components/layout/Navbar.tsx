@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IoRocketOutline } from "react-icons/io5";
 import { HiMenu } from "react-icons/hi";
@@ -8,11 +8,15 @@ function Navbar() {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const navItems = ["About", "Mission", "Timeline", "Contact"];
 
-  if (typeof window !== "undefined") {
-    window.addEventListener("scroll", () => {
+  useEffect(() => {
+    const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-    });
-  }
+    };
+
+    // Add passive scroll listener for better performance
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.nav

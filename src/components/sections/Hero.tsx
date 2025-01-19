@@ -5,8 +5,14 @@ import { IoRocketOutline } from "react-icons/io5";
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
+
+  // Update scroll configuration
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
 
   return (
     <motion.div
