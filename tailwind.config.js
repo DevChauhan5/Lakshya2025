@@ -22,6 +22,9 @@ export default {
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         glow: "glow 2s ease-in-out infinite",
         "text-shimmer": "text-shimmer 2.5s ease-in-out infinite",
+        marquee: "marquee 25s linear infinite",
+        marquee2: "marquee2 25s linear infinite",
+        "infinite-scroll": "infinite-scroll 25s linear infinite",
       },
       keyframes: {
         float: {
@@ -41,6 +44,18 @@ export default {
             "background-size": "200% 200%",
             "background-position": "right center",
           },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        marquee2: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0%)" },
+        },
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
         },
       },
       backgroundImage: {
