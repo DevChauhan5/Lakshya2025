@@ -15,7 +15,7 @@ export default {
       fontFamily: {
         audiowide: ["Audiowide", "cursive"],
         orbitron: ["Orbitron", "sans-serif"],
-        quicksand: ["Quicksand", "sans-serif"],
+        syne: ["Syne", "sans-serif"], // Replace grotesk with syne
       },
       animation: {
         float: "float 8s ease-in-out infinite",
