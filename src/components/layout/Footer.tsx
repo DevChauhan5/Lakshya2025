@@ -124,13 +124,6 @@ const Footer = () => {
             >
               Dev Chauhan
             </a>
-            <span> & </span>
-            <a
-              href="https://www.linkedin.com/in/moksh-khanna-b84069325/"
-              className="text-cosmic-accent hover:underline"
-            >
-              Moksh
-            </a>
           </p>
         </motion.div>
       </div>
