@@ -21,26 +21,26 @@ export const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed left-0 right-0 top-0 z-40 bg-black/80 backdrop-blur-sm"
+      className="fixed left-0 right-0 top-0 z-40 backdrop-blur-md"
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between p-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link href="/">
           <Image
             src="/logo.webp"
             alt="Lakshya Logo"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
             className="h-auto w-auto"
           />
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden space-x-8 md:flex">
+        <div className="hidden space-x-12 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="text-white transition-colors hover:text-gray-300"
+              className="text-lg font-medium text-white/80 transition-colors hover:text-gold"
             >
               {item.name}
             </Link>
@@ -70,13 +70,13 @@ export const Navbar = () => {
           initial={{ x: "100%" }}
           animate={{ x: isOpen ? "0%" : "100%" }}
           transition={{ type: "tween" }}
-          className="fixed inset-y-0 right-0 flex w-full flex-col items-center justify-center bg-black p-8 md:hidden"
+          className="fixed inset-y-0 right-0 flex w-full flex-col items-center justify-center bg-purple-dark/90 backdrop-blur-lg md:hidden"
         >
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="py-4 text-2xl text-white"
+              className="py-4 text-2xl text-gold"
               onClick={() => setIsOpen(false)}
             >
               {item.name}

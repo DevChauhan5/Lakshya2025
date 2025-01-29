@@ -4,4 +4,34 @@
 
 body {
   font-family: "Kanit", serif;
+  background: black;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: theme("colors.gold");
+  color: theme("colors.purple.dark");
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme("colors.purple.dark");
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme("colors.gold");
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme("colors.orange");
 }

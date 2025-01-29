@@ -1,7 +1,10 @@
 import React from "react";
+import { Hero } from "@/components/sections/Hero";
 
-const page = () => {
-  return <div>page</div>;
-};
-
-export default page;
+export default function Home() {
+  return (
+    <>
+      <Hero />
+    </>
+  );
+}
