@@ -1,8 +1,9 @@
+import { Footer } from "../components/layout/Footer";
+import { Navbar } from "../components/layout/Navbar";
+import { PreLoader } from "../components/PreLoader";
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
@@ -25,7 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${kanit.className}  antialiased`}>
-        <main>
+        <PreLoader />
+        <main className="bg-black">
           <Navbar />
           {children}
           <Footer />
