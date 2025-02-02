@@ -18,7 +18,7 @@ const SpaceElements = () => {
   return (
     <>
       {/* Deep space gradient background */}
-      <div className="absolute inset-0 bg-gradient-radial from-[#1e3c72] via-[#0f172a] to-black" />
+      <div className="absolute inset-0 bg-gradient-radial from-theme-light via-theme-dark to-black" />
 
       {/* Animated rings */}
       <Rings />
@@ -30,7 +30,7 @@ const SpaceElements = () => {
       {orbPositions.map((position, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-blue-400 rounded-full"
+          className="absolute w-2 h-2 bg-theme-primary rounded-full"
           style={{
             top: `${position.top}%`,
             left: `${position.left}%`,
@@ -53,13 +53,13 @@ const SpaceElements = () => {
 };
 
 const AnimatedTitle = () => {
-  const letters = "INCRIDEA".split("");
+  const letters = "LAKSHYA'25".split("");
 
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
       {/* Simple background glow */}
       <motion.div
-        className="absolute inset-0 bg-blue-500/10 blur-[120px] rounded-full"
+        className="absolute inset-0 bg-theme-primary/10 blur-[120px] rounded-full"
         animate={{
           opacity: [0.3, 0.5, 0.3],
         }}
@@ -82,8 +82,8 @@ const AnimatedTitle = () => {
         {letters.map((letter, i) => (
           <motion.span
             key={i}
-            className="text-[130px] sm:text-[150px] md:text-[180px] font-bold tracking-tighter text-white
-                       [text-shadow:0_0_30px_rgba(59,130,246,0.3)]"
+            className="text-[130px] sm:text-[150px] md:text-[180px] font-bold tracking-tighter text-theme-primary
+                       [text-shadow:0_0_30px_rgba(255,206,107,0.3)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -116,10 +116,10 @@ const AnimatedButton = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5 }}
       whileHover={{ scale: 1.05 }}
-      className="relative z-10 mt-12 px-10 py-3 rounded-full bg-white/10 backdrop-blur-sm
-                 border border-white/20 text-white hover:bg-white/20 transition-all
-                 flex items-center gap-2 group text-lg hover:border-blue-400/50
-                 hover:[box-shadow:0_0_20px_rgba(59,130,246,0.3)]"
+      className="relative z-10 mt-12 px-10 py-3 rounded-full bg-theme-dark/10 backdrop-blur-sm
+                 border border-theme-primary/20 text-theme-primary hover:bg-theme-dark/20 transition-all
+                 flex items-center gap-2 group text-lg hover:border-theme-primary/50
+                 hover:[box-shadow:0_0_20px_rgba(255,206,107,0.3)]"
     >
       <span>See events</span>
       <motion.svg
@@ -152,15 +152,15 @@ export const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="w-full h-full"
+        className="w-full h-full absolute inset-0"
       >
         <SpaceElements />
-
-        <div className="relative z-10 container mx-auto px-4 flex flex-col items-center">
-          <AnimatedTitle />
-          <AnimatedButton />
-        </div>
       </motion.div>
+
+      <div className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen">
+        <AnimatedTitle />
+        <AnimatedButton />
+      </div>
     </section>
   );
 };

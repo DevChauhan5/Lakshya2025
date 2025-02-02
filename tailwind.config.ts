@@ -9,16 +9,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        purple: {
-          dark: "#382f59",
-          light: "#733c80",
+        theme: {
+          primary: "#ffce6b", // Gold from logo
+          secondary: "#f0524a", // Red from logo
+          accent: "#f48952", // Orange from logo
+          highlight: "#d82c88", // Pink from logo
+          dark: "#382f59", // Dark purple from logo
+          light: "#733c80", // Light purple from logo
         },
-        gold: "#ffce6b",
-        red: "#f0524a",
-        orange: "#f48952",
-        pink: "#d82c88",
       },
       animation: {
         float: "float 6s ease-in-out infinite",

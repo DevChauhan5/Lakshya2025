@@ -21,9 +21,4 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-::selection {
-  background: theme("colors.gold");
-  color: theme("colors.purple.dark");
-}
-
 /* Remove default smooth scroll since Lenis handles it */
