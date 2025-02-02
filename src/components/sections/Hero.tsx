@@ -24,21 +24,13 @@ const AnimatedNebula = () => {
   );
 };
 
+// Updated AnimatedButton component with responsive Tailwind classes instead of fixed inline styles.
 const AnimatedButton = () => {
   return (
     <button
-      style={{
-        position: "relative",
-        marginTop: "16px",
-        overflow: "hidden",
-        borderRadius: "50%",
-        background: "linear-gradient(to right, gold, red, pink)",
-        padding: "10px 20px",
-        fontSize: "1.125rem",
-        fontWeight: "600",
-        color: "purple-dark",
-        transition: "all 0.3s",
-      }}
+      className="relative mt-4 sm:mt-16 overflow-hidden rounded-full bg-gradient-to-r from-gold via-red to-pink 
+                 px-4 py-2 sm:px-10 sm:py-3 text-base sm:text-lg font-semibold text-purple-dark transition-all 
+                 hover:from-pink hover:via-purple-light hover:to-gold"
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "scale(1.1)";
         e.currentTarget.style.boxShadow = "0 0 30px rgba(255, 206, 107, 0.6)";
@@ -54,7 +46,7 @@ const AnimatedButton = () => {
         e.currentTarget.style.transform = "scale(1)";
       }}
     >
-      <span style={{ position: "relative" }}>Enter Portal</span>
+      <span className="relative">Enter Portal</span>
     </button>
   );
 };
@@ -103,7 +95,8 @@ export const Hero = () => {
         <div className="relative">
           <h1
             ref={lettersContainerRef}
-            className="relative z-10 flex justify-center items-center space-x-0 text-7xl sm:text-9xl md:text-[12rem] lg:text-[14rem]"
+            // Increase letter sizes and reduce spacing: using larger responsive sizes and tighter tracking.
+            className="relative z-10 flex justify-center items-center tracking-tighter text-6xl sm:text-8xl md:text-[10rem] lg:text-[14rem] xl:text-[16rem]"
           >
             {Array.from(title).map((char, index) =>
               char === " " ? (
@@ -113,7 +106,8 @@ export const Hero = () => {
               ) : (
                 <svg
                   key={index}
-                  className="letter inline-block overflow-hidden -mx-1 cursor-pointer"
+                  // Reduced horizontal margins for less spacing between letters.
+                  className="letter inline-block overflow-hidden -mx-0.5 cursor-pointer"
                   width="2em"
                   height="2em"
                   viewBox="0 0 120 120"
@@ -161,7 +155,7 @@ export const Hero = () => {
             )}
           </h1>
         </div>
-        <div id="hero-button" className="mt-16">
+        <div id="hero-button" className="mt-8 sm:mt-16">
           {isMounted && <AnimatedButton />}
         </div>
       </div>
