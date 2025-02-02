@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Stars } from "../effects/Stars";
 import { useLoading } from "@/context/LoadingContext";
+import { useGSAP } from "@gsap/react";
 
 const ClientStars = () => {
   return <Stars />;
@@ -18,22 +19,6 @@ const AnimatedNebula = () => {
         zIndex: -1,
         background:
           "radial-gradient(circle_at_center, rgba(128,0,128,0.5), transparent)",
-      }}
-    />
-  );
-};
-
-const AnimatedBackground = () => {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        inset: "-20px",
-        zIndex: 0,
-        borderRadius: "50%",
-        background:
-          "linear-gradient(to right, rgba(138,43,226,0.2), rgba(75,0,130,0.2), rgba(0,0,139,0.2))",
-        filter: "blur(3xl)",
       }}
     />
   );
@@ -86,24 +71,27 @@ export const Hero = () => {
     }
   }, [isLoading]);
 
-  useEffect(() => {
-    if (isMounted && lettersContainerRef.current) {
-      const letters = lettersContainerRef.current.querySelectorAll(".letter");
-      gsap.fromTo(
-        letters,
-        { opacity: 0, y: 50, rotationX: -90, scale: 0.5 },
-        {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          scale: 1,
-          stagger: 0.15,
-          duration: 0.8,
-          ease: "power4.out",
-        }
-      );
-    }
-  }, [isMounted]);
+  useGSAP(
+    () => {
+      const letters = lettersContainerRef.current?.querySelectorAll(".letter");
+      if (letters) {
+        gsap.fromTo(
+          letters,
+          { opacity: 0, y: 50, rotationX: -90, scale: 0.5 },
+          {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            scale: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power4.out",
+          }
+        );
+      }
+    },
+    { scope: lettersContainerRef, deps: [isMounted] }
+  );
 
   if (isLoading) return null;
 
@@ -113,7 +101,6 @@ export const Hero = () => {
       {isMounted && <AnimatedNebula />}
       <div className="relative z-10 max-w-7xl px-4 text-center">
         <div className="relative">
-          {isMounted && <AnimatedBackground />}
           <h1
             ref={lettersContainerRef}
             className="relative z-10 flex justify-center items-center space-x-0 text-7xl sm:text-9xl md:text-[12rem] lg:text-[14rem]"
