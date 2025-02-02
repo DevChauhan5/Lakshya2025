@@ -23,9 +23,9 @@ export const About = () => {
           y: 0,
           rotation: 0,
           scale: 1,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-          stagger: 0.15,
+          duration: 0.5, // reduced duration for faster appearance
+          ease: "expo.out", // smoother easing
+          stagger: 0.1, // reduced stagger for quicker sequence
           delay: 0.5,
         }
       );

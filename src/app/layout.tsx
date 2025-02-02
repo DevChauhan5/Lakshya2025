@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import { LoadingProvider } from "@/context/LoadingContext";
+import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
 
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
@@ -31,12 +32,14 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LoadingProvider>
-          <PreLoader />
-          <main className="bg-black">
-            <Navbar />
-            {children}
-            <Footer />
-          </main>
+          <SmoothScrollProvider>
+            <PreLoader />
+            <main className="bg-black">
+              <Navbar />
+              {children}
+              <Footer />
+            </main>
+          </SmoothScrollProvider>
         </LoadingProvider>
       </body>
     </html>

@@ -13,7 +13,4 @@ body {
   color: theme("colors.purple.dark");
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/* Remove default smooth scroll since Lenis handles it */
