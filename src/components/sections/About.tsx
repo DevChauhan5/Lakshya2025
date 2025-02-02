@@ -1,12 +1,20 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { SectionTitle } from "@/components/ui/SectionTitle";
+import { useSmoothScroll } from "@/context/SmoothScrollContext";
 
 export const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: false, margin: "-20%" });
+  const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
 
   const description = [
     {
@@ -66,20 +74,21 @@ export const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.15,
         delayChildren: 0.3,
       },
     },
   };
 
   const lineVariants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { opacity: 0, x: -50, filter: "blur(4px)" },
     visible: {
       opacity: 1,
       x: 0,
+      filter: "blur(0px)",
       transition: {
-        duration: 0.5,
-        ease: "easeOut",
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1], // Custom ease curve for smoother animation
       },
     },
   };
@@ -89,13 +98,17 @@ export const About = () => {
       ref={sectionRef}
       className="relative w-full min-h-screen overflow-hidden bg-transparent py-20"
     >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-theme-dark/20 to-black pointer-events-none" />
+      {/* Background gradient with parallax effect */}
+      <motion.div
+        style={{ opacity }}
+        className="absolute inset-0 bg-gradient-to-b from-black via-theme-dark/20 to-black pointer-events-none"
+      />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
+        style={{ y }}
         className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen"
       >
         <SectionTitle title="About Us" />
@@ -103,7 +116,7 @@ export const About = () => {
         <div className="max-w-4xl w-full space-y-6">
           {description.map((item, index) =>
             item.type === "spacer" ? (
-              <div key={index} className="h-6" /> // Adds spacing between paragraphs
+              <div key={index} className="h-6" />
             ) : (
               <motion.div
                 key={index}
@@ -122,10 +135,13 @@ export const About = () => {
                         ? "text-white/90"
                         : "text-white/70"
                     }
-                  `}
+                    transform-gpu`}
                   whileHover={{
                     x: 20,
-                    transition: { duration: 0.2 },
+                    transition: {
+                      duration: 0.4,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
                   }}
                 >
                   {item.text}
@@ -135,15 +151,15 @@ export const About = () => {
           )}
         </div>
 
-        {/* Decorative elements */}
+        {/* Enhanced decorative elements with smoother animations */}
         <motion.div
           className="absolute top-1/4 right-[10%] w-32 h-32 bg-theme-primary/20 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            duration: 4,
+            duration: 6,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -152,10 +168,10 @@ export const About = () => {
           className="absolute bottom-1/4 left-[10%] w-40 h-40 bg-theme-secondary/20 rounded-full blur-3xl"
           animate={{
             scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            duration: 5,
+            duration: 7,
             repeat: Infinity,
             ease: "easeInOut",
           }}
