@@ -2,19 +2,63 @@
 
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { SectionTitle } from "@/components/ui/SectionTitle";
 
 export const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-20%" });
 
   const description = [
-    "At Lakshya,",
-    "we believe in creativity,",
-    "innovation, and the endless",
-    "possibilities of the universe.",
-    "Our annual celebration showcases",
-    "remarkable talents and inspires",
-    "dreams across diverse fields.",
+    {
+      type: "heading",
+      text: "Lakshya is the flagship annual cultural and sports fest of Poornima University,",
+    },
+    {
+      type: "text",
+      text: "a grand five-day celebration of art, music, sports, and creativity.",
+    },
+    {
+      type: "highlight",
+      text: "More than just a fest, Lakshya is a movement of passion, unity, and self-expression,",
+    },
+    {
+      type: "text",
+      text: "bringing together students from diverse backgrounds to showcase their talents.",
+    },
+    {
+      type: "spacer",
+    },
+    {
+      type: "text",
+      text: "With electrifying artist performances, thrilling sports competitions,",
+    },
+    {
+      type: "text",
+      text: "engaging games, and immersive activities,",
+    },
+    {
+      type: "highlight",
+      text: "Lakshya is an unforgettable experience where creativity meets competition.",
+    },
+    {
+      type: "text",
+      text: "It serves as a platform for self-discovery, teamwork, and cultural celebration,",
+    },
+    {
+      type: "text",
+      text: "fostering innovation, sportsmanship, and lifelong memories.",
+    },
+    {
+      type: "spacer",
+    },
+    {
+      type: "highlight",
+      text: "At Lakshya, dreams take flight, talents shine, and the impossible becomes reality—",
+    },
+    {
+      type: "heading",
+      text: "a fest that unites, inspires, and transforms!",
+    },
   ];
 
   const containerVariants = {
@@ -24,18 +68,6 @@ export const About = () => {
       transition: {
         staggerChildren: 0.1,
         delayChildren: 0.3,
-      },
-    },
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
       },
     },
   };
@@ -66,32 +98,41 @@ export const About = () => {
         animate={isInView ? "visible" : "hidden"}
         className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen"
       >
-        <motion.h2
-          variants={titleVariants}
-          className="text-6xl md:text-7xl font-bold mb-16 bg-gradient-to-r from-theme-primary via-theme-secondary to-theme-highlight bg-clip-text text-transparent"
-        >
-          About Us
-        </motion.h2>
+        <SectionTitle title="About Us" />
 
-        <div className="max-w-4xl w-full space-y-4">
-          {description.map((line, index) => (
-            <motion.div
-              key={index}
-              variants={lineVariants}
-              className="overflow-hidden"
-            >
-              <motion.p
-                className="text-2xl md:text-3xl text-white/80 font-light"
-                whileHover={{
-                  color: "rgba(255, 206, 107, 0.95)",
-                  x: 20,
-                  transition: { duration: 0.2 },
-                }}
+        <div className="max-w-4xl w-full space-y-6">
+          {description.map((item, index) =>
+            item.type === "spacer" ? (
+              <div key={index} className="h-6" /> // Adds spacing between paragraphs
+            ) : (
+              <motion.div
+                key={index}
+                variants={lineVariants}
+                className="overflow-hidden"
               >
-                {line}
-              </motion.p>
-            </motion.div>
-          ))}
+                <motion.p
+                  className={`text-xl md:text-2xl font-light 
+                    ${
+                      item.type === "heading"
+                        ? "text-theme-primary font-medium"
+                        : ""
+                    }
+                    ${
+                      item.type === "highlight"
+                        ? "text-white/90"
+                        : "text-white/70"
+                    }
+                  `}
+                  whileHover={{
+                    x: 20,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  {item.text}
+                </motion.p>
+              </motion.div>
+            )
+          )}
         </div>
 
         {/* Decorative elements */}
