@@ -1,164 +1,166 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import React, { useRef } from "react";
+import { motion } from "framer-motion";
 import { Stars } from "../effects/Stars";
-import { useLoading } from "@/context/LoadingContext";
-import { useGSAP } from "@gsap/react";
+import { Rings } from "../effects/Rings";
 
-const ClientStars = () => {
-  return <Stars />;
-};
+const SpaceElements = () => {
+  // Fixed positions for orbs to prevent hydration mismatch
+  const orbPositions = [
+    { top: 15, left: 25 },
+    { top: 35, left: 75 },
+    { top: 65, left: 15 },
+    { top: 45, left: 85 },
+    { top: 75, left: 45 },
+  ];
 
-const AnimatedNebula = () => {
   return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        zIndex: -1,
-        background:
-          "radial-gradient(circle_at_center, rgba(128,0,128,0.5), transparent)",
-      }}
-    />
+    <>
+      {/* Deep space gradient background */}
+      <div className="absolute inset-0 bg-gradient-radial from-[#1e3c72] via-[#0f172a] to-black" />
+
+      {/* Animated rings */}
+      <Rings />
+
+      {/* Stars effect with increased density */}
+      <Stars />
+
+      {/* Additional glowing orbs */}
+      {orbPositions.map((position, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-blue-400 rounded-full"
+          style={{
+            top: `${position.top}%`,
+            left: `${position.left}%`,
+            filter: "blur(1px)",
+          }}
+          animate={{
+            opacity: [0.2, 1, 0.2],
+            scale: [1, 1.5, 1],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            delay: i * 0.4,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </>
   );
 };
 
-// Updated AnimatedButton component with responsive Tailwind classes instead of fixed inline styles.
+const AnimatedTitle = () => {
+  const letters = "INCRIDEA".split("");
+
+  return (
+    <div className="relative z-10 flex flex-col items-center text-center">
+      {/* Simple background glow */}
+      <motion.div
+        className="absolute inset-0 bg-blue-500/10 blur-[120px] rounded-full"
+        animate={{
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.div
+        className="flex relative"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 1,
+          ease: "easeOut",
+        }}
+      >
+        {letters.map((letter, i) => (
+          <motion.span
+            key={i}
+            className="text-[130px] sm:text-[150px] md:text-[180px] font-bold tracking-tighter text-white
+                       [text-shadow:0_0_30px_rgba(59,130,246,0.3)]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: i * 0.08,
+              ease: "easeOut",
+            }}
+          >
+            {letter}
+          </motion.span>
+        ))}
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1 }}
+        className="text-xl md:text-2xl text-white/80 mt-6 tracking-wide"
+      >
+        Explore the infinite.
+      </motion.p>
+    </div>
+  );
+};
+
 const AnimatedButton = () => {
   return (
-    <button
-      className="relative mt-4 sm:mt-16 overflow-hidden rounded-full bg-gradient-to-r from-gold via-red to-pink 
-                 px-4 py-2 sm:px-10 sm:py-3 text-base sm:text-lg font-semibold text-purple-dark transition-all 
-                 hover:from-pink hover:via-purple-light hover:to-gold"
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.1)";
-        e.currentTarget.style.boxShadow = "0 0 30px rgba(255, 206, 107, 0.6)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
-        e.currentTarget.style.boxShadow = "none";
-      }}
-      onMouseDown={(e) => {
-        e.currentTarget.style.transform = "scale(0.95)";
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
-      }}
+    <motion.button
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.5 }}
+      whileHover={{ scale: 1.05 }}
+      className="relative z-10 mt-12 px-10 py-3 rounded-full bg-white/10 backdrop-blur-sm
+                 border border-white/20 text-white hover:bg-white/20 transition-all
+                 flex items-center gap-2 group text-lg hover:border-blue-400/50
+                 hover:[box-shadow:0_0_20px_rgba(59,130,246,0.3)]"
     >
-      <span className="relative">Enter Portal</span>
-    </button>
+      <span>See events</span>
+      <motion.svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="group-hover:translate-x-1 transition-transform"
+      >
+        <path d="M5 12h14m-7-7 7 7-7 7" />
+      </motion.svg>
+    </motion.button>
   );
 };
 
 export const Hero = () => {
-  const { isLoading } = useLoading();
-  const [isMounted, setIsMounted] = useState(false);
-  const title = "LAKSHYA'25";
-  const lettersContainerRef = useRef<HTMLHeadingElement>(null);
-
-  useEffect(() => {
-    if (!isLoading) {
-      setIsMounted(true);
-    }
-  }, [isLoading]);
-
-  useGSAP(
-    () => {
-      const letters = lettersContainerRef.current?.querySelectorAll(".letter");
-      if (letters) {
-        gsap.fromTo(
-          letters,
-          { opacity: 0, y: 50, rotationX: -90, scale: 0.5 },
-          {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            scale: 1,
-            stagger: 0.15,
-            duration: 0.8,
-            ease: "power4.out",
-          }
-        );
-      }
-    },
-    { scope: lettersContainerRef, deps: [isMounted] }
-  );
-
-  if (isLoading) return null;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#000000]">
-      {isMounted && <ClientStars />}
-      {isMounted && <AnimatedNebula />}
-      <div className="relative z-10 max-w-7xl px-4 text-center">
-        <div className="relative">
-          <h1
-            ref={lettersContainerRef}
-            // Increase letter sizes and reduce spacing: using larger responsive sizes and tighter tracking.
-            className="relative z-10 flex justify-center items-center tracking-tighter text-6xl sm:text-8xl md:text-[10rem] lg:text-[14rem] xl:text-[16rem]"
-          >
-            {Array.from(title).map((char, index) =>
-              char === " " ? (
-                <span key={index} className="w-0.5 inline-block">
-                  &nbsp;
-                </span>
-              ) : (
-                <svg
-                  key={index}
-                  // Reduced horizontal margins for less spacing between letters.
-                  className="letter inline-block overflow-hidden -mx-0.5 cursor-pointer"
-                  width="2em"
-                  height="2em"
-                  viewBox="0 0 120 120"
-                >
-                  <defs>
-                    <mask id={`mask-letter-${index}`}>
-                      <rect width="100%" height="100%" fill="black" />
-                      <text
-                        x="50%"
-                        y="50%"
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        fontSize="100"
-                        fontWeight="bold"
-                        fill="white"
-                        style={{ filter: "url(#glow)" }}
-                      >
-                        {char}
-                      </text>
-                    </mask>
-                    <filter id="glow">
-                      <feGaussianBlur stdDeviation="2" result="blur" />
-                      <feMerge>
-                        <feMergeNode in="blur" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-                  <g mask={`url(#mask-letter-${index})`}>
-                    <foreignObject width="100%" height="100%">
-                      <div className="w-full h-full">
-                        <video
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="w-full h-full object-cover"
-                          src={`/videos/hero/${index + 1}.webm`}
-                        />
-                      </div>
-                    </foreignObject>
-                  </g>
-                </svg>
-              )
-            )}
-          </h1>
+    <section
+      ref={containerRef}
+      className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-black"
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="w-full h-full"
+      >
+        <SpaceElements />
+
+        <div className="relative z-10 container mx-auto px-4 flex flex-col items-center">
+          <AnimatedTitle />
+          <AnimatedButton />
         </div>
-        <div id="hero-button" className="mt-8 sm:mt-16">
-          {isMounted && <AnimatedButton />}
-        </div>
-      </div>
-    </div>
+      </motion.div>
+    </section>
   );
 };
