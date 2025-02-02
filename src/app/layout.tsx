@@ -24,8 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${kanit.className}  antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${kanit.className}  antialiased`}
+        suppressHydrationWarning
+      >
         <PreLoader />
         <main className="bg-black">
           <Navbar />
