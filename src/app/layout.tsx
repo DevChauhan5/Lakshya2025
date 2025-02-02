@@ -4,6 +4,7 @@ import { PreLoader } from "../components/PreLoader";
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
+import { LoadingProvider } from "@/context/LoadingContext";
 
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
@@ -29,12 +30,14 @@ export default function RootLayout({
         className={`${kanit.className}  antialiased`}
         suppressHydrationWarning
       >
-        <PreLoader />
-        <main className="bg-black">
-          <Navbar />
-          {children}
-          <Footer />
-        </main>
+        <LoadingProvider>
+          <PreLoader />
+          <main className="bg-black">
+            <Navbar />
+            {children}
+            <Footer />
+          </main>
+        </LoadingProvider>
       </body>
     </html>
   );
