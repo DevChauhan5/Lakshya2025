@@ -1,9 +1,16 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Stars } from "../effects/Stars";
 import { Rings } from "../effects/Rings";
+import localFont from "next/font/local";
+import gsap from "gsap";
+
+const starwar = localFont({
+  src: "../../app/fonts/star.woff",
+  variable: "--font-starwars",
+});
 
 const SpaceElements = () => {
   // Fixed positions for orbs to prevent hydration mismatch
@@ -18,7 +25,7 @@ const SpaceElements = () => {
   return (
     <>
       {/* Deep space gradient background */}
-      <div className="absolute inset-0 bg-gradient-radial from-theme-light via-theme-dark to-black" />
+      <div className="absolute inset-0  bg-gradient-radial from-theme-light via-theme-dark to-black" />
 
       {/* Animated rings */}
       <Rings />
@@ -53,6 +60,47 @@ const SpaceElements = () => {
 };
 
 const AnimatedTitle = () => {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const title = titleRef.current;
+    const subtitle = subtitleRef.current;
+
+    gsap.fromTo(
+      title,
+      {
+        opacity: 0,
+        y: 50,
+        scale: 0.8,
+        rotation: -10,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotation: 0,
+        duration: 1,
+        ease: "power3.out",
+      }
+    );
+
+    gsap.fromTo(
+      subtitle,
+      {
+        opacity: 0,
+        y: 20,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: "power3.out",
+      }
+    );
+  }, []);
+
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
       {/* Background glow */}
@@ -68,27 +116,19 @@ const AnimatedTitle = () => {
         }}
       />
 
-      <motion.h1
-        className="text-[130px] sm:text-[150px] md:text-[180px] font-bold tracking-tighter text-theme-primary
-                   [text-shadow:0_0_30px_rgba(255,206,107,0.3)]"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          ease: "easeOut",
-        }}
+      <h1
+        ref={titleRef}
+        className={`${starwar.className} text-[130px] sm:text-[150px] md:text-[180px] tracking-tighter text-theme-primary`}
       >
         LAKSHYA&apos;25
-      </motion.h1>
+      </h1>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
+      <p
+        ref={subtitleRef}
         className="text-xl md:text-2xl text-white/80 mt-6 tracking-wide"
       >
-        Explore the infinite.
-      </motion.p>
+        Euphoria: Orbit of Wonder
+      </p>
     </div>
   );
 };

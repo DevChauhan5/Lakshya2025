@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${kanit.className}  antialiased`}
+        className={`${kanit.className}   antialiased`}
         suppressHydrationWarning
       >
         <LoadingProvider>
