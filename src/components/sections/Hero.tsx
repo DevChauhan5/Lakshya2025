@@ -124,9 +124,14 @@ const AnimatedTitle = () => {
 
         <p
           ref={subtitleRef}
-          className="text-lg xs:text-xl md:text-2xl mt-4 md:mt-6 tracking-wide bg-gradient-to-r from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent font-semibold px-2"
+          className="text-lg xs:text-xl md:text-2xl mt-4 md:mt-6 tracking-wide font-medium px-2 relative uppercase"
         >
-          Euphoria: Orbit of Wonder
+          <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 opacity-80 bg-clip-text text-transparent blur-[1px]">
+            Euphoria: Orbit of Wonder
+          </span>
+          <span className="relative bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
+            Euphoria: Orbit of Wonder
+          </span>
         </p>
       </div>
     </div>
@@ -134,33 +139,60 @@ const AnimatedTitle = () => {
 };
 
 const AnimatedButton = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   return (
     <motion.button
+      ref={buttonRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5 }}
       whileHover={{ scale: 1.05 }}
-      className="relative z-10 mt-8 md:mt-12 px-6 md:px-10 py-2.5 md:py-3 rounded-full 
-                 bg-black/20 backdrop-blur-sm border border-yellow-400/30 
-                 text-yellow-400 hover:bg-black/40 transition-all
-                 flex items-center gap-2 group text-base md:text-lg 
-                 hover:border-yellow-400/60 hover:[box-shadow:0_0_20px_rgba(255,206,107,0.2)]"
+      whileTap={{ scale: 0.98 }}
+      className="relative z-10 mt-8 md:mt-12 px-8 md:px-12 py-3 md:py-4 rounded-2xl 
+                 bg-gradient-to-r from-yellow-400/10 via-orange-400/10 to-yellow-400/10
+                 hover:from-yellow-400/20 hover:via-orange-400/20 hover:to-yellow-400/20
+                 backdrop-blur-sm border border-yellow-400/30 
+                 text-yellow-400 transition-all duration-300 cursor-pointer
+                 flex items-center gap-3 group text-base md:text-lg 
+                 hover:border-yellow-400/60 hover:[box-shadow:0_0_30px_rgba(255,206,107,0.15)]
+                 overflow-hidden"
+      onClick={() => {
+        // Scroll to events section or navigate to events page
+        const eventsSection = document.getElementById("events");
+        if (eventsSection) {
+          eventsSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }}
     >
-      <span>See events</span>
-      <motion.svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="group-hover:translate-x-1 transition-transform"
+      <span className="relative z-10 tracking-wide">Explore Events</span>
+      <motion.div
+        className="relative flex items-center"
+        initial={false}
+        animate={{ x: 0 }}
+        whileHover={{ x: 5 }}
+        transition={{ duration: 0.3 }}
       >
-        <path d="M5 12h14m-7-7 7 7-7 7" />
-      </motion.svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="relative z-10"
+        >
+          <path d="M5 12h14m-7-7 7 7-7 7" />
+        </svg>
+      </motion.div>
+
+      {/* Animated glow effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-400/20 to-yellow-400/20 blur-xl" />
+      </div>
     </motion.button>
   );
 };
