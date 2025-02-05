@@ -9,16 +9,12 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 html {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body {
-  font-family: "Kanit", serif;
   background: black;
   overflow-x: hidden;
-  /* Add smooth momentum scrolling for iOS */
   -webkit-overflow-scrolling: touch;
 }
-
-/* Remove default smooth scroll since Lenis handles it */

@@ -34,7 +34,7 @@ const SpaceElements = () => {
           style={{
             top: `${position.top}%`,
             left: `${position.left}%`,
-            filter: "blur(1px)",
+            filter: "blur(1px)`",
           }}
           animate={{
             opacity: [0.2, 1, 0.2],
@@ -53,11 +53,9 @@ const SpaceElements = () => {
 };
 
 const AnimatedTitle = () => {
-  const letters = "LAKSHYA'25".split("");
-
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
-      {/* Simple background glow */}
+      {/* Background glow */}
       <motion.div
         className="absolute inset-0 bg-theme-primary/10 blur-[120px] rounded-full"
         animate={{
@@ -70,37 +68,23 @@ const AnimatedTitle = () => {
         }}
       />
 
-      <motion.div
-        className="flex relative"
-        initial={{ opacity: 0, y: 30 }}
+      <motion.h1
+        className="text-[130px] sm:text-[150px] md:text-[180px] font-bold tracking-tighter text-theme-primary
+                   [text-shadow:0_0_30px_rgba(255,206,107,0.3)]"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
-          duration: 1,
+          duration: 0.8,
           ease: "easeOut",
         }}
       >
-        {letters.map((letter, i) => (
-          <motion.span
-            key={i}
-            className="text-[130px] sm:text-[150px] md:text-[180px] font-bold tracking-tighter text-theme-primary
-                       [text-shadow:0_0_30px_rgba(255,206,107,0.3)]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: i * 0.08,
-              ease: "easeOut",
-            }}
-          >
-            {letter}
-          </motion.span>
-        ))}
-      </motion.div>
+        LAKSHYA&apos;25
+      </motion.h1>
 
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
         className="text-xl md:text-2xl text-white/80 mt-6 tracking-wide"
       >
         Explore the infinite.
@@ -151,7 +135,7 @@ export const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
+        transition={{ duration: 1 }}
         className="w-full h-full absolute inset-0"
       >
         <SpaceElements />
