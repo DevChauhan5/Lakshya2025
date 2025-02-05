@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Stars } from "../effects/Stars";
 import { Rings } from "../effects/Rings";
@@ -13,48 +13,16 @@ const starwar = localFont({
 });
 
 const SpaceElements = () => {
-  // Fixed positions for orbs to prevent hydration mismatch
-  const orbPositions = [
-    { top: 15, left: 25 },
-    { top: 35, left: 75 },
-    { top: 65, left: 15 },
-    { top: 45, left: 85 },
-    { top: 75, left: 45 },
-  ];
-
   return (
     <>
-      {/* Deep space gradient background */}
-      <div className="absolute inset-0  bg-gradient-radial from-theme-light via-theme-dark to-black" />
+      {/* Pure black background */}
+      <div className="absolute inset-0 bg-black" />
 
       {/* Animated rings */}
       <Rings />
 
       {/* Stars effect with increased density */}
       <Stars />
-
-      {/* Additional glowing orbs */}
-      {orbPositions.map((position, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-theme-primary rounded-full"
-          style={{
-            top: `${position.top}%`,
-            left: `${position.left}%`,
-            filter: "blur(1px)`",
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-            scale: [1, 1.5, 1],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            delay: i * 0.4,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
     </>
   );
 };
@@ -62,8 +30,20 @@ const SpaceElements = () => {
 const AnimatedTitle = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const [starPositions, setStarPositions] = useState<
+    Array<{ top: number; left: number }>
+  >([]);
 
   useEffect(() => {
+    // Generate star positions once on client-side
+    const positions = Array(20)
+      .fill(0)
+      .map(() => ({
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+      }));
+    setStarPositions(positions);
+
     const title = titleRef.current;
     const subtitle = subtitleRef.current;
 
@@ -103,32 +83,52 @@ const AnimatedTitle = () => {
 
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
-      {/* Background glow */}
-      <motion.div
-        className="absolute inset-0 bg-theme-primary/10 blur-[120px] rounded-full"
-        animate={{
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      {/* Stars effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {starPositions.map((position, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-yellow-400 rounded-full"
+            style={{
+              top: `${position.top}%`,
+              left: `${position.left}%`,
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.2, 1, 0.2],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.1,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
-      <h1
-        ref={titleRef}
-        className={`${starwar.className} text-[130px] sm:text-[150px] md:text-[180px] tracking-tighter text-theme-primary`}
-      >
-        LAKSHYA&apos;25
-      </h1>
+      <div className="flex flex-col items-center">
+        <h1
+          ref={titleRef}
+          className={`${starwar.className} text-[130px] sm:text-[150px] md:text-[180px] tracking-tighter relative`}
+        >
+          <span className="relative inline-block">
+            <span className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 opacity-80 bg-clip-text text-transparent blur-[2px]">
+              LAKSHYA&apos;25
+            </span>
+            <span className="relative bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent">
+              LAKSHYA&apos;25
+            </span>
+          </span>
+        </h1>
 
-      <p
-        ref={subtitleRef}
-        className="text-xl md:text-2xl text-white/80 mt-6 tracking-wide"
-      >
-        Euphoria: Orbit of Wonder
-      </p>
+        <p
+          ref={subtitleRef}
+          className="text-xl md:text-2xl mt-6 tracking-wide bg-gradient-to-r from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent font-semibold"
+        >
+          Euphoria: Orbit of Wonder
+        </p>
+      </div>
     </div>
   );
 };
@@ -181,7 +181,7 @@ export const Hero = () => {
         <SpaceElements />
       </motion.div>
 
-      <div className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen">
+      <div className="relative z-10 container mx-2 px-4 flex flex-col items-center justify-center min-h-screen">
         <AnimatedTitle />
         <AnimatedButton />
       </div>
