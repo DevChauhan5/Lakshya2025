@@ -82,7 +82,7 @@ const AnimatedTitle = () => {
   }, []);
 
   return (
-    <div className="relative z-10 flex flex-col items-center text-center">
+    <div className="relative z-10 flex flex-col items-center text-center w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px] mx-auto">
       {/* Stars effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {starPositions.map((position, i) => (
@@ -107,12 +107,12 @@ const AnimatedTitle = () => {
         ))}
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center px-4">
         <h1
           ref={titleRef}
-          className={`${starwar.className} text-[130px] sm:text-[150px] md:text-[180px] tracking-tighter relative`}
+          className={`${starwar.className} text-[60px] xs:text-[80px] sm:text-[100px] md:text-[130px] lg:text-[150px] xl:text-[180px] tracking-tighter relative leading-none`}
         >
-          <span className="relative inline-block">
+          <span className="relative inline-block whitespace-nowrap">
             <span className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 opacity-80 bg-clip-text text-transparent blur-[2px]">
               LAKSHYA&apos;25
             </span>
@@ -124,7 +124,7 @@ const AnimatedTitle = () => {
 
         <p
           ref={subtitleRef}
-          className="text-xl md:text-2xl mt-6 tracking-wide bg-gradient-to-r from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent font-semibold"
+          className="text-lg xs:text-xl md:text-2xl mt-4 md:mt-6 tracking-wide bg-gradient-to-r from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent font-semibold px-2"
         >
           Euphoria: Orbit of Wonder
         </p>
@@ -140,16 +140,17 @@ const AnimatedButton = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5 }}
       whileHover={{ scale: 1.05 }}
-      className="relative z-10 mt-12 px-10 py-3 rounded-full bg-theme-dark/10 backdrop-blur-sm
-                 border border-theme-primary/20 text-theme-primary hover:bg-theme-dark/20 transition-all
-                 flex items-center gap-2 group text-lg hover:border-theme-primary/50
-                 hover:[box-shadow:0_0_20px_rgba(255,206,107,0.3)]"
+      className="relative z-10 mt-8 md:mt-12 px-6 md:px-10 py-2.5 md:py-3 rounded-full 
+                 bg-black/20 backdrop-blur-sm border border-yellow-400/30 
+                 text-yellow-400 hover:bg-black/40 transition-all
+                 flex items-center gap-2 group text-base md:text-lg 
+                 hover:border-yellow-400/60 hover:[box-shadow:0_0_20px_rgba(255,206,107,0.2)]"
     >
       <span>See events</span>
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
+        width="18"
+        height="18"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -170,7 +171,7 @@ export const Hero = () => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-black"
+      className="relative w-full h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-black"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -181,7 +182,7 @@ export const Hero = () => {
         <SpaceElements />
       </motion.div>
 
-      <div className="relative z-10 container mx-2 px-4 flex flex-col items-center justify-center min-h-screen">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center min-h-[100svh]">
         <AnimatedTitle />
         <AnimatedButton />
       </div>

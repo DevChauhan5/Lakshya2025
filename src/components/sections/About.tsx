@@ -113,7 +113,6 @@ export const About = () => {
         className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen"
       >
         <SectionTitle title="About Us" />
-        <Image src={"/main_logo.jpg"} alt="logo" width={100} height={100} />
 
         <div className="max-w-4xl w-full space-y-6">
           {description.map((item, index) =>
