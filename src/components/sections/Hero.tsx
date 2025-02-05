@@ -82,7 +82,7 @@ const AnimatedTitle = () => {
   }, []);
 
   return (
-    <div className="relative z-10 flex flex-col items-center text-center w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px] mx-auto">
+    <div className="relative flex flex-col items-center text-center w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px] mx-auto">
       {/* Stars effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {starPositions.map((position, i) => (
@@ -138,85 +138,78 @@ const AnimatedTitle = () => {
   );
 };
 
-const AnimatedButton = () => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  return (
-    <motion.button
-      ref={buttonRef}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.5 }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
-      className="relative z-10 mt-8 md:mt-12 px-8 md:px-12 py-3 md:py-4 rounded-2xl 
-                 bg-gradient-to-r from-yellow-400/10 via-orange-400/10 to-yellow-400/10
-                 hover:from-yellow-400/20 hover:via-orange-400/20 hover:to-yellow-400/20
-                 backdrop-blur-sm border border-yellow-400/30 
-                 text-yellow-400 transition-all duration-300 cursor-pointer
-                 flex items-center gap-3 group text-base md:text-lg 
-                 hover:border-yellow-400/60 hover:[box-shadow:0_0_30px_rgba(255,206,107,0.15)]
-                 overflow-hidden"
-      onClick={() => {
-        // Scroll to events section or navigate to events page
-        const eventsSection = document.getElementById("events");
-        if (eventsSection) {
-          eventsSection.scrollIntoView({ behavior: "smooth" });
-        }
-      }}
-    >
-      <span className="relative z-10 tracking-wide">Explore Events</span>
-      <motion.div
-        className="relative flex items-center"
-        initial={false}
-        animate={{ x: 0 }}
-        whileHover={{ x: 5 }}
-        transition={{ duration: 0.3 }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="relative z-10"
-        >
-          <path d="M5 12h14m-7-7 7 7-7 7" />
-        </svg>
-      </motion.div>
-
-      {/* Animated glow effect */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-400/20 to-yellow-400/20 blur-xl" />
-      </div>
-    </motion.button>
-  );
-};
-
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-black"
+      className="relative w-full min-h-[100svh] flex flex-col items-center justify-center bg-black"
     >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="w-full h-full absolute inset-0"
-      >
-        <SpaceElements />
-      </motion.div>
+      {/* Background Elements - with pointer-events-none */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <SpaceElements />
+        </motion.div>
+      </div>
 
-      <div className="relative z-10 w-full flex flex-col items-center justify-center min-h-[100svh]">
+      {/* Content Container - with pointer-events-auto */}
+      <div className="relative w-full flex flex-col items-center justify-center min-h-[100svh] pointer-events-auto">
         <AnimatedTitle />
-        <AnimatedButton />
+        <div className="relative z-50">
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            className="mt-8 md:mt-12 px-8 md:px-12 py-3 md:py-4 rounded-2xl 
+                     bg-gradient-to-r from-yellow-400/10 via-orange-400/10 to-yellow-400/10
+                     hover:from-yellow-400/20 hover:via-orange-400/20 hover:to-yellow-400/20
+                     backdrop-blur-sm border border-yellow-400/30 
+                     text-yellow-400 transition-all duration-300
+                     flex items-center gap-3 group text-base md:text-lg 
+                     hover:border-yellow-400/60 hover:[box-shadow:0_0_30px_rgba(255,206,107,0.15)]
+                     cursor-pointer select-none"
+            onClick={() => {
+              const eventsSection = document.getElementById("events");
+              if (eventsSection) {
+                eventsSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            <span>Explore Events</span>
+            <motion.div
+              className="flex items-center"
+              animate={{ x: 0 }}
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14m-7-7 7 7-7 7" />
+              </svg>
+            </motion.div>
+
+            {/* Glow effect with pointer-events-none */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-400/20 to-yellow-400/20 blur-xl" />
+            </div>
+          </motion.button>
+        </div>
       </div>
     </section>
   );
