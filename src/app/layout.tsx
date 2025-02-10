@@ -1,3 +1,4 @@
+import { AppWrapper } from "@/components/AppWrapper";
 import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
 import type { Metadata } from "next";
@@ -32,11 +33,11 @@ export default function RootLayout({
         {/* <LoadingProvider> */}
         <SmoothScrollProvider>
           {/* <PreLoader /> */}
-          <main>
+          <AppWrapper>
             <Navbar />
             {children}
             <Footer />
-          </main>
+          </AppWrapper>
         </SmoothScrollProvider>
         {/* </LoadingProvider> */}
       </body>

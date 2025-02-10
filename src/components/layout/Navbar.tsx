@@ -2,8 +2,12 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+
+// Register ScrollToPlugin
+gsap.registerPlugin(ScrollToPlugin);
 
 const navLinks = [
   { name: "Timeline", href: "#timeline" },
@@ -55,10 +59,14 @@ export const Navbar = () => {
   const handleClick = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      // Smooth scroll with GSAP
+      // Fixed smooth scroll implementation
+      const offsetY = 80; // Navbar height offset
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offsetY;
+
       gsap.to(window, {
         duration: 1,
-        scrollTo: { y: href, offsetY: 80 },
+        scrollTo: offsetPosition,
         ease: "power3.inOut",
       });
     }
@@ -75,12 +83,18 @@ export const Navbar = () => {
         className="container mx-auto px-4 h-20 flex items-center justify-between
                    max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px]"
       >
-        {/* Logo */}
+        {/* Logo with updated scroll behavior */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="relative w-12 h-12 cursor-pointer"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => {
+            gsap.to(window, {
+              duration: 1,
+              scrollTo: 0,
+              ease: "power3.inOut",
+            });
+          }}
         >
           <Image
             src="/t-logo.png"
