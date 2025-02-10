@@ -100,10 +100,10 @@ const EventCard = ({ category, index, direction }) => {
   return (
     <motion.div
       ref={cardRef}
-      className="relative group rounded-xl overflow-hidden"
+      className="relative group rounded-xl overflow-hidden w-full"
       style={{
-        aspectRatio: "1/1", // Square aspect ratio for consistent sizing
-        height: "600px", // Fixed height
+        height: "min(600px, 90vh)", // Responsive height
+        aspectRatio: "4/5", // Better aspect ratio for mobile
       }}
     >
       {/* Image container */}
@@ -113,49 +113,57 @@ const EventCard = ({ category, index, direction }) => {
           src={category.image}
           alt={category.title}
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 480px) 100vw, 
+                 (max-width: 768px) 90vw,
+                 (max-width: 1024px) 45vw,
+                 40vw"
           priority={index < 2}
           className="object-cover object-center transform opacity-0
-                     group-hover:scale-110 transition-transform duration-1000 
+                     group-hover:scale-105 md:group-hover:scale-110 
+                     transition-transform duration-1000 
                      ease-[cubic-bezier(0.08,0.82,0.17,1)]"
           style={{
             willChange: "transform",
             transformOrigin:
               direction === "left" ? "right center" : "left center",
           }}
-          quality={100}
+          quality={90}
           placeholder="blur"
           blurDataURL={`data:image/jpeg;base64,${BLUR_HASH}`}
         />
       </div>
 
-      {/* Enhanced gradient overlay */}
+      {/* Enhanced gradient overlay - Optimized for mobile */}
       <div
-        className={`absolute inset-0 opacity-0 group-hover:opacity-100 
+        className={`absolute inset-0 
+                    md:opacity-0 md:group-hover:opacity-100 
+                    opacity-100
                     transition-all duration-700 ease-out
                     bg-gradient-to-t ${category.gradient}
-                    backdrop-blur-sm`}
+                    backdrop-blur-[1px] md:backdrop-blur-sm`}
       >
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
       </div>
 
-      {/* Content container */}
+      {/* Content container - Always visible on mobile */}
       <div
         ref={contentRef}
-        className="absolute inset-0 p-10 flex flex-col justify-end
-                   opacity-0 group-hover:opacity-100 
-                   transform translate-y-10 group-hover:translate-y-0 
+        className="absolute inset-0 p-4 sm:p-6 md:p-8 lg:p-10 
+                   flex flex-col justify-end
+                   md:opacity-0 md:group-hover:opacity-100 opacity-100
+                   transform md:translate-y-10 md:group-hover:translate-y-0 
                    transition-all duration-700 ease-[cubic-bezier(0.08,0.82,0.17,1)] z-10"
       >
-        <div className="space-y-3">
+        <div className="space-y-2 md:space-y-3">
           <h3
-            className="text-3xl font-bold text-white 
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-white 
                         drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
           >
             {category.title}
           </h3>
           <p
-            className="text-white/95 text-lg leading-relaxed
+            className="text-white/95 text-sm sm:text-base md:text-lg 
+                       leading-relaxed line-clamp-3 md:line-clamp-none
                        drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
           >
             {category.description}
@@ -165,13 +173,19 @@ const EventCard = ({ category, index, direction }) => {
         <motion.button
           whileHover={{ scale: 1.05, x: 10 }}
           whileTap={{ scale: 0.95 }}
-          className="mt-6 self-start px-6 py-3 rounded-full 
+          className="mt-3 sm:mt-4 md:mt-6 self-start 
+                     px-4 sm:px-5 md:px-6 
+                     py-2 sm:py-2.5 md:py-3 
+                     rounded-full text-sm sm:text-base
                      bg-white/10 backdrop-blur-md
                      border border-white/30 text-white
                      hover:bg-white/20 hover:border-white/50
-                     transition-all duration-500 flex items-center gap-2"
+                     transition-all duration-500 
+                     flex items-center gap-2"
         >
-          <span>View {category.title.split(" ")[0]} Events</span>
+          <span className="whitespace-nowrap">
+            View {category.title.split(" ")[0]} Events
+          </span>
           <span className="transform group-hover:translate-x-1 transition-transform duration-500">
             →
           </span>
@@ -225,7 +239,7 @@ export const Events = () => {
     <section
       id="events"
       ref={sectionRef}
-      className="relative py-32 bg-black overflow-hidden"
+      className="relative py-16 sm:py-20 md:py-24 lg:py-32 bg-black overflow-hidden"
     >
       {/* Background elements with events-bg class */}
       <div className="events-bg absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black" />
@@ -240,12 +254,16 @@ export const Events = () => {
         transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
       />
 
-      <div className="relative z-10 container mx-auto px-4">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6">
         <div className="section-title">
           <SectionTitle title="Events" />
         </div>
 
-        <div className="event-grid grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+        <div
+          className="event-grid grid grid-cols-1 md:grid-cols-2 
+                        gap-4 sm:gap-6 md:gap-8 
+                        mt-8 sm:mt-12 md:mt-16"
+        >
           {eventCategories.map((category, index) => (
             <EventCard
               key={index}
