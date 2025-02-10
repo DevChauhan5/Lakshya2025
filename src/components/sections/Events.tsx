@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { SectionTitle } from "../ui/SectionTitle";
 
@@ -19,6 +20,7 @@ const eventCategories = [
       "Dance, music, theatre, and art competitions that celebrate creativity and expression.",
     image: "/images/events/cultural/poster.webp",
     gradient: "from-theme-primary/20 to-theme-dark/40",
+    route: "/cultural",
   },
   {
     title: "EduFun Events",
@@ -26,6 +28,7 @@ const eventCategories = [
       "Hackathons, robotics, and coding challenges that push innovation boundaries.",
     image: "/images/events/edufun/poster.webp",
     gradient: "from-theme-secondary/20 to-theme-dark/40",
+    route: "/edufun",
   },
   {
     title: "Sports Events",
@@ -33,6 +36,7 @@ const eventCategories = [
       "Athletic competitions and team sports that test skill and sportsmanship.",
     image: "/images/events/sports/poster.webp",
     gradient: "from-theme-accent/20 to-theme-dark/40",
+    route: "/sports",
   },
   {
     title: "E-Sports Events",
@@ -40,10 +44,12 @@ const eventCategories = [
       "Debates, quizzes, and writing competitions that showcase intellectual prowess.",
     image: "/images/events/e-sports/poster.webp",
     gradient: "from-theme-highlight/20 to-theme-dark/40",
+    route: "/e-sports",
   },
 ];
 
 const EventCard = ({ category, index, direction }) => {
+  const router = useRouter();
   const cardRef = useRef(null);
   const imageRef = useRef(null);
   const contentRef = useRef(null);
@@ -97,10 +103,25 @@ const EventCard = ({ category, index, direction }) => {
     }
   }, [direction]);
 
+  const handleClick = () => {
+    // Add exit animation before navigation
+    gsap.to(cardRef.current, {
+      scale: 0.95,
+      opacity: 0,
+      y: -20,
+      duration: 0.3,
+      ease: "power2.in",
+      onComplete: () => {
+        router.push(category.route);
+      },
+    });
+  };
+
   return (
     <motion.div
       ref={cardRef}
-      className="relative group rounded-xl overflow-hidden w-full"
+      className="relative group rounded-xl overflow-hidden w-full cursor-pointer"
+      onClick={handleClick}
       style={{
         height: "min(600px, 90vh)", // Responsive height
         aspectRatio: "4/5", // Better aspect ratio for mobile
@@ -171,6 +192,10 @@ const EventCard = ({ category, index, direction }) => {
         </div>
 
         <motion.button
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent double navigation
+            handleClick();
+          }}
           whileHover={{ scale: 1.05, x: 10 }}
           whileTap={{ scale: 0.95 }}
           className="mt-3 sm:mt-4 md:mt-6 self-start 
@@ -181,14 +206,24 @@ const EventCard = ({ category, index, direction }) => {
                      border border-white/30 text-white
                      hover:bg-white/20 hover:border-white/50
                      transition-all duration-500 
-                     flex items-center gap-2"
+                     flex items-center gap-2
+                     relative overflow-hidden"
         >
-          <span className="whitespace-nowrap">
+          <span className="relative z-10 whitespace-nowrap">
             View {category.title.split(" ")[0]} Events
           </span>
-          <span className="transform group-hover:translate-x-1 transition-transform duration-500">
+          <span className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-500">
             →
           </span>
+
+          {/* Button hover effect */}
+          <motion.div
+            className="absolute inset-0 bg-white/10"
+            initial={false}
+            animate={{ x: "-100%" }}
+            whileHover={{ x: "0%" }}
+            transition={{ duration: 0.3 }}
+          />
         </motion.button>
       </div>
     </motion.div>
