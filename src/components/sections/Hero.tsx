@@ -30,21 +30,8 @@ const SpaceElements = () => {
 const AnimatedTitle = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const [starPositions, setStarPositions] = useState<
-    Array<{ top: number; left: number }>
-  >([]);
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Generate star positions once on client-side
-    const positions = Array(20)
-      .fill(0)
-      .map(() => ({
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-      }));
-    setStarPositions(positions);
-
     const title = titleRef.current;
     const subtitle = subtitleRef.current;
 
@@ -84,89 +71,26 @@ const AnimatedTitle = () => {
 
   return (
     <div className="relative flex flex-col items-center text-center w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px] mx-auto">
-      {/* Stars effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {starPositions.map((position, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-yellow-400 rounded-full"
-            style={{
-              top: `${position.top}%`,
-              left: `${position.left}%`,
-            }}
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.2, 1, 0.2],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.1,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
+      {/* Main title */}
+      <h1
+        ref={titleRef}
+        className={`${starwar.className} text-[60px] xs:text-[80px] sm:text-[100px] md:text-[130px] lg:text-[150px] xl:text-[180px] tracking-tighter relative leading-none bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent mix-blend-screen`}
+      >
+        LAKSHYA&apos;25
+      </h1>
 
-      <div className="flex flex-col items-center px-4 relative">
-        <h1
-          ref={titleRef}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className={`${starwar.className} text-[60px] xs:text-[80px] sm:text-[100px] md:text-[130px] lg:text-[150px] xl:text-[180px] tracking-tighter relative leading-none`}
-        >
-          <span className="relative inline-block whitespace-nowrap">
-            {/* Video container with proper masking */}
-            <span className="absolute inset-0 overflow-hidden">
-              <video
-                src="/hero-bg.webm"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute w-[120%] h-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover transition-opacity duration-500"
-                style={{
-                  opacity: isHovered ? 1 : 0,
-                  mixBlendMode: "screen",
-                }}
-              />
-            </span>
-
-            {/* Text layers */}
-            <span
-              className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 opacity-80 bg-clip-text text-transparent blur-[2px] mix-blend-screen"
-              style={{
-                opacity: isHovered ? 0 : 1,
-                transition: "opacity 0.5s ease-in-out",
-              }}
-            >
-              LAKSHYA&apos;25
-            </span>
-            <span
-              className="relative bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 bg-clip-text text-transparent mix-blend-screen"
-              style={{
-                opacity: isHovered ? 0 : 1,
-                transition: "opacity 0.5s ease-in-out",
-                WebkitBackgroundClip: "text",
-              }}
-            >
-              LAKSHYA&apos;25
-            </span>
-          </span>
-        </h1>
-
-        <p
-          ref={subtitleRef}
-          className="text-lg xs:text-xl md:text-2xl mt-4 md:mt-6 tracking-wide font-medium px-2 relative uppercase"
-        >
-          <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 opacity-80 bg-clip-text text-transparent blur-[1px]">
-            Euphoria: Orbit of Wonder
-          </span>
-          <span className="relative bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
-            Euphoria: Orbit of Wonder
-          </span>
-        </p>
-      </div>
+      {/* Subtitle */}
+      <p
+        ref={subtitleRef}
+        className="text-lg xs:text-xl md:text-2xl mt-4 md:mt-6 tracking-wide font-medium px-2 relative uppercase"
+      >
+        <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 opacity-80 bg-clip-text text-transparent blur-[1px]">
+          Euphoria: Orbit of Wonder
+        </span>
+        <span className="relative bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
+          Euphoria: Orbit of Wonder
+        </span>
+      </p>
     </div>
   );
 };
