@@ -30,15 +30,15 @@ export default function RootLayout({
         className={`${kanit.className}   antialiased`}
         suppressHydrationWarning
       >
-        <LoadingProvider>
-          <SmoothScrollProvider>
-            <PreLoader />
-            <main>
-              {children}
-              <Footer />
-            </main>
-          </SmoothScrollProvider>
-        </LoadingProvider>
+        {/* <LoadingProvider> */}
+        <SmoothScrollProvider>
+          {/* <PreLoader /> */}
+          <main>
+            {children}
+            <Footer />
+          </main>
+        </SmoothScrollProvider>
+        {/* </LoadingProvider> */}
       </body>
     </html>
   );
