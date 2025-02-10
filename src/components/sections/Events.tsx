@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
@@ -35,7 +35,7 @@ const eventCategories = [
     gradient: "from-theme-accent/20 to-theme-dark/40",
   },
   {
-    title: "Literary Events",
+    title: "E-Sports Events",
     description:
       "Debates, quizzes, and writing competitions that showcase intellectual prowess.",
     image: "/images/events/e-sports/poster.webp",
@@ -43,32 +43,71 @@ const eventCategories = [
   },
 ];
 
-const EventCard = ({ category, index }) => {
+const EventCard = ({ category, index, direction }) => {
   const cardRef = useRef(null);
   const imageRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-10%" });
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    if (imageRef.current) {
-      gsap.to(imageRef.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-      });
+    if (cardRef.current) {
+      // Enhanced entrance animation with direction
+      gsap.fromTo(
+        cardRef.current,
+        {
+          opacity: 0,
+          x: direction === "left" ? -100 : 100,
+          scale: 0.8,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: "top bottom-=100",
+            end: "top center+=100",
+            toggleActions: "play none none reverse",
+            scrub: 0.5, // Smooth scrubbing effect
+          },
+        }
+      );
+
+      // Image scale animation
+      gsap.fromTo(
+        imageRef.current,
+        {
+          scale: 1.2,
+          opacity: 0,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: "top bottom-=50",
+            end: "top center",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     }
-  }, []);
+  }, [direction]);
 
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: index * 0.2 }}
-      className="relative group rounded-xl overflow-hidden aspect-square"
+      className="relative group rounded-xl overflow-hidden"
+      style={{
+        aspectRatio: "1/1", // Square aspect ratio for consistent sizing
+        height: "600px", // Fixed height
+      }}
     >
       {/* Image container */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0">
         <Image
           ref={imageRef}
           src={category.image}
@@ -76,55 +115,66 @@ const EventCard = ({ category, index }) => {
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           priority={index < 2}
-          className="object-cover object-center transform scale-100 opacity-0
-                     group-hover:scale-105 transition-all duration-700 ease-out"
-          style={{ willChange: "transform" }}
-          onLoad={(e) => {
-            e.target.style.opacity = "1";
+          className="object-cover object-center transform opacity-0
+                     group-hover:scale-110 transition-transform duration-1000 
+                     ease-[cubic-bezier(0.08,0.82,0.17,1)]"
+          style={{
+            willChange: "transform",
+            transformOrigin:
+              direction === "left" ? "right center" : "left center",
           }}
-          quality={90}
+          quality={100}
           placeholder="blur"
           blurDataURL={`data:image/jpeg;base64,${BLUR_HASH}`}
         />
       </div>
 
-      {/* Gradient overlay - only visible on hover */}
+      {/* Enhanced gradient overlay */}
       <div
-        className={`absolute inset-0 bg-gradient-to-b ${category.gradient} opacity-0
-                    group-hover:opacity-90 transition-all duration-500 ease-out`}
-      />
-
-      {/* Content - hidden by default, visible on hover */}
-      <div
-        className="relative z-10 p-8 h-full flex flex-col justify-between opacity-0 
-                      group-hover:opacity-100 transition-all duration-500 ease-out"
+        className={`absolute inset-0 opacity-0 group-hover:opacity-100 
+                    transition-all duration-700 ease-out
+                    bg-gradient-to-t ${category.gradient}
+                    backdrop-blur-sm`}
       >
-        <div
-          className="transform translate-y-8 group-hover:translate-y-0 
-                      transition-transform duration-500 ease-out"
-        >
-          <h3 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      </div>
+
+      {/* Content container */}
+      <div
+        ref={contentRef}
+        className="absolute inset-0 p-10 flex flex-col justify-end
+                   opacity-0 group-hover:opacity-100 
+                   transform translate-y-10 group-hover:translate-y-0 
+                   transition-all duration-700 ease-[cubic-bezier(0.08,0.82,0.17,1)] z-10"
+      >
+        <div className="space-y-3">
+          <h3
+            className="text-3xl font-bold text-white 
+                        drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+          >
             {category.title}
           </h3>
-          <p className="text-white/90 text-lg drop-shadow-lg">
+          <p
+            className="text-white/95 text-lg leading-relaxed
+                       drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
+          >
             {category.description}
           </p>
         </div>
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, x: 10 }}
           whileTap={{ scale: 0.95 }}
-          className="self-start px-6 py-3 rounded-full bg-theme-dark/30 backdrop-blur-sm
-                     border border-white/20 text-white hover:bg-theme-dark/50 
-                     transition-all flex items-center gap-2 group/btn
-                     transform translate-y-8 group-hover:translate-y-0 
-                     transition-all duration-500 ease-out"
+          className="mt-6 self-start px-6 py-3 rounded-full 
+                     bg-white/10 backdrop-blur-md
+                     border border-white/30 text-white
+                     hover:bg-white/20 hover:border-white/50
+                     transition-all duration-500 flex items-center gap-2"
         >
-          <span>Click to view all {category.title.toLowerCase()}</span>
-          <motion.span
-            className="group-hover/btn:translate-x-2 transition-transform duration-300"
-            children="→"
-          />
+          <span>View {category.title.split(" ")[0]} Events</span>
+          <span className="transform group-hover:translate-x-1 transition-transform duration-500">
+            →
+          </span>
         </motion.button>
       </div>
     </motion.div>
@@ -136,16 +186,35 @@ export const Events = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Section background animation
+      gsap.fromTo(
+        ".events-bg",
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 1.5,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "center center",
+            toggleActions: "play none none reverse",
+            scrub: 1,
+          },
+        }
+      );
+
+      // Grid stagger animation
       gsap.from(".event-grid", {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "bottom center",
-          toggleActions: "play none none reverse",
-        },
         y: 100,
         opacity: 0,
         duration: 1,
+        scrollTrigger: {
+          trigger: ".event-grid",
+          start: "top bottom-=100",
+          end: "top center+=100",
+          toggleActions: "play none none reverse",
+          scrub: 0.5,
+        },
       });
     }, sectionRef);
 
@@ -154,11 +223,12 @@ export const Events = () => {
 
   return (
     <section
+      id="events"
       ref={sectionRef}
-      className="relative min-h-screen py-20 bg-black overflow-hidden"
+      className="relative py-32 bg-black overflow-hidden"
     >
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black" />
+      {/* Background elements with events-bg class */}
+      <div className="events-bg absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black" />
       <motion.div
         className="absolute inset-0"
         animate={{
@@ -171,11 +241,18 @@ export const Events = () => {
       />
 
       <div className="relative z-10 container mx-auto px-4">
-        <SectionTitle title="Events" />
+        <div className="section-title">
+          <SectionTitle title="Events" />
+        </div>
 
-        <div className="event-grid grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        <div className="event-grid grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
           {eventCategories.map((category, index) => (
-            <EventCard key={index} category={category} index={index} />
+            <EventCard
+              key={index}
+              category={category}
+              index={index}
+              direction={index % 2 === 0 ? "left" : "right"}
+            />
           ))}
         </div>
       </div>
