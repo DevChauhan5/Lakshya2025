@@ -1,9 +1,8 @@
-import { LoadingProvider } from "@/context/LoadingContext";
+import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import { Footer } from "../components/layout/Footer";
-import { PreLoader } from "../components/PreLoader";
 import "./globals.css";
 
 const kanit = Kanit({
@@ -34,6 +33,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           {/* <PreLoader /> */}
           <main>
+            <Navbar />
             {children}
             <Footer />
           </main>
