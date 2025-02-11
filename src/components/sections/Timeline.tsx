@@ -1,14 +1,14 @@
 "use client";
 
-import { useRef } from "react";
 import {
   motion,
-  useScroll,
-  useTransform,
-  useSpring,
   useInView,
+  useScroll,
+  useSpring,
+  useTransform,
 } from "framer-motion";
 import Image from "next/image";
+import { useRef } from "react";
 import { SectionTitle } from "../ui/SectionTitle";
 
 const posters = [
@@ -97,10 +97,10 @@ const PosterCard = ({ poster, index, containerProgress }) => {
           : {}
       }
       style={{ scale, opacity }}
-      className="w-full aspect-[3/4] relative"
+      className="w-full aspect-[4/5] relative max-h-[70vh]" // Adjusted aspect ratio and max height
     >
       <motion.div
-        className="relative w-full h-full rounded-2xl overflow-hidden
+        className="relative w-full h-full rounded-xl overflow-hidden
                    shadow-xl shadow-black/20"
         whileHover={{
           scale: 1.02,
@@ -131,9 +131,9 @@ const PosterCard = ({ poster, index, containerProgress }) => {
           }}
         />
 
-        {/* Content with staggered animations */}
+        {/* Adjusted content padding and spacing */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 p-6 z-10"
+          className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={
             isInView
@@ -149,13 +149,13 @@ const PosterCard = ({ poster, index, containerProgress }) => {
               : {}
           }
         >
-          <motion.h3 className="text-2xl md:text-3xl font-bold text-theme-primary mb-2">
+          <motion.h3 className="text-xl sm:text-2xl font-bold text-theme-primary mb-1.5">
             {poster.title}
           </motion.h3>
-          <motion.p className="text-base md:text-lg text-white/90 mb-1">
+          <motion.p className="text-sm sm:text-base text-white/90 mb-1">
             {poster.date}
           </motion.p>
-          <motion.p className="text-sm md:text-base text-white/70">
+          <motion.p className="text-xs sm:text-sm text-white/70 line-clamp-2">
             {poster.description}
           </motion.p>
         </motion.div>
@@ -168,41 +168,54 @@ export const Timeline = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
+
+  // Enhanced spring config for smoother transitions
+  const springConfig = { stiffness: 50, damping: 15 };
+
+  // Earlier fade in for title
+  const titleOpacity = useSpring(
+    useTransform(scrollYProgress, [0, 0.05], [0, 1]),
+    springConfig
+  );
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen bg-black overflow-hidden py-20"
+      className="relative min-h-screen bg-black overflow-hidden py-16"
     >
-      {/* Background with parallax */}
+      {/* Background effect */}
       <motion.div
         className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
         style={{
           opacity: useSpring(
             useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]),
-            { stiffness: 30, damping: 15 }
+            springConfig
           ),
         }}
       />
 
-      {/* Title with fade effect */}
+      {/* Centered and earlier visible title */}
       <motion.div
-        className="sticky top-0 pt-20 pb-6 px-4 z-50 bg-black/50 backdrop-blur-sm"
+        className="sticky top-0 pt-16 pb-4 px-4 z-50 bg-black/50 backdrop-blur-sm
+                   flex justify-center items-center w-full"
         style={{
-          opacity: useSpring(useTransform(scrollYProgress, [0, 0.1], [0, 1]), {
-            stiffness: 100,
-            damping: 20,
-          }),
+          opacity: titleOpacity,
         }}
       >
-        <SectionTitle title="Timeline" />
+        <div className="w-full max-w-[1400px] flex justify-center">
+          <SectionTitle title="Timeline" />
+        </div>
       </motion.div>
 
-      {/* Responsive grid container */}
+      {/* Rest of the component */}
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 mt-10">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 
+                     gap-4 md:gap-6 lg:gap-8 mt-8
+                     max-w-[1400px] mx-auto"
+        >
           {posters.map((poster, index) => (
             <PosterCard
               key={poster.id}
@@ -213,11 +226,11 @@ export const Timeline = () => {
           ))}
         </div>
 
-        {/* Connecting elements */}
+        {/* Adjusted connecting line position */}
         <motion.div
-          className="absolute left-1/2 top-[20%] bottom-[20%] w-[2px]
+          className="absolute left-1/2 top-[25%] bottom-[25%] w-[2px]
                      bg-gradient-to-b from-theme-primary via-theme-secondary to-theme-accent
-                     hidden md:block"
+                     hidden md:block -translate-x-[1px]"
           style={{
             scaleY: useSpring(scrollYProgress, { stiffness: 30, damping: 15 }),
             opacity: useSpring(
