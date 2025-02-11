@@ -175,7 +175,7 @@ export const Timeline = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"],
+    offset: ["start center", "end center"], // Adjusted offset for better section detection
   });
 
   // Enhanced spring config for smoother transitions
@@ -189,8 +189,8 @@ export const Timeline = () => {
 
   return (
     <section
-      id="timeline"
       ref={containerRef}
+      id="timeline" // Added proper ID to match navbar link
       className="relative min-h-screen bg-black overflow-hidden py-16"
     >
       {/* Background effect */}

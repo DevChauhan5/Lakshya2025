@@ -82,7 +82,10 @@ export const Navbar = () => {
           }
         });
       },
-      { threshold: 0.5 }
+      {
+        threshold: 0.2, // Reduced threshold for earlier detection
+        rootMargin: "-10% 0px -10% 0px", // Added margin to improve detection area
+      }
     );
 
     navLinks.forEach(({ href }) => {
