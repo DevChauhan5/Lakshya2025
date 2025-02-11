@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { SectionTitle } from "@/components/ui/SectionTitle";
-import { useSmoothScroll } from "@/context/SmoothScrollContext";
 import Image from "next/image";
 
 export const About = () => {
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-10%" });
   const { scrollYProgress } = useScroll({
@@ -14,8 +14,18 @@ export const About = () => {
     offset: ["start end", "end start"],
   });
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [50, 0, 0, -50]);
 
   const description = [
     {
@@ -70,26 +80,31 @@ export const About = () => {
     },
   ];
 
+  // Simplified variants for mobile
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
+        staggerChildren: isMobile ? 0.1 : 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
   const lineVariants = {
-    hidden: { opacity: 0, x: -50, filter: "blur(4px)" },
+    hidden: {
+      opacity: 0,
+      x: isMobile ? -20 : -50,
+      filter: isMobile ? "blur(0px)" : "blur(4px)",
+    },
     visible: {
       opacity: 1,
       x: 0,
       filter: "blur(0px)",
       transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1], // Custom ease curve for smoother animation
+        duration: isMobile ? 0.5 : 0.8,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
@@ -97,27 +112,32 @@ export const About = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen overflow-hidden bg-transparent py-20"
+      className="relative w-full min-h-screen overflow-hidden bg-transparent py-16 md:py-20"
     >
-      {/* Background gradient with parallax effect */}
+      {/* Simplified background for mobile */}
       <motion.div
         style={{ opacity }}
-        className="absolute inset-0 bg-gradient-to-b from-black via-theme-dark/20 to-black pointer-events-none"
+        className={`absolute inset-0 ${
+          isMobile
+            ? "bg-gradient-to-b from-black to-theme-dark/20"
+            : "bg-gradient-to-b from-black via-theme-dark/20 to-black"
+        } pointer-events-none`}
       />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        style={{ y }}
-        className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center min-h-screen"
+        style={isMobile ? undefined : { y }}
+        className="relative z-10 container mx-auto px-4 flex flex-col items-center 
+                   justify-center min-h-screen"
       >
         <SectionTitle title="About Us" />
 
-        <div className="max-w-4xl w-full space-y-6">
+        <div className="max-w-4xl w-full space-y-4 md:space-y-6">
           {description.map((item, index) =>
             item.type === "spacer" ? (
-              <div key={index} className="h-6" />
+              <div key={index} className="h-3 md:h-6" />
             ) : (
               <motion.div
                 key={index}
@@ -125,7 +145,7 @@ export const About = () => {
                 className="overflow-hidden"
               >
                 <motion.p
-                  className={`text-xl md:text-2xl font-light 
+                  className={`text-lg md:text-xl lg:text-2xl font-light 
                     ${
                       item.type === "heading"
                         ? "text-theme-primary font-medium"
@@ -137,13 +157,17 @@ export const About = () => {
                         : "text-white/70"
                     }
                     transform-gpu`}
-                  whileHover={{
-                    x: 20,
-                    transition: {
-                      duration: 0.4,
-                      ease: [0.16, 1, 0.3, 1],
-                    },
-                  }}
+                  whileHover={
+                    isMobile
+                      ? undefined
+                      : {
+                          x: 20,
+                          transition: {
+                            duration: 0.4,
+                            ease: [0.16, 1, 0.3, 1],
+                          },
+                        }
+                  }
                 >
                   {item.text}
                 </motion.p>
@@ -152,31 +176,37 @@ export const About = () => {
           )}
         </div>
 
-        {/* Enhanced decorative elements with smoother animations */}
-        <motion.div
-          className="absolute top-1/4 right-[10%] w-32 h-32 bg-theme-primary/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 left-[10%] w-40 h-40 bg-theme-secondary/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        {/* Conditional decorative elements */}
+        {!isMobile && (
+          <>
+            <motion.div
+              className="absolute top-1/4 right-[10%] w-32 h-32 
+                        bg-theme-primary/20 rounded-full blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.4, 0.2],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 left-[10%] w-40 h-40 
+                        bg-theme-secondary/20 rounded-full blur-3xl"
+              animate={{
+                scale: [1.2, 1, 1.2],
+                opacity: [0.2, 0.4, 0.2],
+              }}
+              transition={{
+                duration: 7,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </>
+        )}
       </motion.div>
     </section>
   );
