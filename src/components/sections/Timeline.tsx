@@ -15,30 +15,37 @@ const posters = [
   {
     id: 1,
     title: "Day 1",
-    date: "March 1, 2025",
+    date: "Feb 22, 2025",
     image: "/images/timeline/1.jpg",
-    description: "Opening Ceremony & Cultural Night",
+    description: "DJ Aztec",
   },
   {
     id: 2,
     title: "Day 2",
-    date: "March 2, 2025",
+    date: "Feb 23, 2025",
     image: "/images/timeline/2.jpg",
-    description: "Sports & E-Sports Tournaments",
+    description: "DJ Aerreo",
   },
   {
     id: 3,
     title: "Day 3",
-    date: "March 3, 2025",
+    date: "Feb 24, 2025",
     image: "/images/timeline/3.jpg",
-    description: "Technical Events & Workshops",
+    description: "DJ Deafox",
   },
   {
     id: 4,
     title: "Day 4",
-    date: "March 4, 2025",
+    date: "Feb 25, 2025",
     image: "/images/timeline/4.jpg",
-    description: "Star Night & Closing Ceremony",
+    description: "Seedhe Maut",
+  },
+  {
+    id: 5,
+    title: "Day 5",
+    date: "Feb 26, 2025",
+    image: "/images/timeline/4.jpg",
+    description: "Sunidhee Chauhan",
   },
 ];
 
@@ -182,6 +189,7 @@ export const Timeline = () => {
 
   return (
     <section
+      id="timeline"
       ref={containerRef}
       className="relative min-h-screen bg-black overflow-hidden py-16"
     >
