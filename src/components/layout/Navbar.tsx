@@ -241,10 +241,12 @@ export const Navbar = () => {
           transition={{ type: "spring", damping: 20, stiffness: 100 }}
           className="absolute right-0 top-0 bottom-0 w-full max-w-sm 
                      bg-black/50 backdrop-blur-xl
-                     flex flex-col items-center p-8"
+                     flex flex-col items-center p-6" // Reduced padding
         >
-          {/* Menu Items Container */}
-          <div className="flex-1 flex flex-col items-center justify-center gap-8 w-full">
+          {/* Menu Items Container - More compact spacing */}
+          <div className="flex-1 flex flex-col items-center justify-center gap-4 w-full">
+            {" "}
+            {/* Reduced gap */}
             {navLinks.map(({ name, href }, index) => (
               <motion.button
                 key={name}
@@ -258,7 +260,7 @@ export const Navbar = () => {
                   duration: 0.3,
                 }}
                 onClick={() => handleMobileNavClick(href)}
-                className={`text-2xl font-medium w-full text-center py-4 rounded-xl
+                className={`text-xl font-medium w-full text-center py-3 rounded-lg
                            transition-colors duration-200 relative overflow-hidden
                            ${
                              activeSection === href.slice(1)
@@ -267,7 +269,7 @@ export const Navbar = () => {
                            }`}
               >
                 <motion.div
-                  className="absolute inset-0 bg-white/5 rounded-xl"
+                  className="absolute inset-0 bg-white/5 rounded-lg"
                   initial={false}
                   whileHover={{ opacity: [0, 1] }}
                   transition={{ duration: 0.2 }}
@@ -277,7 +279,7 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Animated Footer Text */}
+          {/* Footer with adjusted spacing */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{
@@ -289,7 +291,7 @@ export const Navbar = () => {
               duration: 0.5,
               ease: [0.23, 1, 0.32, 1],
             }}
-            className="mt-8 text-center"
+            className="mt-6 text-center" // Reduced margin
           >
             <motion.div
               animate={{
@@ -300,7 +302,7 @@ export const Navbar = () => {
                 repeat: Infinity,
                 ease: "linear",
               }}
-              className="text-sm font-medium bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
+              className="text-xs font-medium bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
                          bg-[length:200%_auto] bg-clip-text text-transparent"
             >
               © Copyright 2025 Poornima University
@@ -309,7 +311,7 @@ export const Navbar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.7 }}
               transition={{ delay: 0.4 }}
-              className="text-xs text-white/50 mt-1"
+              className="text-[10px] text-white/50 mt-0.5" // Smaller text and spacing
             >
               All Rights Reserved
             </motion.p>
