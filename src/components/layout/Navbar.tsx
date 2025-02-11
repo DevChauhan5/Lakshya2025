@@ -4,6 +4,7 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { PiPlanetDuotone, PiPlanetFill } from "react-icons/pi";
 
 const navLinks = [
   { name: "Timeline", href: "#timeline" },
@@ -187,50 +188,32 @@ export const Navbar = () => {
             ))}
           </div>
 
+          {/* Updated Mobile Menu Toggle */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
             onClick={toggleMobileMenu}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center"
+            className="md:hidden relative w-10 h-10 flex items-center justify-center text-theme-primary"
           >
             <motion.div
-              animate={isMobileMenuOpen ? { rotate: 45 } : { rotate: 0 }}
-              transition={{ duration: 0.2 }}
-              className="absolute inset-0"
+              animate={{
+                rotate: isMobileMenuOpen ? 180 : 0,
+                scale: isMobileMenuOpen ? 0.8 : 1,
+              }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                className="w-full h-full text-theme-primary"
-                strokeWidth="1.5"
-              >
-                <motion.path
-                  d="M12 2L8 6H4L2 8V16L4 18H8L12 22L16 18H20L22 16V8L20 6H16L12 2Z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={false}
-                  animate={
-                    isMobileMenuOpen
-                      ? {
-                          pathLength: [1, 0.5, 1],
-                          rotate: 180,
-                        }
-                      : {
-                          pathLength: 1,
-                          rotate: 0,
-                        }
-                  }
-                  transition={{ duration: 0.3 }}
-                />
-              </svg>
+              {isMobileMenuOpen ? (
+                <PiPlanetFill size={32} />
+              ) : (
+                <PiPlanetDuotone size={32} />
+              )}
             </motion.div>
           </motion.button>
         </motion.div>
       </motion.nav>
 
+      {/* Mobile Menu Overlay */}
       <motion.div
         initial={false}
         animate={{
@@ -256,39 +239,81 @@ export const Navbar = () => {
             x: isMobileMenuOpen ? "0%" : "100%",
           }}
           transition={{ type: "spring", damping: 20, stiffness: 100 }}
-          className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-black/50 backdrop-blur-xl
-                     flex flex-col items-center justify-center gap-8 p-8"
+          className="absolute right-0 top-0 bottom-0 w-full max-w-sm 
+                     bg-black/50 backdrop-blur-xl
+                     flex flex-col items-center p-8"
         >
-          {navLinks.map(({ name, href }, index) => (
-            <motion.button
-              key={name}
-              initial={{ opacity: 0, x: 50 }}
+          {/* Menu Items Container */}
+          <div className="flex-1 flex flex-col items-center justify-center gap-8 w-full">
+            {navLinks.map(({ name, href }, index) => (
+              <motion.button
+                key={name}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{
+                  opacity: isMobileMenuOpen ? 1 : 0,
+                  x: isMobileMenuOpen ? 0 : 50,
+                }}
+                transition={{
+                  delay: isMobileMenuOpen ? index * 0.1 : 0,
+                  duration: 0.3,
+                }}
+                onClick={() => handleMobileNavClick(href)}
+                className={`text-2xl font-medium w-full text-center py-4 rounded-xl
+                           transition-colors duration-200 relative overflow-hidden
+                           ${
+                             activeSection === href.slice(1)
+                               ? "text-theme-primary"
+                               : "text-white/70"
+                           }`}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-white/5 rounded-xl"
+                  initial={false}
+                  whileHover={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.2 }}
+                />
+                <span className="relative z-10">{name}</span>
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Animated Footer Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: isMobileMenuOpen ? 1 : 0,
+              y: isMobileMenuOpen ? 0 : 20,
+            }}
+            transition={{
+              delay: isMobileMenuOpen ? 0.3 : 0,
+              duration: 0.5,
+              ease: [0.23, 1, 0.32, 1],
+            }}
+            className="mt-8 text-center"
+          >
+            <motion.div
               animate={{
-                opacity: isMobileMenuOpen ? 1 : 0,
-                x: isMobileMenuOpen ? 0 : 50,
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               }}
               transition={{
-                delay: isMobileMenuOpen ? index * 0.1 : 0,
-                duration: 0.3,
+                duration: 5,
+                repeat: Infinity,
+                ease: "linear",
               }}
-              onClick={() => handleMobileNavClick(href)}
-              className={`text-2xl font-medium w-full text-center py-4 rounded-xl
-                         transition-colors duration-200 relative overflow-hidden
-                         ${
-                           activeSection === href.slice(1)
-                             ? "text-theme-primary"
-                             : "text-white/70"
-                         }`}
+              className="text-sm font-medium bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
+                         bg-[length:200%_auto] bg-clip-text text-transparent"
             >
-              <motion.div
-                className="absolute inset-0 bg-white/5 rounded-xl"
-                initial={false}
-                whileHover={{ opacity: [0, 1] }}
-                transition={{ duration: 0.2 }}
-              />
-              <span className="relative z-10">{name}</span>
-            </motion.button>
-          ))}
+              © Copyright 2025 Poornima University
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.7 }}
+              transition={{ delay: 0.4 }}
+              className="text-xs text-white/50 mt-1"
+            >
+              All Rights Reserved
+            </motion.p>
+          </motion.div>
         </motion.div>
       </motion.div>
     </>
