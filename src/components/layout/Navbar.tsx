@@ -127,12 +127,21 @@ export const Navbar = () => {
             <motion.button
               key={name}
               onClick={() => handleNavClick(href)}
-              className="relative text-white/70 hover:text-white transition-colors"
+              className="relative group"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <span className="relative z-10 text-sm">{name}</span>
+              <motion.span
+                className={`relative z-10 text-sm transition-all duration-500 ease-out
+                           ${
+                             activeSection === href.slice(1)
+                               ? "bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent"
+                               : "text-white/70 group-hover:text-white"
+                           }`}
+              >
+                {name}
+              </motion.span>
 
               {activeSection === href.slice(1) && (
                 <motion.div
@@ -149,9 +158,13 @@ export const Navbar = () => {
               )}
 
               <motion.div
-                className="absolute -bottom-1 left-0 right-0 h-0.5
+                className={`absolute -bottom-1 left-0 right-0 h-0.5
                          bg-gradient-to-r from-theme-primary to-theme-secondary
-                         origin-left"
+                         origin-left ${
+                           activeSection === href.slice(1)
+                             ? "opacity-0"
+                             : "opacity-100"
+                         }`}
                 initial={{ scaleX: 0 }}
                 whileHover={{ scaleX: 1 }}
                 transition={{ duration: 0.3 }}
