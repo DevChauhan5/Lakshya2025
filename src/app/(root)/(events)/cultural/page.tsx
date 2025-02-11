@@ -8,30 +8,27 @@ const culturalEvents = [
   {
     id: 1,
     title: "Dance Competition",
-    description: "Solo & Group Dance Performances",
   },
   {
     id: 2,
     title: "Music Night",
-    description: "Live Band & Singing Competition",
   },
-  { id: 3, title: "Fashion Show", description: "Ethnic & Western Rounds" },
-  { id: 4, title: "Theatre Play", description: "Drama & Street Play" },
-  { id: 5, title: "Poetry Slam", description: "Hindi & English Poetry" },
-  { id: 6, title: "Battle of Bands", description: "Rock & Pop Music" },
+  { id: 3, title: "Fashion Show" },
+  { id: 4, title: "Theatre Play" },
+  { id: 5, title: "Poetry Slam" },
+  { id: 6, title: "Battle of Bands" },
   {
     id: 7,
     title: "Classical Night",
-    description: "Indian Classical Performances",
   },
-  { id: 8, title: "Folk Dance", description: "Traditional Dance Forms" },
-  { id: 9, title: "Rap Battle", description: "Hip-Hop & Freestyle" },
-  { id: 10, title: "Stand-Up Comedy", description: "Open Mic Night" },
-  { id: 11, title: "Art Exhibition", description: "Painting & Sculptures" },
-  { id: 12, title: "Photography", description: "Photo Exhibition" },
-  { id: 13, title: "Short Films", description: "Film Screening" },
-  { id: 14, title: "Beat Boxing", description: "Solo Performance" },
-  { id: 15, title: "Cultural Quiz", description: "Art & Culture Knowledge" },
+  { id: 8, title: "Folk Dance" },
+  { id: 9, title: "Rap Battle" },
+  { id: 10, title: "Stand-Up Comedy" },
+  { id: 11, title: "Art Exhibition" },
+  { id: 12, title: "Photography" },
+  { id: 13, title: "Short Films" },
+  { id: 14, title: "Beat Boxing" },
+  { id: 15, title: "Cultural Quiz" },
 ];
 
 const EventCard = ({ event, index }) => {
@@ -53,7 +50,6 @@ const EventCard = ({ event, index }) => {
         whileHover={{ y: -5 }}
         className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black"
       >
-        {/* Image */}
         <Image
           src={`/images/events/cultural/${event.id}.webp`}
           alt={event.title}
@@ -62,17 +58,28 @@ const EventCard = ({ event, index }) => {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Enhanced overlay with better gradient */}
+        <div
+          className="absolute inset-0 bg-gradient-to-t 
+                       from-black/90 via-black/50 to-transparent 
+                       opacity-0 group-hover:opacity-100 
+                       transition-all duration-500 ease-out"
+        />
 
-        {/* Content */}
-        <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-          <motion.h3 className="text-xl font-bold text-white mb-2 transform opacity-0 group-hover:opacity-100 transition-all duration-500">
+        {/* Simplified content - only title */}
+        <div className="absolute inset-0 flex items-end p-6">
+          <motion.h3
+            className="text-2xl font-bold text-white
+                       translate-y-8 opacity-0
+                       group-hover:translate-y-0 group-hover:opacity-100
+                       transition-all duration-500 ease-out
+                       relative after:absolute after:bottom-0 after:left-0
+                       after:w-0 after:h-[2px] after:bg-white
+                       after:transition-all after:duration-500
+                       group-hover:after:w-full"
+          >
             {event.title}
           </motion.h3>
-          <motion.p className="text-sm text-white/80 transform opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75">
-            {event.description}
-          </motion.p>
         </div>
       </motion.div>
     </motion.div>
