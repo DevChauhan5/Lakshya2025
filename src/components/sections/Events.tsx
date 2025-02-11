@@ -218,7 +218,7 @@ export const Events = () => {
 
       {/* Centered title container */}
       <motion.div
-        className="sticky top-0 pt-16 pb-4 px-4 z-50 bg-black/50 backdrop-blur-sm
+        className="sticky top-0 pt-16 pb-4 px-4 z-[60] bg-black/50 backdrop-blur-sm
                    flex justify-center items-center w-full"
         style={{ opacity: titleOpacity }}
       >

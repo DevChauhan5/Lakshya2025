@@ -45,7 +45,7 @@ const posters = [
     title: "Day 5",
     date: "Feb 26, 2025",
     image: "/images/timeline/4.jpg",
-    description: "Sunidhee Chauhan",
+    description: "Sunidhee Chauhan",
   },
 ];
 
@@ -204,9 +204,9 @@ export const Timeline = () => {
         }}
       />
 
-      {/* Centered and earlier visible title */}
+      {/* Updated z-index for section title */}
       <motion.div
-        className="sticky top-0 pt-16 pb-4 px-4 z-50 bg-black/50 backdrop-blur-sm
+        className="sticky top-0 pt-16 pb-4 px-4 z-[60] bg-black/50 backdrop-blur-sm
                    flex justify-center items-center w-full"
         style={{
           opacity: titleOpacity,
