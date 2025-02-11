@@ -1,17 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import {
+  motion,
+  useInView,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { SectionTitle } from "../ui/SectionTitle";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const BLUR_HASH =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
 const eventCategories = [
   {
@@ -48,264 +47,196 @@ const eventCategories = [
   },
 ];
 
-const EventCard = ({ category, index, direction }) => {
+const EventCard = ({ category, index }) => {
   const router = useRouter();
   const cardRef = useRef(null);
-  const imageRef = useRef(null);
-  const contentRef = useRef(null);
+  const isInView = useInView(cardRef, {
+    once: false,
+    margin: "-15% 0px",
+    amount: 0.4,
+  });
 
-  useEffect(() => {
-    if (cardRef.current) {
-      // Enhanced entrance animation with direction
-      gsap.fromTo(
-        cardRef.current,
-        {
-          opacity: 0,
-          x: direction === "left" ? -100 : 100,
-          scale: 0.8,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: cardRef.current,
-            start: "top bottom-=100",
-            end: "top center+=100",
-            toggleActions: "play none none reverse",
-            scrub: 0.5, // Smooth scrubbing effect
-          },
-        }
-      );
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
 
-      // Image scale animation
-      gsap.fromTo(
-        imageRef.current,
-        {
-          scale: 1.2,
-          opacity: 0,
-        },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 1.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cardRef.current,
-            start: "top bottom-=50",
-            end: "top center",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }
-  }, [direction]);
+  // Optimized animations config
+  const springConfig = { stiffness: 70, damping: 15, mass: 0.5 };
+
+  const scale = useSpring(
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6]),
+    springConfig
+  );
+
+  const opacity = useSpring(
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]),
+    springConfig
+  );
 
   const handleClick = () => {
-    // Add exit animation before navigation
-    gsap.to(cardRef.current, {
-      scale: 0.95,
-      opacity: 0,
-      y: -20,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: () => {
-        router.push(category.route);
-      },
-    });
+    router.push(category.route);
   };
 
   return (
     <motion.div
       ref={cardRef}
-      className="relative group rounded-xl overflow-hidden w-full cursor-pointer"
+      initial={{ opacity: 0, y: 50 }}
+      animate={
+        isInView
+          ? {
+              opacity: 1,
+              y: 0,
+              transition: {
+                type: "spring",
+                stiffness: 50,
+                damping: 20,
+                mass: 1,
+              },
+            }
+          : {}
+      }
+      style={{ scale, opacity }}
       onClick={handleClick}
-      style={{
-        height: "min(600px, 90vh)", // Responsive height
-        aspectRatio: "4/5", // Better aspect ratio for mobile
-      }}
+      className="w-full aspect-[4/5] relative max-h-[70vh] cursor-pointer"
     >
-      {/* Image container */}
-      <div className="absolute inset-0">
-        <Image
-          ref={imageRef}
-          src={category.image}
-          alt={category.title}
-          fill
-          sizes="(max-width: 480px) 100vw, 
-                 (max-width: 768px) 90vw,
-                 (max-width: 1024px) 45vw,
-                 40vw"
-          priority={index < 2}
-          className="object-cover object-center transform opacity-0
-                     group-hover:scale-105 md:group-hover:scale-110 
-                     transition-transform duration-1000 
-                     ease-[cubic-bezier(0.08,0.82,0.17,1)]"
+      <motion.div
+        className="relative w-full h-full rounded-xl overflow-hidden"
+        whileHover={{
+          scale: 1.02,
+          transition: { duration: 0.3, ease: "easeOut" },
+        }}
+      >
+        {/* Image container */}
+        <motion.div
+          className="absolute inset-0"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Image
+            src={category.image}
+            alt={category.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={index < 2}
+          />
+        </motion.div>
+
+        {/* Enhanced gradient overlay */}
+        <motion.div
+          className="absolute inset-0"
           style={{
-            willChange: "transform",
-            transformOrigin:
-              direction === "left" ? "right center" : "left center",
+            background: useTransform(
+              scrollYProgress,
+              [0, 1],
+              [
+                `linear-gradient(to bottom, transparent, ${category.gradient})`,
+                `linear-gradient(to bottom, rgba(0,0,0,0.3), ${category.gradient})`,
+              ]
+            ),
           }}
-          quality={90}
-          placeholder="blur"
-          blurDataURL={`data:image/jpeg;base64,${BLUR_HASH}`}
         />
-      </div>
 
-      {/* Enhanced gradient overlay - Optimized for mobile */}
-      <div
-        className={`absolute inset-0 
-                    md:opacity-0 md:group-hover:opacity-100 
-                    opacity-100
-                    transition-all duration-700 ease-out
-                    bg-gradient-to-t ${category.gradient}
-                    backdrop-blur-[1px] md:backdrop-blur-sm`}
-      >
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-      </div>
-
-      {/* Content container - Always visible on mobile */}
-      <div
-        ref={contentRef}
-        className="absolute inset-0 p-4 sm:p-6 md:p-8 lg:p-10 
-                   flex flex-col justify-end
-                   md:opacity-0 md:group-hover:opacity-100 opacity-100
-                   transform md:translate-y-10 md:group-hover:translate-y-0 
-                   transition-all duration-700 ease-[cubic-bezier(0.08,0.82,0.17,1)] z-10"
-      >
-        <div className="space-y-2 md:space-y-3">
-          <h3
-            className="text-xl sm:text-2xl md:text-3xl font-bold text-white 
-                        drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+        {/* Content */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={
+            isInView
+              ? {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.5,
+                    delay: index * 0.1,
+                  },
+                }
+              : {}
+          }
+        >
+          <motion.h3
+            className="text-xl sm:text-2xl font-bold text-white mb-2"
+            whileHover={{ x: 10 }}
           >
             {category.title}
-          </h3>
-          <p
-            className="text-white/95 text-sm sm:text-base md:text-lg 
-                       leading-relaxed line-clamp-3 md:line-clamp-none
-                       drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
-          >
+          </motion.h3>
+          <motion.p className="text-sm sm:text-base text-white/80 line-clamp-2 mb-4">
             {category.description}
-          </p>
-        </div>
+          </motion.p>
 
-        <motion.button
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent double navigation
-            handleClick();
-          }}
-          whileHover={{ scale: 1.05, x: 10 }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-3 sm:mt-4 md:mt-6 self-start 
-                     px-4 sm:px-5 md:px-6 
-                     py-2 sm:py-2.5 md:py-3 
-                     rounded-full text-sm sm:text-base
-                     bg-white/10 backdrop-blur-md
-                     border border-white/30 text-white
-                     hover:bg-white/20 hover:border-white/50
-                     transition-all duration-500 
-                     flex items-center gap-2
-                     relative overflow-hidden"
-        >
-          <span className="relative z-10 whitespace-nowrap">
-            View {category.title.split(" ")[0]} Events
-          </span>
-          <span className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-500">
-            →
-          </span>
-
-          {/* Button hover effect */}
-          <motion.div
-            className="absolute inset-0 bg-white/10"
-            initial={false}
-            animate={{ x: "-100%" }}
-            whileHover={{ x: "0%" }}
-            transition={{ duration: 0.3 }}
-          />
-        </motion.button>
-      </div>
+          <motion.button
+            whileHover={{ scale: 1.05, x: 10 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-4 py-2 rounded-full text-sm
+                     bg-white/10 backdrop-blur-sm
+                     border border-white/20 text-white
+                     hover:bg-white/20 hover:border-white/40
+                     transition-colors duration-300
+                     flex items-center gap-2"
+          >
+            <span>View Events</span>
+            <span>→</span>
+          </motion.button>
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 };
 
 export const Events = () => {
   const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Section background animation
-      gsap.fromTo(
-        ".events-bg",
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "center center",
-            toggleActions: "play none none reverse",
-            scrub: 1,
-          },
-        }
-      );
+  // Enhanced spring config
+  const springConfig = { stiffness: 50, damping: 15 };
 
-      // Grid stagger animation
-      gsap.from(".event-grid", {
-        y: 100,
-        opacity: 0,
-        duration: 1,
-        scrollTrigger: {
-          trigger: ".event-grid",
-          start: "top bottom-=100",
-          end: "top center+=100",
-          toggleActions: "play none none reverse",
-          scrub: 0.5,
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  // Earlier fade in for title
+  const titleOpacity = useSpring(
+    useTransform(scrollYProgress, [0, 0.05], [0, 1]),
+    springConfig
+  );
 
   return (
     <section
       id="events"
       ref={sectionRef}
-      className="relative py-16 sm:py-20 md:py-24 lg:py-32 bg-black overflow-hidden"
+      className="relative min-h-screen bg-black overflow-hidden py-16"
     >
-      {/* Background elements with events-bg class */}
-      <div className="events-bg absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black" />
+      {/* Background with parallax */}
       <motion.div
-        className="absolute inset-0"
-        animate={{
-          background: [
-            "radial-gradient(circle at 0% 0%, rgba(115,60,128,0.1) 0%, transparent 50%)",
-            "radial-gradient(circle at 100% 100%, rgba(115,60,128,0.1) 0%, transparent 50%)",
-          ],
+        className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
+        style={{
+          opacity: useSpring(
+            useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]),
+            springConfig
+          ),
         }}
-        transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
       />
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6">
-        <div className="section-title">
+      {/* Centered title container */}
+      <motion.div
+        className="sticky top-0 pt-16 pb-4 px-4 z-50 bg-black/50 backdrop-blur-sm
+                   flex justify-center items-center w-full"
+        style={{ opacity: titleOpacity }}
+      >
+        <div className="w-full max-w-[1400px] flex justify-center">
           <SectionTitle title="Events" />
         </div>
+      </motion.div>
 
+      {/* Grid container */}
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div
-          className="event-grid grid grid-cols-1 md:grid-cols-2 
-                        gap-4 sm:gap-6 md:gap-8 
-                        mt-8 sm:mt-12 md:mt-16"
+          className="grid grid-cols-1 md:grid-cols-2 
+                     gap-4 md:gap-6 lg:gap-8 mt-8
+                     max-w-[1400px] mx-auto"
         >
           {eventCategories.map((category, index) => (
-            <EventCard
-              key={index}
-              category={category}
-              index={index}
-              direction={index % 2 === 0 ? "left" : "right"}
-            />
+            <EventCard key={category.title} category={category} index={index} />
           ))}
         </div>
       </div>
