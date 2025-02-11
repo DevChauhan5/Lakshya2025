@@ -39,10 +39,10 @@ const AnimatedTitle = () => {
       className="relative w-full max-w-[1400px] mx-auto px-4"
     >
       <div className="relative flex flex-col items-center justify-center">
-        {/* Static glow effect */}
+        {/* Enhanced glow effect */}
         <div className="absolute inset-0 rounded-full opacity-20 blur-3xl bg-gradient-radial from-theme-primary/30 via-transparent to-transparent" />
 
-        {/* Main title */}
+        {/* Main title with larger sizes */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,8 +50,9 @@ const AnimatedTitle = () => {
           style={{ y: titleY }}
           className={`${starwar.className} 
             relative text-center
-            text-[40px] xs:text-[60px] sm:text-[80px] md:text-[100px] lg:text-[130px]
-            leading-[1] tracking-tighter
+            text-[50px] xs:text-[60px] sm:text-[80px] md:text-[120px] lg:text-[150px] xl:text-[180px]
+            leading-[0.9] sm:leading-[0.95] md:leading-[1]
+            tracking-tighter
             bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 
             bg-clip-text text-transparent mix-blend-screen
             py-2`}
@@ -59,21 +60,49 @@ const AnimatedTitle = () => {
           LAKSHYA&apos;25
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-4 text-center"
-        >
-          <p
-            className="text-base xs:text-lg sm:text-xl md:text-2xl 
-                       bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 
-                       bg-clip-text text-transparent font-medium"
+        {/* Simplified animated subtitle */}
+        <div className="relative mt-2 sm:mt-4">
+          <motion.div
+            className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl 
+                      tracking-wide font-medium px-2 relative uppercase
+                      flex flex-wrap justify-center gap-x-2 gap-y-1"
           >
-            Euphoria: Orbit of Wonder
-          </p>
-        </motion.div>
+            {["Euphoria:", "Orbit", "of", "Wonder"].map((word, i) => (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.5 + i * 0.1,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
+              >
+                <motion.span
+                  className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 
+                           bg-clip-text text-transparent
+                           relative inline-block"
+                  animate={{
+                    filter: [
+                      "brightness(1)",
+                      "brightness(1.2)",
+                      "brightness(1)",
+                    ],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.2,
+                  }}
+                >
+                  {word}
+                </motion.span>
+              </motion.span>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </div>
   );
