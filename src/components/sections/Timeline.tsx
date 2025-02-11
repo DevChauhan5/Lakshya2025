@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+} from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "../ui/SectionTitle";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const posters = [
   {
@@ -40,92 +42,123 @@ const posters = [
   },
 ];
 
-const PosterCard = ({ poster, index }) => {
+const PosterCard = ({ poster, index, containerProgress }) => {
   const cardRef = useRef(null);
-  const imageRef = useRef(null);
+  const isInView = useInView(cardRef, {
+    once: false,
+    margin: "-15% 0px",
+    amount: 0.4,
+  });
 
-  useEffect(() => {
-    const card = cardRef.current;
-    const image = imageRef.current;
+  // Optimized animations config
+  const springConfig = {
+    stiffness: 70,
+    damping: 15,
+    mass: 0.5,
+  };
 
-    gsap.fromTo(
-      card,
-      {
-        opacity: 0,
-        y: 100,
-        rotate: index % 2 === 0 ? -10 : 10,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        rotate: 0,
-        duration: 1.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top bottom-=100",
-          end: "top center",
-          toggleActions: "play none none reverse",
-          scrub: 1,
-        },
-      }
-    );
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
 
-    gsap.fromTo(
-      image,
-      {
-        scale: 1.2,
-        filter: "grayscale(100%) brightness(50%)",
-      },
-      {
-        scale: 1,
-        filter: "grayscale(0%) brightness(100%)",
-        duration: 2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top bottom-=50",
-          end: "top center+=100",
-          toggleActions: "play none none reverse",
-          scrub: 1,
-        },
-      }
-    );
-  }, [index]);
+  // Smoother scale animation
+  const scale = useSpring(
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6]),
+    springConfig
+  );
+
+  // Enhanced opacity transition
+  const opacity = useSpring(
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]),
+    springConfig
+  );
+
+  // Direction-based animations
+  const isLeftCard = index % 2 === 0;
+  const xOffset = isLeftCard ? -50 : 50;
 
   return (
     <motion.div
       ref={cardRef}
-      className="relative w-[300px] h-[450px] md:w-[400px] md:h-[600px] 
-                 flex-shrink-0 overflow-hidden rounded-2xl
-                 transform perspective-1000"
-      whileHover={{ scale: 1.02, rotateY: 5 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      initial={{ opacity: 0, x: xOffset }}
+      animate={
+        isInView
+          ? {
+              opacity: 1,
+              x: 0,
+              transition: {
+                type: "spring",
+                stiffness: 50,
+                damping: 20,
+                mass: 1,
+              },
+            }
+          : {}
+      }
+      style={{ scale, opacity }}
+      className="w-full aspect-[3/4] relative"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/50 to-black z-10" />
-
-      <div ref={imageRef} className="absolute inset-0">
-        <Image
-          src={poster.image}
-          alt={poster.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 300px, 400px"
-          priority={index === 0}
-        />
-      </div>
-
       <motion.div
-        className="absolute bottom-0 left-0 right-0 p-6 z-20"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        className="relative w-full h-full rounded-2xl overflow-hidden
+                   shadow-xl shadow-black/20"
+        whileHover={{
+          scale: 1.02,
+          transition: { duration: 0.3, ease: "easeOut" },
+        }}
       >
-        <h3 className="text-3xl font-bold text-theme-primary mb-2">
-          {poster.title}
-        </h3>
-        <p className="text-lg text-white/90 mb-1">{poster.date}</p>
-        <p className="text-white/70">{poster.description}</p>
+        {/* Image with dynamic blur effect */}
+        <motion.div className="absolute inset-0">
+          <Image
+            src={poster.image}
+            alt={poster.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={index < 2}
+          />
+        </motion.div>
+
+        {/* Enhanced gradient overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-b 
+                     from-black/0 via-black/50 to-black"
+          style={{
+            opacity: useSpring(
+              useTransform(scrollYProgress, [0, 0.5], [0.5, 0.8]),
+              springConfig
+            ),
+          }}
+        />
+
+        {/* Content with staggered animations */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 p-6 z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={
+            isInView
+              ? {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: [0.23, 1, 0.32, 1],
+                  },
+                }
+              : {}
+          }
+        >
+          <motion.h3 className="text-2xl md:text-3xl font-bold text-theme-primary mb-2">
+            {poster.title}
+          </motion.h3>
+          <motion.p className="text-base md:text-lg text-white/90 mb-1">
+            {poster.date}
+          </motion.p>
+          <motion.p className="text-sm md:text-base text-white/70">
+            {poster.description}
+          </motion.p>
+        </motion.div>
       </motion.div>
     </motion.div>
   );
@@ -133,57 +166,66 @@ const PosterCard = ({ poster, index }) => {
 
 export const Timeline = () => {
   const containerRef = useRef(null);
-  const scrollRef = useRef(null);
-  const { scrollYProgress } = useScroll();
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const scrollContainer = scrollRef.current;
-
-    let ctx = gsap.context(() => {
-      // Horizontal scroll animation
-      gsap.to(scrollContainer, {
-        x: () => -(scrollContainer.scrollWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: () => `+=${scrollContainer.scrollWidth - window.innerWidth}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-    }, container);
-
-    return () => ctx.revert();
-  }, []);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
   return (
-    <section className="relative bg-black" ref={containerRef}>
+    <section
+      ref={containerRef}
+      className="relative min-h-screen bg-black overflow-hidden py-20"
+    >
+      {/* Background with parallax */}
       <motion.div
-        style={{ y }}
-        className="absolute inset-0 bg-gradient-radial from-theme-dark/30 via-black to-black"
+        className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
+        style={{
+          opacity: useSpring(
+            useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]),
+            { stiffness: 30, damping: 15 }
+          ),
+        }}
       />
 
-      <div className="sticky top-0 pt-20 pb-10 px-4 z-10">
-        <SectionTitle title="Timeline" />
-      </div>
-
-      <div
-        ref={scrollRef}
-        className="flex gap-8 md:gap-12 px-4 md:px-20 pb-20 min-h-[80vh]
-                   items-center"
+      {/* Title with fade effect */}
+      <motion.div
+        className="sticky top-0 pt-20 pb-6 px-4 z-50 bg-black/50 backdrop-blur-sm"
+        style={{
+          opacity: useSpring(useTransform(scrollYProgress, [0, 0.1], [0, 1]), {
+            stiffness: 100,
+            damping: 20,
+          }),
+        }}
       >
-        {/* Line connecting the posters */}
-        <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-theme-primary via-theme-secondary to-theme-accent transform -translate-y-1/2" />
+        <SectionTitle title="Timeline" />
+      </motion.div>
 
-        {posters.map((poster, index) => (
-          <PosterCard key={poster.id} poster={poster} index={index} />
-        ))}
+      {/* Responsive grid container */}
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 mt-10">
+          {posters.map((poster, index) => (
+            <PosterCard
+              key={poster.id}
+              poster={poster}
+              index={index}
+              containerProgress={scrollYProgress}
+            />
+          ))}
+        </div>
+
+        {/* Connecting elements */}
+        <motion.div
+          className="absolute left-1/2 top-[20%] bottom-[20%] w-[2px]
+                     bg-gradient-to-b from-theme-primary via-theme-secondary to-theme-accent
+                     hidden md:block"
+          style={{
+            scaleY: useSpring(scrollYProgress, { stiffness: 30, damping: 15 }),
+            opacity: useSpring(
+              useTransform(scrollYProgress, [0, 0.2], [0, 1]),
+              { stiffness: 30, damping: 15 }
+            ),
+          }}
+        />
       </div>
     </section>
   );
