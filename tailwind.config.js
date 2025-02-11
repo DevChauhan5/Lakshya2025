@@ -17,6 +17,9 @@ module.exports = {
           light: "#733c80",
         },
       },
+      screens: {
+        xs: "380px",
+      },
       keyframes: {
         spin: {
           "0%": { transform: "rotate(0deg)" },
@@ -27,13 +30,14 @@ module.exports = {
           "50%": { opacity: 0.5 },
         },
         shine: {
-          "100%": { transform: "translateX(100%)" },
+          "0%": { "mask-position": "150%" },
+          "100%": { "mask-position": "-50%" },
         },
       },
       animation: {
         spin: "spin 3s linear infinite",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        shine: "shine 2s infinite",
+        shine: "shine 2.5s cubic-bezier(0.42,0,0.58,1) infinite",
       },
     },
   },
