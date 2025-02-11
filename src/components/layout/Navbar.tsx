@@ -107,6 +107,25 @@ export const Navbar = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Add new useEffect for handling body scroll
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      // Prevent background scrolling
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      // Re-enable scrolling
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <>
       <motion.nav
@@ -213,14 +232,14 @@ export const Navbar = () => {
         </motion.div>
       </motion.nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Updated Mobile Menu Overlay with touch handling */}
       <motion.div
         initial={false}
         animate={{
           opacity: isMobileMenuOpen ? 1 : 0,
           pointerEvents: isMobileMenuOpen ? "auto" : "none",
         }}
-        className="fixed inset-0 z-[90] md:hidden"
+        className="fixed inset-0 z-[90] md:hidden overflow-hidden touch-none"
       >
         <motion.div
           initial={false}
@@ -229,7 +248,7 @@ export const Navbar = () => {
             backdropFilter: isMobileMenuOpen ? "blur(10px)" : "blur(0px)",
           }}
           transition={{ duration: 0.2 }}
-          className="absolute inset-0 bg-black/80"
+          className="absolute inset-0 bg-black/80 touch-none"
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
@@ -241,7 +260,8 @@ export const Navbar = () => {
           transition={{ type: "spring", damping: 20, stiffness: 100 }}
           className="absolute right-0 top-0 bottom-0 w-full max-w-sm 
                      bg-black/50 backdrop-blur-xl
-                     flex flex-col items-center p-6" // Reduced padding
+                     flex flex-col items-center p-6
+                     overflow-y-auto touch-pan-y"
         >
           {/* Menu Items Container - More compact spacing */}
           <div className="flex-1 flex flex-col items-center justify-center gap-4 w-full">

@@ -18,3 +18,15 @@ body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Add scroll lock utility */
+.scroll-lock {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+/* Ensure menu content is scrollable when needed */
+.menu-content {
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
