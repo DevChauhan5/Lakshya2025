@@ -17,7 +17,7 @@ const eventCategories = [
   {
     title: "Cultural Events",
     description:
-      "Dance, music, theatre, and art competitions that celebrate creativity and expression.",
+      "The Cultural Committee in Lakshya 2025 plans, organizes, and executes cultural events like dance, music, drama, and fashion walk competitions.  they create a vibrant and memorable cultural experience for all.",
     image: "/images/events/cultural/poster.webp",
     gradient: "from-theme-primary/20 to-theme-dark/40",
     route: "/cultural",
@@ -25,7 +25,7 @@ const eventCategories = [
   {
     title: "EduFun Events",
     description:
-      "Hackathons, robotics, and coding challenges that push innovation boundaries.",
+      "The EduFun Committee in Lakshya 2025 organizes and manages educational and fun activities like quizzes, debates, and interactive games.  they create a stimulating and enjoyable learning experience for all.",
     image: "/images/events/edufun/poster.webp",
     gradient: "from-theme-secondary/20 to-theme-dark/40",
     route: "/edufun",
@@ -33,7 +33,7 @@ const eventCategories = [
   {
     title: "Sports Events",
     description:
-      "Athletic competitions and team sports that test skill and sportsmanship.",
+      "The Sports Committee in Lakshya 2025 organizes and manages various sports events, ensuring smooth scheduling, fair play, and proper officiating.  they create a dynamic and competitive sports experience for all.",
     image: "/images/events/sports/poster.webp",
     gradient: "from-theme-accent/20 to-theme-dark/40",
     route: "/sports",
@@ -41,7 +41,7 @@ const eventCategories = [
   {
     title: "E-Sports Events",
     description:
-      "Debates, quizzes, and writing competitions that showcase intellectual prowess.",
+      "The E-Sports Committee in Lakshya 2025 organizes and manages competitive gaming events, ensuring fair play, smooth scheduling, and technical support.  they create an exciting and immersive e-sports experience for all..",
     image: "/images/events/e-sports/poster.webp",
     gradient: "from-theme-highlight/20 to-theme-dark/40",
     route: "/e-sports",
