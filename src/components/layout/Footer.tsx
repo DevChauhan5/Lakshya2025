@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import { FiInstagram } from "react-icons/fi";
+import { FiInstagram, FiYoutube } from "react-icons/fi";
 import {
   IoHomeOutline,
   IoLocationOutline,
@@ -17,7 +17,12 @@ const socialLinks = [
   {
     name: "Instagram",
     icon: <FiInstagram size={24} />,
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/pulakshya/",
+  },
+  {
+    name: "Youtube",
+    icon: <FiYoutube size={24} />,
+    href: "https://www.youtube.com/@PoornimaUniversityTV",
   },
 ];
 
