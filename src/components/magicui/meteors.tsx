@@ -5,62 +5,38 @@ import React, { useEffect, useState } from "react";
 
 interface MeteorsProps {
   number?: number;
-  minDelay?: number;
-  maxDelay?: number;
-  minDuration?: number;
-  maxDuration?: number;
-  angle?: number;
   className?: string;
 }
 
-export const Meteors = ({
-  number = 20,
-  minDelay = 0.2,
-  maxDelay = 1.2,
-  minDuration = 2,
-  maxDuration = 10,
-  angle = 215,
-  className,
-}: MeteorsProps) => {
+export const Meteors = ({ number = 20, className }: MeteorsProps) => {
   const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>(
     []
   );
 
   useEffect(() => {
     const styles = [...new Array(number)].map(() => ({
-      "--angle": angle + "deg",
-      top: -5,
-      left: `calc(-50% + ${Math.floor(Math.random() * window.innerWidth)}px)`,
-      animationDelay: Math.random() * (maxDelay - minDelay) + minDelay + "s",
-      animationDuration:
-        Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) +
-        "s",
+      top: -10,
+      left: Math.floor(Math.random() * 100) + "%",
+      animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+      animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
     }));
     setMeteorStyles(styles);
-  }, [number, minDelay, maxDelay, minDuration, maxDuration, angle]);
+  }, [number]);
 
   return (
     <>
-      {[...meteorStyles].map((style, idx) => (
-        // Meteor Head
+      {meteorStyles.map((style, idx) => (
         <span
           key={idx}
-          style={{ ...style }}
+          style={style}
           className={cn(
-            "pointer-events-none absolute size-1.5 rotate-[var(--angle)] animate-meteor rounded-full",
-            "bg-gradient-to-br", // Add gradient support
-            className ?? "from-white via-white to-white/0"
+            "absolute h-1 w-1 rotate-[215deg] animate-meteor rounded-[9999px]",
+            "before:absolute before:top-1/2 before:h-[2px] before:w-[50px]",
+            "before:-translate-y-[50%] before:transform",
+            "before:opacity-[0.3]",
+            className
           )}
-        >
-          {/* Meteor Tail */}
-          <div
-            className={cn(
-              "pointer-events-none absolute top-1/2 -z-10 h-[2px] w-[80px] -translate-y-1/2",
-              "bg-gradient-to-r", // Add gradient support
-              className ?? "from-white via-white to-transparent"
-            )}
-          />
-        </span>
+        />
       ))}
     </>
   );

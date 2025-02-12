@@ -33,15 +33,16 @@ const SpaceElements = () => {
         <>
           <Particles
             className="absolute inset-0"
-            quantity={200}
+            quantity={160}
             staticity={30}
             size={0.4}
             color="#ffce6b"
           />
           <div className="absolute inset-0">
             <Meteors
-              number={8}
-              className="from-yellow-400 via-red-500 to-purple-700"
+              number={6}
+              className="!bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 
+                        before:!bg-gradient-to-r before:!from-yellow-400 before:!via-red-500 before:!to-transparent"
             />
           </div>
           <Rings />
