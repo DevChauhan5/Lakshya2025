@@ -298,7 +298,7 @@ export const Footer = () => {
               style={{ color: "rgba(255, 255, 255, 0.8)" }}
               whileTap={{ scale: 0.9 }}
               onClick={() =>
-                router.push("https://www.linkedin.com/in/pranav-lata-7329b5267")
+                router.push("https://www.linkedin.com/in/dev-chauhan-in")
               }
             >
               Crafted with ❤️ by{" "}
@@ -306,7 +306,7 @@ export const Footer = () => {
                 className="bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
                        bg-[length:200%_auto] bg-clip-text text-transparent font-semibold  "
               >
-                PRANAV LATA
+                DEV CHAUHAN
               </span>
             </motion.p>
           </div>
