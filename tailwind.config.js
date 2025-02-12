@@ -80,10 +80,17 @@ module.exports = {
   			},
   			shine: {
   				'0%': {
-  					'mask-position': '150%'
+  					'mask-position': '150%',
+  					'background-position': '0% 0%'
   				},
   				'100%': {
   					'mask-position': '-50%'
+  				},
+  				'50%': {
+  					'background-position': '100% 100%'
+  				},
+  				to: {
+  					'background-position': '0% 0%'
   				}
   			},
   			meteor: {
@@ -103,7 +110,7 @@ module.exports = {
   		animation: {
   			spin: 'spin 3s linear infinite',
   			pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-  			shine: 'shine 2.5s cubic-bezier(0.42,0,0.58,1) infinite',
+  			shine: 'shine var(--duration) infinite linear',
   			meteor: 'meteor 5s linear infinite'
   		},
   		borderRadius: {
