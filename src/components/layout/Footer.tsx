@@ -3,12 +3,13 @@
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { FiInstagram } from "react-icons/fi";
 import {
+  IoHomeOutline,
   IoLocationOutline,
   IoMailOutline,
-  IoHomeOutline,
 } from "react-icons/io5";
 import { FlickeringGrid } from "../effects/FlickeringGrid";
 
@@ -49,6 +50,7 @@ const quickLinks = [
 
 export const Footer = () => {
   const footerRef = useRef(null);
+  const router = useRouter();
   const { scrollYProgress } = useScroll({
     target: footerRef,
     offset: ["start end", "end end"],
@@ -109,21 +111,25 @@ export const Footer = () => {
               type: "spring",
               stiffness: 100,
             }}
-            className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8"
+            className="relative w-40 h-40 sm:w-48 sm:h-48 mx-auto mb-8" // Increased size
           >
+            {/* Black circle background with glow */}
             <div
-              className="absolute inset-0 bg-black rounded-full 
-                          shadow-[0_0_30px_rgba(244,137,82,0.3)] 
-                          before:absolute before:inset-0 before:rounded-full 
-                          before:blur-xl before:bg-theme-accent/20"
+              className="absolute inset-0 rounded-full bg-black 
+                          shadow-[0_0_40px_rgba(244, 137, 82, 1)] 
+                          before:absolute before:inset-0 
+                          before:rounded-full before:blur-xl 
+                          before:bg-theme-accent/20
+                          after:absolute after:inset-0 
+                          after:rounded-full after:bg-black" // Added solid black background
             />
             <Image
               src="/logo.webp"
               alt="Lakshya Logo"
-              width={160}
-              height={160}
+              width={192} // Increased from 160
+              height={192} // Increased from 160
               className="object-contain relative z-10 p-4
-                         transition-transform duration-500 hover:scale-105"
+                       transition-transform duration-500 hover:scale-105"
             />
           </motion.div>
           <motion.p
@@ -280,13 +286,23 @@ export const Footer = () => {
               className="text-sm bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
                        bg-[length:200%_auto] bg-clip-text text-transparent"
             >
-              © {new Date().getFullYear()} Lakshya, Poornima University
+              © Copyright {new Date().getFullYear()} Poornima University
             </motion.div>
             <motion.p
-              className="text-white/40 text-xs"
-              whileHover={{ color: "rgba(255, 255, 255, 0.8)" }}
+              className="text-sm cursor-pointer"
+              style={{ color: "rgba(255, 255, 255, 0.8)" }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() =>
+                router.push("https://www.linkedin.com/in/pranav-lata-7329b5267")
+              }
             >
-              Crafted with ❤️ by Development Team
+              Crafted with ❤️ by{" "}
+              <span
+                className="bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
+                       bg-[length:200%_auto] bg-clip-text text-transparent font-semibold  "
+              >
+                PRANAV LATA
+              </span>
             </motion.p>
           </div>
         </motion.div>
