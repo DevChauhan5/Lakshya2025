@@ -4,30 +4,20 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { FiGithub, FiInstagram, FiLinkedin, FiTwitter } from "react-icons/fi";
+import { FiInstagram } from "react-icons/fi";
 import {
   IoLocationOutline,
   IoMailOutline,
   IoHomeOutline,
 } from "react-icons/io5";
+import { FlickeringGrid } from "../effects/FlickeringGrid";
 
 const socialLinks = [
   {
     name: "Instagram",
-    icon: <FiInstagram size={20} />,
+    icon: <FiInstagram size={24} />,
     href: "https://instagram.com",
   },
-  {
-    name: "Twitter",
-    icon: <FiTwitter size={20} />,
-    href: "https://twitter.com",
-  },
-  {
-    name: "LinkedIn",
-    icon: <FiLinkedin size={20} />,
-    href: "https://linkedin.com",
-  },
-  { name: "GitHub", icon: <FiGithub size={20} />, href: "https://github.com" },
 ];
 
 const contactInfo = [
@@ -71,18 +61,19 @@ export const Footer = () => {
 
   return (
     <footer ref={footerRef} className="relative overflow-hidden bg-black">
-      {/* Dynamic Background */}
+      {/* Dynamic Background with FlickeringGrid */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent z-10" />
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-30"
-        >
-          <source src="/videos/space3.mp4" type="video/mp4" />
-        </video>
+        <FlickeringGrid
+          className="absolute inset-0"
+          squareSize={4}
+          gridGap={6}
+          color="#ffce6b"
+          maxOpacity={0.3}
+          flickerChance={0.1}
+          height={1200}
+          width={1920}
+        />
 
         {/* Animated Gradient Orbs */}
         <motion.div
@@ -108,41 +99,59 @@ export const Footer = () => {
         style={{ opacity }}
         className="relative z-20 container mx-auto px-4 pt-20 pb-12"
       >
-        {/* Logo and Mission */}
+        {/* Enhanced Logo and Mission */}
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative w-20 h-20 mx-auto mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.8,
+              type: "spring",
+              stiffness: 100,
+            }}
+            className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8"
           >
+            <div
+              className="absolute inset-0 bg-black rounded-full 
+                          shadow-[0_0_30px_rgba(244,137,82,0.3)] 
+                          before:absolute before:inset-0 before:rounded-full 
+                          before:blur-xl before:bg-theme-accent/20"
+            />
             <Image
-              src="/t-logo.png"
+              src="/logo.webp"
               alt="Lakshya Logo"
-              fill
-              className="object-contain"
+              width={160}
+              height={160}
+              className="object-contain relative z-10 p-4
+                         transition-transform duration-500 hover:scale-105"
             />
           </motion.div>
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto text-white/60 text-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="max-w-2xl mx-auto text-white/60 text-base sm:text-lg
+                     leading-relaxed tracking-wide"
           >
             Join us in this grand celebration of talent, culture, and innovation
             at Lakshya 2025
           </motion.p>
         </div>
 
-        {/* Quick Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
           {/* Quick Links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
             className="space-y-4"
           >
-            <h3 className="text-lg font-semibold text-white mb-4">
+            <h3
+              className="text-xl font-semibold text-white mb-6 
+                         relative after:absolute after:bottom-0 after:left-0 
+                         after:w-12 after:h-0.5 after:bg-theme-primary"
+            >
               Quick Links
             </h3>
             <ul className="grid grid-cols-2 gap-2">
@@ -174,10 +183,14 @@ export const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
             className="space-y-4"
           >
-            <h3 className="text-lg font-semibold text-white mb-4">
+            <h3
+              className="text-xl font-semibold text-white mb-6
+                         relative after:absolute after:bottom-0 after:left-0 
+                         after:w-12 after:h-0.5 after:bg-theme-primary"
+            >
               Contact Us
             </h3>
             <ul className="space-y-4">
@@ -201,18 +214,22 @@ export const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Connect Section */}
+          {/* Social Section - Simplified */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="col-span-1 lg:col-span-2"
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="space-y-6"
           >
-            <h3 className="text-lg font-semibold text-white mb-6">
-              Connect With Us
+            <h3
+              className="text-xl font-semibold text-white mb-6
+                         relative after:absolute after:bottom-0 after:left-0 
+                         after:w-12 after:h-0.5 after:bg-theme-primary"
+            >
+              Follow Us
             </h3>
-            <div className="flex flex-wrap gap-4">
-              {socialLinks.map((social, index) => (
+            <div className="flex justify-center sm:justify-start">
+              {socialLinks.map((social) => (
                 <motion.a
                   key={social.name}
                   href={social.href}
@@ -220,14 +237,18 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  whileHover={{ y: -5 }}
-                  transition={{
-                    delay: 0.4 + index * 0.1,
-                    duration: 0.2,
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: "rgba(255, 206, 107, 0.2)",
                   }}
-                  className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center
-                           hover:bg-theme-primary/20 hover:text-theme-primary
-                           transition-all duration-300 text-white/60"
+                  transition={{
+                    duration: 0.2,
+                    type: "spring",
+                    stiffness: 300,
+                  }}
+                  className="w-14 h-14 rounded-full bg-white/5 
+                           flex items-center justify-center
+                           text-theme-primary transition-all duration-300"
                 >
                   {social.icon}
                 </motion.a>
@@ -236,14 +257,17 @@ export const Footer = () => {
           </motion.div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Enhanced Bottom Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
           className="border-t border-white/10 pt-8 mt-8"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div
+            className="flex flex-col sm:flex-row justify-between 
+                        items-center gap-4 text-center sm:text-left"
+          >
             <motion.div
               animate={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
