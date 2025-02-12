@@ -3,8 +3,9 @@
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import localFont from "next/font/local";
 import { useRef, useEffect, useState } from "react";
+import { Meteors } from "../magicui/meteors";
+import { Particles } from "../magicui/particles";
 import { Rings } from "../effects/Rings";
-import { Stars } from "../effects/Stars";
 
 const starwar = localFont({
   src: "../../app/fonts/star.woff",
@@ -25,17 +26,30 @@ const SpaceElements = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  if (isMobile) {
-    return (
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-theme-dark/5 to-black" />
-    );
-  }
-
   return (
     <>
       <div className="absolute inset-0 bg-black" />
-      <Rings />
-      <Stars />
+      {!isMobile && (
+        <>
+          <Particles
+            className="absolute inset-0"
+            quantity={200}
+            staticity={30}
+            size={0.4}
+            color="#ffce6b"
+          />
+          <div className="absolute inset-0">
+            <Meteors
+              number={8}
+              className="from-yellow-400 via-red-500 to-purple-700"
+            />
+          </div>
+          <Rings />
+        </>
+      )}
+      {isMobile && (
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-theme-dark/5 to-black" />
+      )}
     </>
   );
 };
