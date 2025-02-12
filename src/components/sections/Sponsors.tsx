@@ -8,7 +8,10 @@ import { TextAnimate } from "../magicui/text-animate";
 
 export const Sponsors = () => {
   return (
-    <section className="w-full min-h-screen bg-black/95 py-20 px-4 sm:px-6 md:px-8">
+    <section
+      id="sponsors"
+      className="w-full min-h-screen bg-black/95 py-20 px-4 sm:px-6 md:px-8"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-center mb-16">
           <BlurFade>
@@ -19,7 +22,7 @@ export const Sponsors = () => {
         <div className="flex justify-center">
           <BlurFade>
             <ShineBorder
-              className="relative max-w-3xl p-6 rounded-xl backdrop-blur-sm bg-black/40 !border-0"
+              className="relative max-w-3xl p-6 rounded-xl backdrop-blur-sm bg-black/40 !border-0 shadow-sm shadow-theme-primary"
               color={["#ffce6b", "#f48952", "#f0524a"]}
             >
               <div className="flex flex-col md:flex-row items-center gap-8">
