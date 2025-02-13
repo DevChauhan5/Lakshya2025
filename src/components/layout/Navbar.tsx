@@ -138,22 +138,28 @@ export const Navbar = () => {
       >
         <motion.div
           style={{ scale }}
-          className="container mx-auto px-4 h-24 flex items-center justify-between
+          className="container mx-auto h-20 flex items-center justify-between
                    max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px]"
         >
+          {/* Updated Logo with consistent sizing */}
           <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            className="relative size-16 cursor-pointer backdrop-blur-xl rounded-full bg-white border "
+            className="relative w-12 h-12 md:w-14 md:h-14 cursor-pointer 
+                     bg-white rounded-full overflow-hidden"
             onClick={handleLogoClick}
           >
             <Image
               src="/logo.webp"
               alt="Lakshya Logo"
-              height={240}
-              width={240}
+              width={48}
+              height={48}
               className="object-contain"
+              priority
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHyAiJRwlKycuRDEwMTAxMUQzNjk7PjU1R0dKTU1NW3JbYFllZIGChXFwf7n/2wBDARUXFx4aHh4pISk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTn/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+              quality={90}
             />
           </motion.div>
 
@@ -208,32 +214,38 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Updated Mobile Menu Toggle */}
+          {/* Enhanced Mobile Menu Toggle */}
           <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
             onClick={toggleMobileMenu}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center text-theme-primary"
+            className="md:hidden relative w-12 h-12 flex items-center justify-center 
+                     bg-white/5 backdrop-blur-md rounded-full"
           >
             <motion.div
               animate={{
                 rotate: isMobileMenuOpen ? 180 : 0,
-                scale: isMobileMenuOpen ? 0.8 : 1,
+                scale: isMobileMenuOpen ? 0.9 : 1,
               }}
-              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              transition={{
+                duration: 0.4,
+                ease: [0.23, 1, 0.32, 1],
+                scale: { type: "spring", stiffness: 200 },
+              }}
+              className="text-theme-primary"
             >
               {isMobileMenuOpen ? (
-                <PiPlanetFill size={32} />
+                <PiPlanetFill size={28} />
               ) : (
-                <PiPlanetDuotone size={32} />
+                <PiPlanetDuotone size={28} />
               )}
             </motion.div>
           </motion.button>
         </motion.div>
       </motion.nav>
 
-      {/* Updated Mobile Menu Overlay with touch handling */}
+      {/* Enhanced Mobile Menu Overlay */}
       <motion.div
         initial={false}
         animate={{
@@ -242,32 +254,37 @@ export const Navbar = () => {
         }}
         className="fixed inset-0 z-[90] md:hidden overflow-hidden touch-none"
       >
+        {/* Enhanced Backdrop */}
         <motion.div
-          initial={false}
+          initial={{ opacity: 0, backdrop: "blur(0px)" }}
           animate={{
             opacity: isMobileMenuOpen ? 1 : 0,
-            backdropFilter: isMobileMenuOpen ? "blur(10px)" : "blur(0px)",
+            backdropFilter: `blur(${isMobileMenuOpen ? 16 : 0}px)`,
           }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.3 }}
           className="absolute inset-0 bg-black/80 touch-none"
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
+        {/* Enhanced Mobile Menu Panel */}
         <motion.div
           initial={{ x: "100%" }}
           animate={{
             x: isMobileMenuOpen ? "0%" : "100%",
           }}
-          transition={{ type: "spring", damping: 20, stiffness: 100 }}
+          transition={{
+            type: "spring",
+            damping: 30,
+            stiffness: 200,
+            mass: 0.8,
+          }}
           className="absolute right-0 top-0 bottom-0 w-full max-w-sm 
-                     bg-black/50 backdrop-blur-xl
-                     flex flex-col items-center p-6
-                     overflow-y-auto touch-pan-y"
+                   bg-black/50 backdrop-blur-2xl
+                   flex flex-col items-center p-6
+                   overflow-y-auto touch-pan-y"
         >
-          {/* Menu Items Container - More compact spacing */}
-          <div className="flex-1 flex flex-col items-center justify-center gap-4 w-full">
-            {" "}
-            {/* Reduced gap */}
+          {/* Mobile Menu Items */}
+          <div className="flex-1 flex flex-col items-center justify-center gap-3 w-full">
             {navLinks.map(({ name, href }, index) => (
               <motion.button
                 key={name}
@@ -277,30 +294,26 @@ export const Navbar = () => {
                   x: isMobileMenuOpen ? 0 : 50,
                 }}
                 transition={{
-                  delay: isMobileMenuOpen ? index * 0.1 : 0,
+                  delay: isMobileMenuOpen ? index * 0.075 : 0,
                   duration: 0.3,
+                  ease: [0.23, 1, 0.32, 1],
                 }}
                 onClick={() => handleMobileNavClick(href)}
-                className={`text-xl font-medium w-full text-center py-3 rounded-lg
-                           transition-colors duration-200 relative overflow-hidden
-                           ${
-                             activeSection === href.slice(1)
-                               ? "text-theme-primary"
-                               : "text-white/70"
-                           }`}
+                className={`w-full px-6 py-3.5 rounded-xl text-lg font-medium
+                         bg-white/5 backdrop-blur-sm border border-white/10
+                         transition-all duration-300
+                         ${
+                           activeSection === href.slice(1)
+                             ? "text-theme-primary border-theme-primary/30"
+                             : "text-white/70 hover:text-white hover:border-white/30"
+                         }`}
               >
-                <motion.div
-                  className="absolute inset-0 bg-white/5 rounded-lg"
-                  initial={false}
-                  whileHover={{ opacity: [0, 1] }}
-                  transition={{ duration: 0.2 }}
-                />
-                <span className="relative z-10">{name}</span>
+                {name}
               </motion.button>
             ))}
           </div>
 
-          {/* Footer with adjusted spacing */}
+          {/* Enhanced Mobile Footer */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{
@@ -309,10 +322,10 @@ export const Navbar = () => {
             }}
             transition={{
               delay: isMobileMenuOpen ? 0.3 : 0,
-              duration: 0.5,
+              duration: 0.4,
               ease: [0.23, 1, 0.32, 1],
             }}
-            className="mt-6 text-center" // Reduced margin
+            className="mt-8 text-center"
           >
             <motion.div
               animate={{
@@ -323,10 +336,10 @@ export const Navbar = () => {
                 repeat: Infinity,
                 ease: "linear",
               }}
-              className="text-xs font-medium bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
-                         bg-[length:200%_auto] bg-clip-text text-transparent"
+              className="text-xs font-medium text-white/60"
             >
-              © 2025 Poornima University
+              © {new Date().getFullYear()}{" "}
+              <span className="text-theme-primary">Poornima University</span>
             </motion.div>
             <motion.p
               initial={{ opacity: 0 }}

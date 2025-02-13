@@ -157,7 +157,7 @@ export const Footer = () => {
                 src="/logo.webp"
                 alt="Lakshya Logo"
                 fill
-                className="object-contain p-2"
+                className="object-contain"
               />
             </div>
             <div className="text-left">
