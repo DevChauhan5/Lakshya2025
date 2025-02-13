@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${kanit.className}   antialiased`}
+        className={`${kanit.className} antialiased min-h-screen`}
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -37,16 +37,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <LoadingProvider> */}
           <SmoothScrollProvider>
-            {/* <PreLoader /> */}
             <AppWrapper>
               <Navbar />
-              {children}
+              <div className="relative">{children}</div>
               <Footer />
             </AppWrapper>
           </SmoothScrollProvider>
-          {/* </LoadingProvider> */}
         </ThemeProvider>
       </body>
     </html>

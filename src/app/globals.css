@@ -11,12 +11,24 @@
 html {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: initial; /* Reset scroll behavior */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  touch-action: manipulation; /* Better touch handling */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: black;
   overflow-x: hidden;
+  touch-action: pan-y pinch-zoom;
   -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000;
+  -webkit-perspective: 1000;
 }
 
 /* Add scroll lock utility */
@@ -187,4 +199,11 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Optimize for GPU acceleration */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
