@@ -1,5 +1,6 @@
 import { AppWrapper } from "@/components/AppWrapper";
 import { Navbar } from "@/components/layout/Navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
@@ -30,16 +31,23 @@ export default function RootLayout({
         className={`${kanit.className}   antialiased`}
         suppressHydrationWarning
       >
-        {/* <LoadingProvider> */}
-        <SmoothScrollProvider>
-          {/* <PreLoader /> */}
-          <AppWrapper>
-            <Navbar />
-            {children}
-            <Footer />
-          </AppWrapper>
-        </SmoothScrollProvider>
-        {/* </LoadingProvider> */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* <LoadingProvider> */}
+          <SmoothScrollProvider>
+            {/* <PreLoader /> */}
+            <AppWrapper>
+              <Navbar />
+              {children}
+              <Footer />
+            </AppWrapper>
+          </SmoothScrollProvider>
+          {/* </LoadingProvider> */}
+        </ThemeProvider>
       </body>
     </html>
   );
