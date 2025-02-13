@@ -21,7 +21,7 @@ const coreMembers = [
   {
     name: "Shubham Sharma",
     role: "Core Executive",
-    image: "/images/team/avval.webp", // Temporarily using same image
+    image: "/images/team/71.webp", // Temporarily using same image
     width: 800,
     height: 1000,
   },
@@ -113,78 +113,48 @@ export const OurTeam = () => {
             </MagicCard>
           </div>
 
-          {/* Enhanced Core Committee Cards Grid */}
+          {/* Fixed Core Committee Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {coreMembers.map((member, index) => (
               <MagicCard
                 key={member.name}
-                className="bg-black/40 backdrop-blur-sm border border-white/10
-                          rounded-xl overflow-hidden group"
+                className="relative bg-transparent backdrop-blur-sm border border-white/10
+                          rounded-xl overflow-hidden group min-h-[400px]"
                 gradientColor="#262626"
-                gradientFrom="rgba(244, 137, 82, 0.1)"
-                gradientTo="rgba(255, 206, 107, 0.1)"
-                gradientOpacity={0.5}
               >
-                <motion.div
-                  className="relative aspect-[3/4] w-full"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                >
+                <div className="w-full h-full">
                   {/* Image Container */}
-                  <div className="absolute inset-0 rounded-t-xl overflow-hidden">
+                  <div className="absolute inset-0 w-full h-full">
                     <Image
                       src={member.image}
                       alt={member.name}
                       width={member.width}
                       height={member.height}
-                      className="object-cover h-full w-full brightness-105 
+                      className="object-cover w-full h-full brightness-105 
                                scale-[1.01] group-hover:scale-110
-                               transition-transform duration-700 ease-out"
+                               transition-transform duration-700"
                       sizes="(max-width: 768px) 100vw,
                              (max-width: 1200px) 50vw,
                              25vw"
                       quality={95}
                       priority={index < 2}
-                      placeholder="blur"
-                      blurDataURL={
-                        "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHyAiJRwlKycuRDEwMTAxMUQzNjk7PjU1R0dKTU1NW3JbYFllZIGChXFwf7n/2wBDARUXFx4aHh4pISk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTn/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                      }
                     />
                   </div>
 
-                  {/* Creative Info Panel - Slides up on hover */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t 
-                              from-black/95 via-black/80 to-transparent backdrop-blur-sm
-                              p-6 translate-y-[60%] group-hover:translate-y-0
-                              transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                  >
-                    <motion.h3
-                      className="text-xl font-semibold text-white mb-3
-                               translate-y-[-20px] group-hover:translate-y-0
-                               transition-transform duration-500 delay-100"
-                    >
+                  {/* Gradient Overlay */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t 
+                               from-black via-black/50 to-transparent opacity-60"
+                  />
+
+                  {/* Content */}
+                  <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                    <h3 className="text-xl font-semibold text-white mb-2">
                       {member.name}
-                    </motion.h3>
-
-                    <motion.p
-                      className="text-sm text-white/80 translate-y-[-10px] 
-                               group-hover:translate-y-0 transition-transform 
-                               duration-500 delay-200"
-                    >
-                      {member.role}
-                    </motion.p>
-
-                    {/* Social Links - Fade in on hover */}
-                    <motion.div
-                      className="mt-4 flex gap-3 opacity-0 group-hover:opacity-100
-                               translate-y-[-10px] group-hover:translate-y-0
-                               transition-all duration-500 delay-300"
-                    >
-                      {/* Add social icons/links if needed */}
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
+                    </h3>
+                    <p className="text-sm text-white/80">{member.role}</p>
+                  </div>
+                </div>
               </MagicCard>
             ))}
           </div>
