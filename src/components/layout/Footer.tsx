@@ -1,12 +1,19 @@
 "use client";
 
+// Add starwars font import
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { FiInstagram, FiYoutube } from "react-icons/fi";
 import { FlickeringGrid } from "../effects/FlickeringGrid";
+
+const starwar = localFont({
+  src: "../../app/fonts/star.woff",
+  variable: "--font-starwars",
+});
 
 // Updated social links with additional info
 const socialLinks = [
@@ -24,7 +31,7 @@ const socialLinks = [
   },
 ];
 
-// Updated quick links with proper navigation
+// Update resources naming
 const quickLinks = {
   Events: [
     { name: "Cultural", route: "/cultural" },
@@ -40,13 +47,15 @@ const quickLinks = {
   ],
   Resources: [
     {
-      name: "View Rule Books",
+      name: "📚 Rule Books",
       route:
         "https://drive.google.com/drive/folders/1NpYOjIkTDva_QlPEgzHNoxZlAajdlQF3?usp=sharing",
     },
-    { name: "View Schedule", section: "/timeline" },
-
-    { name: "Location", route: "https://maps.app.goo.gl/9vieVUD3B8w5WBY1A" },
+    { name: "📅 Event Schedule", section: "timeline" },
+    {
+      name: "📍 Event Venue",
+      route: "https://maps.app.goo.gl/9vieVUD3B8w5WBY1A",
+    },
   ],
 };
 
@@ -134,9 +143,8 @@ export const Footer = () => {
         style={{ opacity }}
         className="relative z-20 container mx-auto px-4"
       >
-        {/* Top Section with Logo and Social */}
+        {/* Updated Logo Section with StarWars font */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
-          {/* Logo Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -153,8 +161,12 @@ export const Footer = () => {
               />
             </div>
             <div className="text-left">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-theme-primary to-theme-secondary bg-clip-text text-transparent">
-                Lakshya&apos;25
+              <h2
+                className={`${starwar.className} text-[28px] leading-tight
+                            bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 
+                            bg-clip-text text-transparent mix-blend-screen`}
+              >
+                LAKSHYA&apos;25
               </h2>
               <p className="text-white/60 text-sm mt-1">
                 Euphoria: Orbit of Wonder
@@ -235,11 +247,11 @@ export const Footer = () => {
             </motion.div>
           ))}
 
-          {/* Contact Section */}
+          {/* Updated Contact Section with faster animations */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ duration: 0.4 }}
             className="space-y-4 lg:col-span-1"
           >
             <h3
@@ -255,13 +267,18 @@ export const Footer = () => {
                   key={contact.name}
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 3 + index * 0.1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: index * 0.1,
+                    ease: [0.23, 1, 0.32, 1],
+                  }}
                   className="group"
                 >
                   <Link
                     href={`tel:${contact.phone}`}
                     className="block p-3 rounded-lg bg-white/5 hover:bg-white/10
-                             backdrop-blur-sm transition-all duration-300"
+                           backdrop-blur-sm transition-all duration-300
+                           hover:shadow-lg hover:shadow-theme-primary/5"
                   >
                     <p className="text-sm font-medium text-white">
                       {contact.name}
