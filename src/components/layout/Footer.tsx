@@ -298,7 +298,7 @@ export const Footer = () => {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.6 }}
           className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
         >
           <p className="text-sm text-white/60">

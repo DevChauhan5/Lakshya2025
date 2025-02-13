@@ -6,7 +6,6 @@ import { useRef, useEffect, useState } from "react";
 import { Meteors } from "../magicui/meteors";
 import { Particles } from "../magicui/particles";
 import { Rings } from "../effects/Rings";
-import { useSmoothScroll } from "@/context/SmoothScrollContext";
 
 const starwar = localFont({
   src: "../../app/fonts/star.woff",
@@ -131,15 +130,6 @@ const AnimatedTitle = () => {
 };
 
 export const Hero = () => {
-  const { scrollTo } = useSmoothScroll();
-
-  const handleExploreClick = () => {
-    scrollTo("#events", {
-      duration: 2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-  };
-
   return (
     <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center bg-black overflow-hidden">
       <SpaceElements />
@@ -152,7 +142,11 @@ export const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          onClick={handleExploreClick}
+          onClick={() => {
+            document
+              .getElementById("events")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
           className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl 
                    bg-gradient-to-r from-yellow-400/10 via-orange-400/10 to-yellow-400/10
                    backdrop-blur-sm border border-yellow-400/30 
