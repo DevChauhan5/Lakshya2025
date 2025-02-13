@@ -52,123 +52,132 @@ const EventCard = ({ category, index }) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, {
     once: false,
-    margin: "-15% 0px",
-    amount: 0.4,
+    margin: "-10% 0px",
+    amount: 0.3,
   });
 
+  // Optimized scroll progress tracking
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ["start end", "end start"],
   });
 
-  // Smoother animation configs
+  // Enhanced spring configurations for smoother animations
   const springConfig = {
-    stiffness: 45,
+    stiffness: 70,
     damping: 15,
-    mass: 0.2,
-    restDelta: 0.001,
+    mass: 0.5,
   };
 
   const scale = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]),
+    useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]),
     springConfig
   );
 
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.5, 1, 1, 0.5]),
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]),
     springConfig
   );
 
-  const handleClick = () => {
-    router.push(category.route);
+  // Staggered entrance animation variants
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.9,
+      rotateX: 15,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      transition: {
+        type: "spring",
+        stiffness: 50,
+        damping: 15,
+        mass: 1,
+        delay: index * 0.1,
+      },
+    },
   };
 
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              y: 0,
-              transition: {
-                type: "spring",
-                stiffness: 45,
-                damping: 15,
-                mass: 0.2,
-              },
-            }
-          : {}
-      }
+      variants={cardVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
       style={{ scale, opacity }}
-      onClick={handleClick}
-      className="w-full aspect-[4/5] relative max-h-[70vh] cursor-pointer group"
+      className="w-full aspect-square relative"
+      onClick={() => router.push(category.route)}
     >
       <motion.div
-        className="relative w-full h-full rounded-xl overflow-hidden"
+        className="relative w-full h-full rounded-lg overflow-hidden 
+                   group cursor-pointer"
         whileHover={{
           scale: 1.02,
-          transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] },
+          transition: { duration: 0.3, ease: [0.23, 1, 0.32, 1] },
         }}
       >
-        {/* Image container with smoother hover effect */}
-        <motion.div className="absolute inset-0 transition-transform duration-700">
+        {/* Optimized image container */}
+        <motion.div className="absolute inset-0">
           <Image
             src={category.image}
             alt={category.title}
             fill
-            className="object-cover scale-[1.01] group-hover:scale-110 transition-transform duration-700 ease-out"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover will-change-transform
+                     scale-[1.01] group-hover:scale-110 
+                     transition-transform duration-700 ease-out"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={index < 2}
           />
         </motion.div>
 
-        {/* Enhanced overlay with blur effect - visible on hover */}
+        {/* Enhanced overlay with blur */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/60 to-black/90
-                     opacity-0 group-hover:opacity-100 backdrop-blur-[2px]
-                     transition-all duration-500"
+          className="absolute inset-0 bg-gradient-to-b 
+                     from-black/20 via-black/50 to-black/90
+                     opacity-60 group-hover:opacity-90
+                     transition-opacity duration-500"
         />
 
-        {/* Content container with hover reveal */}
+        {/* Optimized content container */}
         <motion.div
-          className="absolute inset-0 p-6 flex flex-col justify-end
-                     translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100
-                     transition-all duration-500 ease-out"
+          className="absolute inset-0 p-4 flex flex-col justify-end
+                     translate-y-2 group-hover:translate-y-0
+                     transition-transform duration-500 ease-out"
         >
-          {/* Title with slide effect */}
           <motion.h3
-            className="text-2xl font-bold text-white mb-3
+            className="text-xl font-bold text-white mb-2
                        translate-y-4 group-hover:translate-y-0 
                        transition-transform duration-500 ease-out"
           >
             {category.title}
           </motion.h3>
 
-          {/* Description with fade effect */}
           <motion.p
-            className="text-base text-white/80 mb-6 line-clamp-2
-                       translate-y-4 group-hover:translate-y-0 
-                       transition-transform duration-500 delay-[50ms] ease-out"
+            className="text-sm text-white/80 line-clamp-2
+                       translate-y-4 opacity-0
+                       group-hover:translate-y-0 group-hover:opacity-100
+                       transition-all duration-500 delay-[50ms] ease-out"
           >
             {category.description}
           </motion.p>
 
-          {/* Enhanced button with better hover effects */}
           <motion.button
-            className="self-start px-5 py-2.5 rounded-full
-                     bg-white/10 backdrop-blur-md
-                     border border-white/20 text-white
+            className="self-start mt-3 px-4 py-1.5 rounded-full
+                     bg-white/10 backdrop-blur-sm
+                     border border-white/20 text-white/90
                      translate-y-4 opacity-0 
                      group-hover:translate-y-0 group-hover:opacity-100
                      hover:bg-white/20 hover:border-white/40
                      transition-all duration-500 delay-[100ms] ease-out
-                     flex items-center gap-2 text-sm"
+                     text-sm flex items-center gap-2"
             whileHover={{ x: 5 }}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span>View {category.title.split(" ")[0]} Events</span>
+            <span>Explore Events</span>
             <motion.span
               initial={{ x: 0 }}
               whileHover={{ x: 3 }}
@@ -190,10 +199,8 @@ export const Events = () => {
     offset: ["start end", "end start"],
   });
 
-  // Enhanced spring config
+  // Enhanced spring config for smoother animations
   const springConfig = { stiffness: 50, damping: 15 };
-
-  // Earlier fade in for title
   const titleOpacity = useSpring(
     useTransform(scrollYProgress, [0, 0.05], [0, 1]),
     springConfig
@@ -203,9 +210,9 @@ export const Events = () => {
     <section
       id="events"
       ref={sectionRef}
-      className="relative min-h-screen bg-black overflow-hidden py-16"
+      className="relative min-h-screen bg-black overflow-hidden py-12"
     >
-      {/* Background with parallax */}
+      {/* Optimized background effect */}
       <motion.div
         className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
         style={{
@@ -216,7 +223,7 @@ export const Events = () => {
         }}
       />
 
-      {/* Centered title container */}
+      {/* Enhanced title container */}
       <motion.div
         className="sticky top-0 pt-16 pb-4 px-4 z-[60] bg-black/50 backdrop-blur-sm
                    flex justify-center items-center w-full"
@@ -227,11 +234,11 @@ export const Events = () => {
         </div>
       </motion.div>
 
-      {/* Grid container with improved spacing */}
+      {/* Optimized grid container */}
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div
-          className="grid grid-cols-1 md:grid-cols-2 
-                     gap-6 md:gap-8 lg:gap-10 mt-8
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4
+                     gap-4 md:gap-6 mt-8
                      max-w-[1400px] mx-auto"
         >
           {eventCategories.map((category, index) => (
