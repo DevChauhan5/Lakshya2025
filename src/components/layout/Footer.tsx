@@ -39,9 +39,14 @@ const quickLinks = {
     { name: "Team", section: "team" },
   ],
   Resources: [
-    { name: "View Schedule", route: "/schedule" },
-    { name: "Location", section: "location" },
-    { name: "View Rule Books", route: "/rules" },
+    {
+      name: "View Rule Books",
+      route:
+        "https://drive.google.com/drive/folders/1NpYOjIkTDva_QlPEgzHNoxZlAajdlQF3?usp=sharing",
+    },
+    { name: "View Schedule", section: "/timeline" },
+
+    { name: "Location", route: "https://maps.app.goo.gl/9vieVUD3B8w5WBY1A" },
   ],
 };
 
