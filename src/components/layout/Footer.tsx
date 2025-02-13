@@ -120,20 +120,16 @@ export const Footer = () => {
           >
             {/* Black circle background with glow */}
             <div
-              className="absolute inset-0 rounded-full bg-black 
+              className="absolute inset-0 rounded-full bg-white 
                           shadow-[0_0_40px_rgba(244, 137, 82, 1)] 
-                          before:absolute before:inset-0 
-                          before:rounded-full before:blur-xl 
-                          before:bg-theme-accent/20
-                          after:absolute after:inset-0 
-                          after:rounded-full after:bg-black" // Added solid black background
+                          border-2 border-theme-primary shadow shadow-theme-primary" // Added solid black background
             />
             <Image
               src="/logo.webp"
               alt="Lakshya Logo"
               width={192} // Increased from 160
               height={192} // Increased from 160
-              className="object-contain relative z-10 p-4
+              className="object-contain relative z-10 p-2
                        transition-transform duration-500 hover:scale-105"
             />
           </motion.div>
