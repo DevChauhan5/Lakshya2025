@@ -1,12 +1,12 @@
 "use client";
 
 import { BlurFade } from "@/components/magicui/blur-fade";
-import { MagicCard } from "@/components/magicui/magic-card";
 import { RainbowButton } from "@/components/magicui/rainbow-button";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { CommitteeDialog } from "./CommitteeDialog";
 
 // Updated core members data with corrected image paths and dimensions
 const coreMembers = [
@@ -45,6 +45,8 @@ export const OurTeam = () => {
     restDelta: 0.001,
   });
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
     <section
       ref={containerRef}
@@ -66,42 +68,37 @@ export const OurTeam = () => {
         </div>
 
         <div className="flex flex-col gap-12 max-w-7xl mx-auto">
-          {/* Advisory Card */}
-          <div className="h-[500px] md:h-[400px] w-full flex items-center justify-center">
-            <MagicCard
-              className="flex flex-col items-center justify-center w-full max-w-3xl
-                        bg-black/40 backdrop-blur-sm border border-white/10
-                        rounded-xl p-4 sm:p-6"
-              gradientColor="#262626"
-            >
-              <div className="grid md:grid-cols-2 gap-6 items-center w-full">
-                {/* Image Container */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg group">
-                  <Image
-                    src="/images/team/avval.webp"
-                    alt="Avval Yadav"
-                    fill
-                    className="object-cover brightness-110 group-hover:scale-105
-                             transition-transform duration-700 ease-out"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                </div>
-
-                {/* Text Content */}
-                <div className="text-center md:text-left p-4">
-                  <h2
-                    className="text-2xl sm:text-3xl font-bold mb-2
-                               bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
-                               bg-clip-text text-transparent"
-                  >
-                    Avval Yadav
-                  </h2>
-                  <p className="text-white/80">Advisory Committee</p>
-                </div>
+          {/* Advisory Card - Simplified without MagicCard */}
+          <div
+            className="relative w-full max-w-3xl mx-auto bg-black/40 backdrop-blur-sm 
+                         border border-white/10 rounded-xl overflow-hidden"
+          >
+            <div className="grid md:grid-cols-2 gap-6 p-6">
+              {/* Image Container */}
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg group">
+                <Image
+                  src="/images/team/avval.webp"
+                  alt="Avval Yadav"
+                  fill
+                  className="object-cover brightness-110 group-hover:scale-105
+                           transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
               </div>
-            </MagicCard>
+
+              {/* Text Content */}
+              <div className="flex flex-col justify-center">
+                <h2
+                  className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-theme-primary 
+                             via-theme-accent to-theme-secondary bg-clip-text text-transparent"
+                >
+                  Avval Yadav
+                </h2>
+                <p className="text-white/80">Advisory Committee</p>
+              </div>
+            </div>
           </div>
 
           {/* Simplified Core Committee Cards Grid */}
@@ -141,12 +138,17 @@ export const OurTeam = () => {
             ))}
           </div>
 
-          {/* View All Button */}
+          {/* Updated View All Button */}
           <motion.div className="flex justify-center mt-8">
-            <RainbowButton>View All Committees</RainbowButton>
+            <RainbowButton onClick={() => setDialogOpen(true)}>
+              View All Committees
+            </RainbowButton>
           </motion.div>
         </div>
       </div>
+
+      {/* Committee Dialog */}
+      <CommitteeDialog open={dialogOpen} onOpenChange={setDialogOpen} />
     </section>
   );
 };

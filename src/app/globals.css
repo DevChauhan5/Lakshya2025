@@ -31,6 +31,16 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Add these new styles */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes meteor {
   0% {
     transform: rotate(215deg) translateX(0);
@@ -68,6 +78,41 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-fill-color: transparent;
+}
+
+/* Add these styles for better dialog handling */
+[data-overlay-container="true"] {
+  isolation: isolate;
+}
+
+[data-state="open"] > .fixed {
+  pointer-events: auto;
+}
+
+/* Dialog specific styles */
+.dialog-content-container {
+  max-height: calc(100vh - 4rem);
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar styling */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
 }
 
 @layer base {
