@@ -56,13 +56,12 @@ const EventCard = ({ category, index }) => {
     amount: 0.3,
   });
 
-  // Optimized scroll progress tracking
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ["start end", "end start"],
   });
 
-  // Enhanced spring configurations for smoother animations
+  // Enhanced spring config
   const springConfig = {
     stiffness: 70,
     damping: 15,
@@ -74,28 +73,21 @@ const EventCard = ({ category, index }) => {
     springConfig
   );
 
-  const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3]),
-    springConfig
-  );
-
-  // Staggered entrance animation variants
+  // Alternating entrance from left/right based on index
   const cardVariants = {
     hidden: {
       opacity: 0,
-      y: 50,
-      scale: 0.9,
-      rotateX: 15,
+      x: index % 2 === 0 ? -100 : 100,
+      scale: 0.8,
     },
     visible: {
       opacity: 1,
-      y: 0,
+      x: 0,
       scale: 1,
-      rotateX: 0,
       transition: {
         type: "spring",
         stiffness: 50,
-        damping: 15,
+        damping: 20,
         mass: 1,
         delay: index * 0.1,
       },
@@ -108,19 +100,18 @@ const EventCard = ({ category, index }) => {
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      style={{ scale, opacity }}
-      className="w-full aspect-square relative"
+      style={{ scale }}
       onClick={() => router.push(category.route)}
+      className="w-full aspect-square relative cursor-pointer"
     >
       <motion.div
-        className="relative w-full h-full rounded-lg overflow-hidden 
-                   group cursor-pointer"
+        className="relative w-full h-full rounded-lg overflow-hidden group"
         whileHover={{
           scale: 1.02,
           transition: { duration: 0.3, ease: [0.23, 1, 0.32, 1] },
         }}
       >
-        {/* Optimized image container */}
+        {/* Image container */}
         <motion.div className="absolute inset-0">
           <Image
             src={category.image}
@@ -134,58 +125,41 @@ const EventCard = ({ category, index }) => {
           />
         </motion.div>
 
-        {/* Enhanced overlay with blur */}
+        {/* Enhanced overlay with blur - only visible on hover */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-b 
-                     from-black/20 via-black/50 to-black/90
-                     opacity-60 group-hover:opacity-90
-                     transition-opacity duration-500"
+                     from-black/30 via-black/60 to-black/90
+                     opacity-0 group-hover:opacity-100
+                     transition-all duration-500 ease-out"
         />
 
-        {/* Optimized content container */}
+        {/* Simplified content container - only title and CTA */}
         <motion.div
-          className="absolute inset-0 p-4 flex flex-col justify-end
-                     translate-y-2 group-hover:translate-y-0
-                     transition-transform duration-500 ease-out"
+          className="absolute inset-0 p-6 flex flex-col justify-end items-start
+                     opacity-0 group-hover:opacity-100
+                     transition-all duration-500 ease-out"
         >
-          <motion.h3
-            className="text-xl font-bold text-white mb-2
-                       translate-y-4 group-hover:translate-y-0 
-                       transition-transform duration-500 ease-out"
-          >
-            {category.title}
-          </motion.h3>
-
-          <motion.p
-            className="text-sm text-white/80 line-clamp-2
-                       translate-y-4 opacity-0
-                       group-hover:translate-y-0 group-hover:opacity-100
-                       transition-all duration-500 delay-[50ms] ease-out"
-          >
-            {category.description}
-          </motion.p>
-
-          <motion.button
-            className="self-start mt-3 px-4 py-1.5 rounded-full
-                     bg-white/10 backdrop-blur-sm
-                     border border-white/20 text-white/90
-                     translate-y-4 opacity-0 
-                     group-hover:translate-y-0 group-hover:opacity-100
-                     hover:bg-white/20 hover:border-white/40
-                     transition-all duration-500 delay-[100ms] ease-out
-                     text-sm flex items-center gap-2"
-            whileHover={{ x: 5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span>Explore Events</span>
-            <motion.span
-              initial={{ x: 0 }}
-              whileHover={{ x: 3 }}
-              transition={{ duration: 0.3 }}
+          <motion.div className="overflow-hidden">
+            <motion.h3
+              className="text-2xl font-bold text-white
+                         transform translate-y-full group-hover:translate-y-0
+                         transition-transform duration-500 ease-out"
             >
-              →
+              {category.title}
+            </motion.h3>
+          </motion.div>
+
+          <motion.div className="overflow-hidden mt-3">
+            <motion.span
+              className="inline-block text-sm text-white/90
+                         transform translate-y-full group-hover:translate-y-0
+                         transition-transform duration-500 delay-[100ms] ease-out
+                         border-b border-white/0 group-hover:border-white/40
+                         pb-0.5"
+            >
+              Click to view all events →
             </motion.span>
-          </motion.button>
+          </motion.div>
         </motion.div>
       </motion.div>
     </motion.div>
