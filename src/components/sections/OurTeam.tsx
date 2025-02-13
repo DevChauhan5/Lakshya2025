@@ -8,26 +8,35 @@ import Image from "next/image";
 import { useRef } from "react";
 import { RainbowButton } from "@/components/magicui/rainbow-button";
 
+// Updated core members data with corrected image paths and dimensions
 const coreMembers = [
   {
     name: "Naman Agrawal",
     role: "Core Executive",
-    image: "/images/team/71.webp",
+    image: "/images/team/avval.webp", // Temporarily using same image
+    width: 800,
+    height: 1000,
   },
   {
     name: "Shubham Sharma",
     role: "Core Executive",
-    image: "/images/team/68.webp",
+    image: "/images/team/avval.webp", // Temporarily using same image
+    width: 800,
+    height: 1000,
   },
   {
     name: "Arpit Singh",
     role: "Core Executive",
-    image: "/images/team/69.webp",
+    image: "/images/team/avval.webp", // Temporarily using same image
+    width: 800,
+    height: 1000,
   },
   {
     name: "Yash Sharma",
     role: "Core Executive",
-    image: "/images/team/70.webp",
+    image: "/images/team/avval.webp", // Temporarily using same image
+    width: 800,
+    height: 1000,
   },
 ];
 
@@ -72,9 +81,6 @@ export const OurTeam = () => {
                         bg-black/40 backdrop-blur-sm border border-white/10
                         rounded-xl p-4 sm:p-6"
               gradientColor="#262626"
-              gradientFrom="rgba(244, 137, 82, 0.2)"
-              gradientTo="rgba(255, 206, 107, 0.2)"
-              gradientOpacity={0.5}
             >
               <div className="grid md:grid-cols-2 gap-6 items-center w-full">
                 {/* Image Container */}
@@ -106,25 +112,23 @@ export const OurTeam = () => {
             </MagicCard>
           </div>
 
-          {/* Updated Core Committee Cards Grid */}
+          {/* Fixed Core Committee Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {coreMembers.map((member, index) => (
               <MagicCard
                 key={member.name}
                 className="bg-black/40 backdrop-blur-sm border border-white/10
-                          rounded-xl overflow-hidden group h-[400px] w-full"
-                gradientColor="rgba(0, 0, 0, 0.2)"
-                gradientFrom="rgba(244, 137, 82, 0.1)"
-                gradientTo="rgba(255, 206, 107, 0.1)"
-                gradientOpacity={0.5}
+                          rounded-xl overflow-hidden group relative"
+                gradientColor="#262626"
               >
-                <div className="w-full h-full relative">
+                <div className="aspect-[4/5] w-full relative">
                   <Image
                     src={member.image}
                     alt={member.name}
-                    fill
-                    className="object-cover brightness-105 group-hover:scale-105
-                             transition-transform duration-700"
+                    width={member.width}
+                    height={member.height}
+                    className="object-cover h-full w-full brightness-105 group-hover:scale-105
+                           transition-transform duration-700"
                     sizes="(max-width: 768px) 100vw,
                          (max-width: 1200px) 50vw,
                          25vw"
