@@ -326,7 +326,7 @@ export const Navbar = () => {
               className="text-xs font-medium bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
                          bg-[length:200%_auto] bg-clip-text text-transparent"
             >
-              © Copyright 2025 Poornima University
+              © 2025 Poornima University
             </motion.div>
             <motion.p
               initial={{ opacity: 0 }}

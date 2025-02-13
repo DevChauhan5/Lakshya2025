@@ -45,6 +45,31 @@ body {
   }
 }
 
+@keyframes shine {
+  from {
+    background-position: 200% center;
+  }
+  to {
+    background-position: -200% center;
+  }
+}
+
+.shine-effect {
+  animation: shine 4s linear infinite;
+  background: linear-gradient(
+    to right,
+    #f48952 20%,
+    #ffce6b 40%,
+    #ffce6b 60%,
+    #f48952 80%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

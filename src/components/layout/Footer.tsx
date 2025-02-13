@@ -294,7 +294,7 @@ export const Footer = () => {
           </motion.div>
         </div>
 
-        {/* Footer Bar */}
+        {/* Updated Footer Bar with Enhanced Credits */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -305,17 +305,40 @@ export const Footer = () => {
             © {new Date().getFullYear()}{" "}
             <span className="text-theme-primary">Poornima University</span>
           </p>
-          <motion.p
-            className="text-sm cursor-pointer"
+
+          {/* Enhanced credit section */}
+          <motion.div
+            className="text-sm cursor-pointer flex items-center gap-2"
             onClick={() =>
               router.push("https://www.linkedin.com/in/dev-chauhan-in")
             }
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            Crafted by{" "}
-            <span className="text-theme-primary hover:text-theme-accent transition-colors">
+            <span className="text-white/80">Crafted by</span>
+            <motion.span
+              className="relative font-semibold"
+              animate={{
+                backgroundPosition: ["200% center", "-200% center"],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                background:
+                  "linear-gradient(to right, #f48952, #ffce6b, #f48952, #ffce6b)",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
               DEV CHAUHAN
-            </span>
-          </motion.p>
+            </motion.span>
+          </motion.div>
         </motion.div>
       </motion.div>
     </footer>
