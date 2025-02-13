@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PiPlanetDuotone, PiPlanetFill } from "react-icons/pi";
+import { useSmoothScroll } from "@/context/SmoothScrollContext";
 
 const navLinks = [
   { name: "Timeline", href: "#timeline" },
@@ -21,6 +22,7 @@ export const Navbar = () => {
   const { scrollY } = useScroll();
   const pathname = usePathname();
   const router = useRouter();
+  const { scrollTo } = useSmoothScroll();
 
   // Enhanced smooth animations with springs
   const bgOpacity = useSpring(useTransform(scrollY, [0, 100], [0, 0.9]), {
@@ -69,9 +71,11 @@ export const Navbar = () => {
   const handleNavClick = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - 80;
-      smoothScrollTo(offsetPosition);
+      scrollTo(element, {
+        offset: -80,
+        duration: 1.5,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
     }
   };
 
