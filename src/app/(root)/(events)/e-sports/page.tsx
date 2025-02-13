@@ -4,28 +4,9 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 
-const esportsEvents = [
-  {
-    id: 1,
-    title: "CS:GO Tournament",
-  },
-  {
-    id: 2,
-    title: "Valorant Tournament",
-  },
-  {
-    id: 3,
-    title: "BGMI Tournament",
-  },
-  {
-    id: 4,
-    title: "Call of Duty Mobile",
-  },
-  {
-    id: 5,
-    title: "Rocket League",
-  },
-];
+const esportsEvents = Array.from({ length: 5 }, (_, i) => ({
+  id: i + 1,
+}));
 
 const EventCard = ({ event, index }) => {
   const cardRef = useRef(null);
@@ -40,42 +21,17 @@ const EventCard = ({ event, index }) => {
         ease: [0.23, 1, 0.32, 1],
         delay: index * 0.1,
       }}
-      className="group cursor-pointer"
     >
-      <motion.div
-        whileHover={{ y: -5 }}
-        className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black"
-      >
+      <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black">
         <Image
           src={`/images/events/e-sports/${event.id}.webp`}
-          alt={event.title}
+          alt={`E-Sports Event ${event.id}`}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+          className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-
-        <div
-          className="absolute inset-0 bg-gradient-to-t 
-                       from-black/90 via-black/50 to-transparent 
-                       opacity-0 group-hover:opacity-100 
-                       transition-all duration-500 ease-out"
-        />
-
-        <div className="absolute inset-0 flex items-end p-6">
-          <motion.h3
-            className="text-2xl font-bold text-white
-                       translate-y-8 opacity-0
-                       group-hover:translate-y-0 group-hover:opacity-100
-                       transition-all duration-500 ease-out
-                       relative after:absolute after:bottom-0 after:left-0
-                       after:w-0 after:h-[2px] after:bg-white
-                       after:transition-all after:duration-500
-                       group-hover:after:w-full"
-          >
-            {event.title}
-          </motion.h3>
-        </div>
-      </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+      </div>
     </motion.div>
   );
 };

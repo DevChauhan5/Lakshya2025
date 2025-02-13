@@ -4,32 +4,9 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 
-const culturalEvents = [
-  {
-    id: 1,
-    title: "Dance Competition",
-  },
-  {
-    id: 2,
-    title: "Music Night",
-  },
-  { id: 3, title: "Fashion Show" },
-  { id: 4, title: "Theatre Play" },
-  { id: 5, title: "Poetry Slam" },
-  { id: 6, title: "Battle of Bands" },
-  {
-    id: 7,
-    title: "Classical Night",
-  },
-  { id: 8, title: "Folk Dance" },
-  { id: 9, title: "Rap Battle" },
-  { id: 10, title: "Stand-Up Comedy" },
-  { id: 11, title: "Art Exhibition" },
-  { id: 12, title: "Photography" },
-  { id: 13, title: "Short Films" },
-  { id: 14, title: "Beat Boxing" },
-  { id: 15, title: "Cultural Quiz" },
-];
+const culturalEvents = Array.from({ length: 15 }, (_, i) => ({
+  id: i + 1,
+}));
 
 const EventCard = ({ event, index }) => {
   const cardRef = useRef(null);
@@ -44,44 +21,17 @@ const EventCard = ({ event, index }) => {
         ease: [0.23, 1, 0.32, 1],
         delay: index * 0.1,
       }}
-      className="group cursor-pointer"
     >
-      <motion.div
-        whileHover={{ y: -5 }}
-        className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black"
-      >
+      <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black">
         <Image
           src={`/images/events/cultural/${event.id}.webp`}
-          alt={event.title}
+          alt={`Cultural Event ${event.id}`}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+          className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-
-        {/* Enhanced overlay with better gradient */}
-        <div
-          className="absolute inset-0 bg-gradient-to-t 
-                       from-black/90 via-black/50 to-transparent 
-                       opacity-0 group-hover:opacity-100 
-                       transition-all duration-500 ease-out"
-        />
-
-        {/* Simplified content - only title */}
-        <div className="absolute inset-0 flex items-end p-6">
-          <motion.h3
-            className="text-2xl font-bold text-white
-                       translate-y-8 opacity-0
-                       group-hover:translate-y-0 group-hover:opacity-100
-                       transition-all duration-500 ease-out
-                       relative after:absolute after:bottom-0 after:left-0
-                       after:w-0 after:h-[2px] after:bg-white
-                       after:transition-all after:duration-500
-                       group-hover:after:w-full"
-          >
-            {event.title}
-          </motion.h3>
-        </div>
-      </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+      </div>
     </motion.div>
   );
 };
