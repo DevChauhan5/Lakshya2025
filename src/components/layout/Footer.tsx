@@ -24,11 +24,25 @@ const socialLinks = [
   },
 ];
 
-// Updated quick links with sections
+// Updated quick links with proper navigation
 const quickLinks = {
-  Events: ["Cultural", "EduFun", "Sports", "E-Sports"],
-  Information: ["About", "Timeline", "Gallery", "Team"],
-  Resources: ["View Schedule", "Location", "View Rule Boooks"],
+  Events: [
+    { name: "Cultural", route: "/cultural" },
+    { name: "EduFun", route: "/edufun" },
+    { name: "Sports", route: "/sports" },
+    { name: "E-Sports", route: "/e-sports" },
+  ],
+  Information: [
+    { name: "About", section: "about" },
+    { name: "Timeline", section: "timeline" },
+    { name: "Gallery", section: "gallery" },
+    { name: "Team", section: "team" },
+  ],
+  Resources: [
+    { name: "View Schedule", route: "/schedule" },
+    { name: "Location", section: "location" },
+    { name: "View Rule Books", route: "/rules" },
+  ],
 };
 
 // Contact info simplified
@@ -62,6 +76,33 @@ export const Footer = () => {
     stiffness: 50,
     damping: 20,
   });
+
+  // Smooth scroll utility function
+  const smoothScrollTo = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - 80;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Handle link clicks
+  const handleLinkClick = (item: {
+    name: string;
+    route?: string;
+    section?: string;
+  }) => {
+    if (item.route) {
+      router.push(item.route);
+    } else if (item.section) {
+      smoothScrollTo(item.section);
+    }
+  };
 
   return (
     <footer
@@ -98,7 +139,7 @@ export const Footer = () => {
             className="flex items-center gap-6"
           >
             <div className="relative w-24 h-24">
-              <div className="absolute inset-0 rounded-full bg-white/5 backdrop-blur-sm border border-white/10" />
+              <div className="absolute inset-0 rounded-full bg-white shadow-lg" />
               <Image
                 src="/logo.webp"
                 alt="Lakshya Logo"
@@ -152,7 +193,7 @@ export const Footer = () => {
         {/* Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {/* Quick Links Sections */}
-          {Object.entries(quickLinks).map(([section, links], sectionIndex) => (
+          {Object.entries(quickLinks).map(([section, items], sectionIndex) => (
             <motion.div
               key={section}
               initial={{ opacity: 0, y: 20 }}
@@ -168,20 +209,21 @@ export const Footer = () => {
                 {section}
               </h3>
               <ul className="space-y-2">
-                {links.map((link, index) => (
+                {items.map((item, index) => (
                   <motion.li
-                    key={link}
+                    key={item.name}
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: sectionIndex * 0.1 + index * 0.05 }}
                   >
-                    <Link
-                      href={`#${link.toLowerCase()}`}
+                    <motion.button
+                      onClick={() => handleLinkClick(item)}
+                      whileHover={{ x: 5 }}
                       className="text-white/60 hover:text-theme-primary text-sm
-                               transition-colors duration-300 block"
+                               transition-colors duration-300 block text-left w-full"
                     >
-                      {link}
-                    </Link>
+                      {item.name}
+                    </motion.button>
                   </motion.li>
                 ))}
               </ul>
