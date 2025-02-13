@@ -11,33 +11,24 @@ import { useRef } from "react";
 // Updated core members data with corrected image paths and dimensions
 const coreMembers = [
   {
-    name: "Naman Agrawal",
-    role: "Core Executive",
-    image: "/images/team/avval.webp",
-    width: 800,
-    height: 1000,
-    // Add proper blur data URL for each image
+    name: "Pranav Lata",
+    role: "Executive Core Committee",
+    image: "/images/team/68.webp",
   },
   {
-    name: "Shubham Sharma",
-    role: "Core Executive",
-    image: "/images/team/71.webp", // Temporarily using same image
-    width: 800,
-    height: 1000,
+    name: "Jagrati Kumawat",
+    role: "Executive Core Committee",
+    image: "/images/team/69.webp",
   },
   {
-    name: "Arpit Singh",
-    role: "Core Executive",
-    image: "/images/team/avval.webp", // Temporarily using same image
-    width: 800,
-    height: 1000,
+    name: "Ashutosh Yadav",
+    role: "Executive Core Committee",
+    image: "/images/team/70.webp",
   },
   {
-    name: "Yash Sharma",
-    role: "Core Executive",
-    image: "/images/team/avval.webp", // Temporarily using same image
-    width: 800,
-    height: 1000,
+    name: "Kanishk Gupta",
+    role: "Executive Core Committee",
+    image: "/images/team/71.webp",
   },
 ];
 
@@ -113,39 +104,27 @@ export const OurTeam = () => {
             </MagicCard>
           </div>
 
-          {/* Fixed Core Committee Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {/* Simplified Core Committee Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {coreMembers.map((member, index) => (
-              <MagicCard
+              <div
                 key={member.name}
-                className="relative bg-transparent backdrop-blur-sm border border-white/10
-                          rounded-xl overflow-hidden group min-h-[400px]"
-                gradientColor="#262626"
+                className="h-[400px] bg-black/20 rounded-xl overflow-hidden"
               >
-                <div className="w-full h-full">
-                  {/* Image Container */}
-                  <div className="absolute inset-0 w-full h-full">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      width={member.width}
-                      height={member.height}
-                      className="object-cover w-full h-full brightness-105 
-                               scale-[1.01] group-hover:scale-110
-                               transition-transform duration-700"
-                      sizes="(max-width: 768px) 100vw,
-                             (max-width: 1200px) 50vw,
-                             25vw"
-                      quality={95}
-                      priority={index < 2}
-                    />
-                  </div>
+                {/* Simple Card Structure */}
+                <div className="relative w-full h-full group">
+                  {/* Image */}
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    priority={index < 2}
+                  />
 
                   {/* Gradient Overlay */}
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t 
-                               from-black via-black/50 to-transparent opacity-60"
-                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
 
                   {/* Content */}
                   <div className="absolute inset-0 p-6 flex flex-col justify-end">
@@ -154,8 +133,11 @@ export const OurTeam = () => {
                     </h3>
                     <p className="text-sm text-white/80">{member.role}</p>
                   </div>
+
+                  {/* Hover Effects */}
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
-              </MagicCard>
+              </div>
             ))}
           </div>
 
