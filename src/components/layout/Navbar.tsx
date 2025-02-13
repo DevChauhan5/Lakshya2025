@@ -138,25 +138,26 @@ export const Navbar = () => {
       >
         <motion.div
           style={{ scale }}
-          className="container mx-auto px-4 h-20 flex items-center justify-between
+          className="container mx-auto px-4 h-24 flex items-center justify-between
                    max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px]"
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            className="relative w-12 h-12 cursor-pointer"
+            className="relative size-16 cursor-pointer backdrop-blur-xl rounded-full bg-white border "
             onClick={handleLogoClick}
           >
             <Image
-              src="/t-logo.png"
+              src="/logo.webp"
               alt="Lakshya Logo"
-              fill
+              height={240}
+              width={240}
               className="object-contain"
             />
           </motion.div>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-10">
             {navLinks.map(({ name, href }) => (
               <motion.button
                 key={name}
@@ -167,7 +168,7 @@ export const Navbar = () => {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
                 <motion.span
-                  className={`relative z-10 text-sm transition-all duration-500 ease-out
+                  className={`relative z-10 text-base font-medium transition-all duration-500 ease-out
                            ${
                              activeSection === href.slice(1)
                                ? "bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent"
