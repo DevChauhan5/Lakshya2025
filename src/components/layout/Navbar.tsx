@@ -18,20 +18,38 @@ export const Navbar = () => {
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-  const { scrollY } = useScroll();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Enhanced smooth animations with springs
-  const bgOpacity = useSpring(useTransform(scrollY, [0, 100], [0, 0.9]), {
-    stiffness: 100,
-    damping: 20,
-  });
+  const { scrollY } = useScroll();
 
+  // Add the missing scale spring animation
   const scale = useSpring(useTransform(scrollY, [0, 100], [1, 0.95]), {
     stiffness: 200,
     damping: 25,
   });
+
+  // Create smoother animations using springs
+  const bgOpacity = useSpring(useTransform(scrollY, [0, 200], [0, 0.8]), {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.5,
+  });
+
+  const blurAmount = useSpring(useTransform(scrollY, [0, 200], [0, 8]), {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.5,
+  });
+
+  // Derived styles using motion values
+  const navStyle = {
+    backgroundColor: useTransform(
+      bgOpacity,
+      (opacity) => `rgba(0, 0, 0, ${opacity})`
+    ),
+    backdropFilter: useTransform(blurAmount, (blur) => `blur(${blur}px)`),
+  };
 
   // Smooth scroll utility function
   const smoothScrollTo = (y: number) => {
@@ -95,21 +113,55 @@ export const Navbar = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.id);
+          } else {
+            // Clear active section if we're at the top of the page
+            if (window.scrollY < 100) {
+              setActiveSection("");
+            }
+            // If scrolling down and section is leaving viewport, check if any other section is in view
+            else if (
+              !entry.isIntersecting &&
+              entry.boundingClientRect.top < 0
+            ) {
+              const visibleSections = document.querySelectorAll(
+                navLinks.map((link) => link.href.slice(1)).join(",")
+              );
+              for (const section of visibleSections) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                  setActiveSection(section.id);
+                  break;
+                }
+              }
+            }
           }
         });
       },
       {
-        threshold: 0.2, // Reduced threshold for earlier detection
-        rootMargin: "-10% 0px -10% 0px", // Added margin to improve detection area
+        threshold: 0.2,
+        rootMargin: "-10% 0px -10% 0px",
       }
     );
 
+    // Observe all sections
     navLinks.forEach(({ href }) => {
       const element = document.querySelector(href);
       if (element) observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    // Additional scroll handler for top of page
+    const handleScroll = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Add new useEffect for handling body scroll
@@ -138,15 +190,15 @@ export const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        style={{ backgroundColor: `rgba(0, 0, 0, ${bgOpacity.get()})` }}
-        className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-md"
+        style={navStyle}
+        className="fixed top-0 left-0 right-0 z-[100] will-change-transform"
       >
         <motion.div
           style={{ scale }}
           className="container mx-auto h-20 flex items-center justify-between
                    max-w-[95vw] md:max-w-[90vw] lg:max-w-[1200px] relative"
         >
-          {/* Updated Logo with proper aspect ratio */}
+          {/* Updated Logo with proper aspect ratio and sizes */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -162,6 +214,7 @@ export const Navbar = () => {
               height={56}
               className="object-contain w-full h-full"
               priority
+              sizes="(max-width: 768px) 48px, 56px"
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHyAiJRwlKycuRDEwMTAxMUQzNjk7PjU1R0dKTU1NW3JbYFllZIGChXFwf7n/2wBDARUXFx4aHh4pISk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTn/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
               quality={90}

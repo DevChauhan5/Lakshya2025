@@ -97,11 +97,7 @@ export const OurTeam = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
-    <section
-      ref={containerRef}
-      id="team"
-      className="relative min-h-screen bg-black overflow-hidden py-16"
-    >
+    <section ref={containerRef} id="team" className="section-wrapper">
       {/* Background Effects */}
       <motion.div
         className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"

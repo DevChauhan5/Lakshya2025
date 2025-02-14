@@ -194,11 +194,11 @@ export const Events = () => {
     <section
       id="events"
       ref={sectionRef}
-      className="relative min-h-screen bg-black overflow-hidden py-12"
+      className="section-wrapper" // Using the new shared class
     >
-      {/* Optimized background effect */}
+      {/* Remove background div and simplify gradient */}
       <motion.div
-        className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
+        className="absolute inset-0 bg-gradient-radial from-transparent to-transparent"
         style={{
           opacity: useSpring(
             useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]),
@@ -207,9 +207,9 @@ export const Events = () => {
         }}
       />
 
-      {/* Enhanced title container */}
+      {/* Update sticky header to be more transparent */}
       <motion.div
-        className="sticky top-0 pt-16 pb-4 px-4 z-[60] bg-black/50 backdrop-blur-sm
+        className="sticky top-0 pt-16 pb-4 px-4 z-[60] backdrop-blur-sm
                    flex justify-center items-center w-full"
         style={{ opacity: titleOpacity }}
       >

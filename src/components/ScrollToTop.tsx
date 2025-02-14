@@ -15,15 +15,21 @@ export const ScrollToTop = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      // Get the viewport height
+      const windowHeight = window.innerHeight;
+      // Get the total scrollable height
+      const documentHeight = document.documentElement.scrollHeight;
+      // Get current scroll position
+      const scrollPos = window.pageYOffset;
+
+      // Show button only when:
+      // 1. Scrolled past 300px from top AND
+      // 2. Not at the bottom of the page (with a 20px threshold)
+      const isNotAtBottom = documentHeight - (scrollPos + windowHeight) > 20;
+      setIsVisible(scrollPos > 300 && isNotAtBottom);
     };
 
     window.addEventListener("scroll", toggleVisibility);
-
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 

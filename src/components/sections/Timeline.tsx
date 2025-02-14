@@ -8,7 +8,7 @@ import {
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SectionTitle } from "../ui/SectionTitle";
 
 const posters = [
@@ -55,7 +55,7 @@ const mysteryVariants = {
   pulse: {
     scale: [1, 1.05, 1],
     transition: {
-      duration: 2,
+      duration: 3,
       repeat: Infinity,
       ease: "easeInOut",
     },
@@ -63,11 +63,19 @@ const mysteryVariants = {
   glow: {
     boxShadow: [
       "0 0 0 rgba(244,137,82,0)",
-      "0 0 20px rgba(244,137,82,0.5)",
+      "0 0 30px rgba(244,137,82,0.6)",
       "0 0 0 rgba(244,137,82,0)",
     ],
     transition: {
-      duration: 2,
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+  rotate: {
+    rotateY: [0, 10, 0, -10, 0],
+    transition: {
+      duration: 5,
       repeat: Infinity,
       ease: "easeInOut",
     },
@@ -109,6 +117,15 @@ const PosterCard = ({ poster, index, containerProgress }) => {
   // Direction-based animations
   const isLeftCard = index % 2 === 0;
   const xOffset = isLeftCard ? -50 : 50;
+
+  // Add connection line animation for each card
+  const cardLine = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]),
+    {
+      stiffness: 60,
+      damping: 15,
+    }
+  );
 
   if (poster.isMystery) {
     return (
@@ -263,6 +280,64 @@ const PosterCard = ({ poster, index, containerProgress }) => {
           </motion.p>
         </motion.div>
       </motion.div>
+
+      {/* Add connecting dot to timeline */}
+      <motion.div
+        className={`absolute top-1/2 ${
+          index % 2 === 0 ? "md:right-[-34px]" : "md:left-[-34px]"
+        } w-3 h-3 rounded-full bg-theme-primary hidden md:block`}
+        style={{
+          scale: cardLine,
+          opacity: cardLine,
+          boxShadow: "0 0 10px var(--theme-primary)",
+        }}
+      />
+    </motion.div>
+  );
+};
+
+const FloatingParticles = () => {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    // Generate particles only on client side
+    setParticles(
+      [...Array(20)].map((_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        duration: Math.random() * 3 + 2,
+        delay: Math.random() * 2,
+      }))
+    );
+  }, []);
+
+  return (
+    <motion.div className="absolute inset-0 pointer-events-none">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute w-1 h-1 bg-theme-primary rounded-full"
+          initial={{
+            x: `${particle.x}%`,
+            y: "-10%",
+            scale: 0,
+          }}
+          animate={{
+            y: "110%",
+            scale: [0, 1, 0],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+          }}
+          style={{
+            filter: "blur(1px)",
+            left: `${particle.x}%`,
+          }}
+        />
+      ))}
     </motion.div>
   );
 };
@@ -284,14 +359,10 @@ export const Timeline = () => {
   );
 
   return (
-    <section
-      ref={containerRef}
-      id="timeline" // Added proper ID to match navbar link
-      className="relative min-h-screen bg-black overflow-hidden py-16"
-    >
-      {/* Background effect */}
+    <section ref={containerRef} id="timeline" className="section-wrapper">
+      {/* Remove background div and simplify gradient */}
       <motion.div
-        className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
+        className="absolute inset-0 bg-gradient-radial from-transparent to-transparent"
         style={{
           opacity: useSpring(
             useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]),
@@ -300,9 +371,9 @@ export const Timeline = () => {
         }}
       />
 
-      {/* Updated z-index for section title */}
+      {/* Update sticky header to be more transparent */}
       <motion.div
-        className="sticky top-0 pt-16 pb-4 px-4 z-[60] bg-black/50 backdrop-blur-sm
+        className="sticky top-0 pt-16 pb-4 px-4 z-[60] backdrop-blur-sm
                    flex justify-center items-center w-full"
         style={{
           opacity: titleOpacity,
@@ -315,35 +386,91 @@ export const Timeline = () => {
 
       {/* Rest of the component */}
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 
-                     gap-4 md:gap-6 lg:gap-8 mt-8
-                     max-w-[1400px] mx-auto"
-        >
-          {posters.map((poster, index) => (
-            <PosterCard
-              key={poster.id}
-              poster={poster}
-              index={index}
-              containerProgress={scrollYProgress}
-            />
-          ))}
-        </div>
+        {/* Add relative positioning for line context */}
+        <div className="relative">
+          {/* Enhanced timeline line */}
+          <motion.div
+            className="absolute left-1/2 h-full w-[2px] hidden md:block"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent, var(--theme-primary) 10%, var(--theme-accent) 90%, transparent)",
+              transformOrigin: "top",
+              scaleY: useSpring(scrollYProgress, {
+                stiffness: 40,
+                damping: 15,
+                restDelta: 0.001,
+              }),
+            }}
+          >
+            {/* Enhanced floating dot */}
+            <motion.div
+              className="absolute w-4 h-4 -left-[7px] rounded-full bg-theme-primary"
+              style={{
+                top: useTransform(
+                  scrollYProgress,
+                  (value) => `${value * 100}%`
+                ),
+                boxShadow: "0 0 20px var(--theme-primary)",
+              }}
+            >
+              {/* Add trailing effect */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-theme-primary"
+                initial={{ scale: 1, opacity: 0.3 }}
+                animate={{ scale: 2, opacity: 0 }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+            </motion.div>
+          </motion.div>
 
-        {/* Adjusted connecting line position */}
-        <motion.div
-          className="absolute left-1/2 top-[25%] bottom-[25%] w-[2px]
-                     bg-gradient-to-b from-theme-primary via-theme-secondary to-theme-accent
-                     hidden md:block -translate-x-[1px]"
-          style={{
-            scaleY: useSpring(scrollYProgress, { stiffness: 30, damping: 15 }),
-            opacity: useSpring(
-              useTransform(scrollYProgress, [0, 0.2], [0, 1]),
-              { stiffness: 30, damping: 15 }
-            ),
-          }}
-        />
+          {/* Restructured grid layout */}
+          <div className="relative grid grid-cols-1 gap-8 md:gap-12 max-w-[1400px] mx-auto">
+            {/* Regular events (first 4) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {posters.slice(0, 4).map((poster, index) => (
+                <div
+                  key={poster.id}
+                  className={`${
+                    index % 2 === 0
+                      ? "md:pr-8 md:translate-y-0"
+                      : "md:pl-8 md:translate-y-24"
+                  }`}
+                >
+                  <PosterCard
+                    poster={poster}
+                    index={index}
+                    containerProgress={scrollYProgress}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Mystery card (centered and larger) */}
+            <div className="w-full flex justify-center mt-12 md:mt-24">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{
+                  type: "spring",
+                  stiffness: 50,
+                  damping: 20,
+                  mass: 1,
+                }}
+                className="w-full max-w-2xl mx-auto px-4"
+              >
+                <PosterCard
+                  poster={posters[4]}
+                  index={4}
+                  containerProgress={scrollYProgress}
+                />
+              </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <FloatingParticles />
     </section>
   );
 };

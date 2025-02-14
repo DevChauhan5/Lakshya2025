@@ -49,7 +49,7 @@ export const Gallery = () => {
     <section
       ref={containerRef}
       id="gallery"
-      className="w-full min-h-screen bg-black/95 py-16 px-3 sm:px-4 md:px-6"
+      className="w-full min-h-screen  py-16 px-3 sm:px-4 md:px-6"
     >
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-center mb-12">

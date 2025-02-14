@@ -188,3 +188,13 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .section-wrapper {
+    @apply relative w-full min-h-screen py-6 flex flex-col items-center justify-center overflow-hidden;
+  }
+
+  .section-inner {
+    @apply relative w-full max-w-[1400px] mx-auto px-4 py-20;
+  }
+}
