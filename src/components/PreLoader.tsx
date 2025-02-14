@@ -14,7 +14,7 @@ const loadingMessages = [
 
 export const Preloader = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentGif, setCurrentGif] = useState(1);
+  const [currentGif, setCurrentGif] = useState(3);
   const [messageIndex, setMessageIndex] = useState(0);
   const [exitAnimation, setExitAnimation] = useState(false);
 
@@ -26,7 +26,7 @@ export const Preloader = () => {
 
     // Switch GIFs with fade transition
     const gifTimer = setTimeout(() => {
-      setCurrentGif(2);
+      setCurrentGif(4);
     }, gif1Duration);
 
     // Message sequence
@@ -90,7 +90,7 @@ export const Preloader = () => {
                 className="w-full h-full"
               >
                 <Image
-                  src={`/gifs/${currentGif}.gif`}
+                  src={`/gifs/${currentGif}.webp`}
                   alt="Loading..."
                   fill
                   priority
