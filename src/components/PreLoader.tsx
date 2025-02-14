@@ -20,7 +20,7 @@ export const Preloader = () => {
 
   useEffect(() => {
     const gif1Duration = 4000;
-    const gif2Duration = 3500;
+    const gif2Duration = 4100;
     const totalDuration = gif1Duration + gif2Duration;
     const messageDelay = 1000;
 
@@ -71,7 +71,7 @@ export const Preloader = () => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[999] bg-black"
+          className="fixed inset-0 z-[999] bg-black flex items-center justify-center"
         >
           {/* Enhanced GIF transitions */}
           <AnimatePresence mode="wait">
@@ -81,7 +81,7 @@ export const Preloader = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="relative w-full h-full"
+              className="absolute inset-0"
             >
               <motion.div
                 variants={exitVariants}
@@ -102,73 +102,75 @@ export const Preloader = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Enhanced loading message with particles effect */}
+          {/* Centered loading message container */}
           <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 
-                     flex flex-col items-center gap-2 z-10"
+            className="absolute inset-0 flex items-end justify-center my-6"
             animate={{
-              y: exitAnimation ? [0, 20] : 0,
               opacity: exitAnimation ? [1, 0] : 1,
+              scale: exitAnimation ? [1, 0.95] : 1,
             }}
             transition={{ duration: 0.6 }}
           >
-            <motion.div
-              key={messageIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{
-                opacity:
-                  messageIndex === loadingMessages.length - 1 ? [1, 0.5, 1] : 1,
-                y: 0,
-              }}
-              transition={
-                messageIndex === loadingMessages.length - 1
-                  ? {
-                      opacity: {
+            <motion.div className="flex flex-col items-center gap-4 z-10">
+              <motion.div
+                key={messageIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity:
+                    messageIndex === loadingMessages.length - 1
+                      ? [1, 0.5, 1]
+                      : 1,
+                  y: 0,
+                }}
+                transition={
+                  messageIndex === loadingMessages.length - 1
+                    ? {
+                        opacity: {
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        },
+                      }
+                    : { duration: 0.5 }
+                }
+                className=" text-2xl sm:text-3xl font-medium tracking-wider
+                         text-center px-6
+                         text-white/80
+                         rounded-lg backdrop-blur-sm"
+              >
+                {loadingMessages[messageIndex]}
+              </motion.div>
+
+              {messageIndex < loadingMessages.length - 1 && (
+                <motion.div
+                  animate={{
+                    opacity: [0.5, 1, 0.5],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="flex gap-2"
+                >
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.5, 1, 0.5],
+                      }}
+                      transition={{
                         duration: 1,
                         repeat: Infinity,
-                        ease: "easeInOut",
-                      },
-                    }
-                  : { duration: 0.5 }
-              }
-              className="text-white/80 text-lg sm:text-xl font-medium tracking-wider
-                       bg-gradient-to-r from-yellow-400 via-red-500 to-purple-700
-                       bg-clip-text text-transparent
-                       px-4 py-2 rounded-lg backdrop-blur-sm
-                       border border-white/10"
-            >
-              {loadingMessages[messageIndex]}
+                        delay: i * 0.2,
+                      }}
+                      className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-purple-700"
+                    />
+                  ))}
+                </motion.div>
+              )}
             </motion.div>
-
-            {messageIndex < loadingMessages.length - 1 && (
-              <motion.div
-                animate={{
-                  opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="flex gap-1.5"
-              >
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5],
-                    }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      delay: i * 0.2,
-                    }}
-                    className="w-2 h-2 rounded-full bg-gradient-to-r from-yellow-400 to-purple-700"
-                  />
-                ))}
-              </motion.div>
-            )}
           </motion.div>
         </motion.div>
       )}
