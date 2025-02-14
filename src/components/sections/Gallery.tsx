@@ -49,10 +49,10 @@ export const Gallery = () => {
     <section
       ref={containerRef}
       id="gallery"
-      className="w-full min-h-screen bg-black/95 py-20 px-4 sm:px-6 md:px-8"
+      className="w-full min-h-screen bg-black/95 py-16 px-3 sm:px-4 md:px-6"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-center mb-16">
+        <div className="flex justify-center mb-12">
           <BlurFade>
             <SectionTitle title="Gallery" />
           </BlurFade>
@@ -60,7 +60,7 @@ export const Gallery = () => {
 
         <motion.div
           style={{ opacity: containerOpacity }}
-          className="columns-1 sm:columns-2 lg:columns-3 gap-4 [&>div]:mb-4"
+          className="columns-1 sm:columns-2 lg:columns-3 gap-3 [&>div]:mb-3"
         >
           {galleryImages.map((image, index) => (
             <BlurFade
@@ -74,7 +74,7 @@ export const Gallery = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-10%" }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative overflow-hidden rounded-xl aspect-[4/5] w-full group"
+                className="relative overflow-hidden rounded-lg aspect-[3/4] w-full group"
               >
                 {/* Image Container with Hover Effect */}
                 <motion.div
@@ -89,7 +89,7 @@ export const Gallery = () => {
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    quality={95}
+                    quality={90}
                     priority={index < 3}
                   />
                 </motion.div>
@@ -103,20 +103,13 @@ export const Gallery = () => {
                                transition-all duration-300 ease-out"
                   />
                   <div
-                    className="absolute inset-x-0 bottom-0 p-4
-                               transform translate-y-full group-hover:translate-y-0
-                               transition-all duration-300 ease-out"
+                    className="absolute inset-x-0 bottom-0 p-3 transform translate-y-full 
+                               group-hover:translate-y-0 transition-all duration-300 ease-out"
                   >
-                    <h3
-                      className="text-white text-lg font-medium 
-                               truncate drop-shadow-lg mb-1"
-                    >
+                    <h3 className="text-white text-base font-medium truncate drop-shadow-lg">
                       Lakshya&apos;24
                     </h3>
-                    <p
-                      className="text-white/90 text-sm drop-shadow-md 
-                              line-clamp-2 overflow-hidden"
-                    >
+                    <p className="text-white/90 text-xs drop-shadow-md line-clamp-2 overflow-hidden">
                       Moments captured during the event
                     </p>
                   </div>
