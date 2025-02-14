@@ -18,20 +18,38 @@ export const Navbar = () => {
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-  const { scrollY } = useScroll();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Enhanced smooth animations with springs
-  const bgOpacity = useSpring(useTransform(scrollY, [0, 100], [0, 1]), {
-    stiffness: 100,
-    damping: 20,
-  });
+  const { scrollY } = useScroll();
 
+  // Add the missing scale spring animation
   const scale = useSpring(useTransform(scrollY, [0, 100], [1, 0.95]), {
     stiffness: 200,
     damping: 25,
   });
+
+  // Create smoother animations using springs
+  const bgOpacity = useSpring(useTransform(scrollY, [0, 200], [0, 0.8]), {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.5,
+  });
+
+  const blurAmount = useSpring(useTransform(scrollY, [0, 200], [0, 8]), {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.5,
+  });
+
+  // Derived styles using motion values
+  const navStyle = {
+    backgroundColor: useTransform(
+      bgOpacity,
+      (opacity) => `rgba(0, 0, 0, ${opacity})`
+    ),
+    backdropFilter: useTransform(blurAmount, (blur) => `blur(${blur}px)`),
+  };
 
   // Smooth scroll utility function
   const smoothScrollTo = (y: number) => {
@@ -138,11 +156,8 @@ export const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        style={{
-          backgroundColor: `rgba(0, 0, 0, ${bgOpacity.get()})`,
-          backdropFilter: `blur(${bgOpacity.get() * 8}px)`,
-        }}
-        className="fixed top-0 left-0 right-0 z-[100] transition-colors duration-200"
+        style={navStyle}
+        className="fixed top-0 left-0 right-0 z-[100] will-change-transform"
       >
         <motion.div
           style={{ scale }}

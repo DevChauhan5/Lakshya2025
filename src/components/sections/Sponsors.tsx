@@ -28,11 +28,7 @@ export const Sponsors = () => {
   );
 
   return (
-    <section
-      id="sponsors"
-      ref={containerRef}
-      className="relative min-h-[80vh] bg-black overflow-hidden py-20"
-    >
+    <section id="sponsors" ref={containerRef} className="section-wrapper">
       {/* Background Effects */}
       <motion.div
         className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
@@ -87,7 +83,7 @@ export const Sponsors = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-2xl md:text-3xl font-bold text-white mb-4"
+                  className="text-2xl md:text-3xl font-bold text-white mb-4 text-left"
                 >
                   {sponsorData.name}
                 </motion.h3>
@@ -95,7 +91,7 @@ export const Sponsors = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="text-white/70 mb-6 leading-relaxed"
+                  className="text-white/70 mb-6 leading-relaxed text-left"
                 >
                   {sponsorData.description}
                 </motion.p>
