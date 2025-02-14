@@ -287,11 +287,11 @@ export const Timeline = () => {
     <section
       ref={containerRef}
       id="timeline" // Added proper ID to match navbar link
-      className="relative min-h-screen bg-black overflow-hidden py-16"
+      className="section-wrapper" // Using the new shared class
     >
-      {/* Background effect */}
+      {/* Remove background div and simplify gradient */}
       <motion.div
-        className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
+        className="absolute inset-0 bg-gradient-radial from-transparent to-transparent"
         style={{
           opacity: useSpring(
             useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]),
@@ -300,9 +300,9 @@ export const Timeline = () => {
         }}
       />
 
-      {/* Updated z-index for section title */}
+      {/* Update sticky header to be more transparent */}
       <motion.div
-        className="sticky top-0 pt-16 pb-4 px-4 z-[60] bg-black/50 backdrop-blur-sm
+        className="sticky top-0 pt-16 pb-4 px-4 z-[60] backdrop-blur-sm
                    flex justify-center items-center w-full"
         style={{
           opacity: titleOpacity,
