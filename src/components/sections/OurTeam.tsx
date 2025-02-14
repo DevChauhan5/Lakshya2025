@@ -69,23 +69,23 @@ export const OurTeam = () => {
 
         <div className="flex flex-col gap-8 max-w-7xl mx-auto">
           {/* Advisory Row */}
-          <div className="flex justify-center">
-            <div className="w-full max-w-md h-[400px] bg-black/20 rounded-xl overflow-hidden">
+          <div className="grid grid-cols-1 gap-6">
+            <div className="w-full sm:w-[400px] h-[500px] mx-auto bg-black/20 rounded-xl overflow-hidden">
               <div className="relative w-full h-full group">
                 <Image
                   src="/images/team/avval.webp"
                   alt="Avval Yadav"
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, 400px"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                  <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent">
+                  <h3 className="text-3xl font-semibold mb-2 bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent">
                     Avval Yadav
                   </h3>
-                  <p className="text-sm text-white/80">Advisory Committee</p>
+                  <p className="text-md text-white/80">Advisory Committee</p>
                 </div>
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
