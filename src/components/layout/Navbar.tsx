@@ -113,21 +113,55 @@ export const Navbar = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.id);
+          } else {
+            // Clear active section if we're at the top of the page
+            if (window.scrollY < 100) {
+              setActiveSection("");
+            }
+            // If scrolling down and section is leaving viewport, check if any other section is in view
+            else if (
+              !entry.isIntersecting &&
+              entry.boundingClientRect.top < 0
+            ) {
+              const visibleSections = document.querySelectorAll(
+                navLinks.map((link) => link.href.slice(1)).join(",")
+              );
+              for (const section of visibleSections) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                  setActiveSection(section.id);
+                  break;
+                }
+              }
+            }
           }
         });
       },
       {
-        threshold: 0.2, // Reduced threshold for earlier detection
-        rootMargin: "-10% 0px -10% 0px", // Added margin to improve detection area
+        threshold: 0.2,
+        rootMargin: "-10% 0px -10% 0px",
       }
     );
 
+    // Observe all sections
     navLinks.forEach(({ href }) => {
       const element = document.querySelector(href);
       if (element) observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    // Additional scroll handler for top of page
+    const handleScroll = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Add new useEffect for handling body scroll
