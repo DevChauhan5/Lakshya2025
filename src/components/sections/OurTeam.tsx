@@ -52,6 +52,35 @@ const imageVariants = {
   },
 };
 
+const advisoryImageVariants = {
+  hidden: { scale: 1.2, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0, 1],
+    },
+  },
+  hover: {
+    scale: 1.1,
+    transition: { duration: 0.7, ease: [0.4, 0.0, 0.2, 1] },
+  },
+};
+
+const advisoryContentVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+      ease: [0.25, 0.1, 0, 1],
+    },
+  },
+};
+
 export const OurTeam = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -93,14 +122,17 @@ export const OurTeam = () => {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               variants={cardVariants}
               className="w-full sm:w-[400px] h-[440px] mx-auto bg-black/20 rounded-xl overflow-hidden"
             >
               <div className="relative w-full h-full group">
                 <motion.div
                   className="absolute inset-0"
-                  variants={imageVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={advisoryImageVariants}
                   whileHover="hover"
                 >
                   <Image
@@ -113,12 +145,18 @@ export const OurTeam = () => {
                   />
                 </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
-                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                <motion.div
+                  className="absolute inset-0 p-6 flex flex-col justify-end"
+                  variants={advisoryContentVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   <h3 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent">
                     Avval Yadav
                   </h3>
                   <p className="text-md text-white/80">Advisory Committee</p>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -145,7 +183,7 @@ export const OurTeam = () => {
                       src={member.image}
                       alt={member.name}
                       fill
-                      className="object-cover"
+                      className="object-cover object-top"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       priority={index < 2}
                     />
