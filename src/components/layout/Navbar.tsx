@@ -23,7 +23,7 @@ export const Navbar = () => {
   const router = useRouter();
 
   // Enhanced smooth animations with springs
-  const bgOpacity = useSpring(useTransform(scrollY, [0, 100], [0, 0.9]), {
+  const bgOpacity = useSpring(useTransform(scrollY, [0, 100], [0, 1]), {
     stiffness: 100,
     damping: 20,
   });
@@ -138,7 +138,11 @@ export const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        className="fixed top-0 left-0 right-0 z-[100]" // Removed backdrop-blur-md and bg-opacity styling
+        style={{
+          backgroundColor: `rgba(0, 0, 0, ${bgOpacity.get()})`,
+          backdropFilter: `blur(${bgOpacity.get() * 8}px)`,
+        }}
+        className="fixed top-0 left-0 right-0 z-[100] transition-colors duration-200"
       >
         <motion.div
           style={{ scale }}
