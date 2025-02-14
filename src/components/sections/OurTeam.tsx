@@ -61,56 +61,45 @@ export const OurTeam = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Centered Title */}
-        <div className="flex justify-center mb-16">
+        <div className="flex justify-center mb-12">
           <BlurFade>
             <SectionTitle title="Our Team" />
           </BlurFade>
         </div>
 
-        <div className="flex flex-col gap-12 max-w-7xl mx-auto">
-          {/* Advisory Card - Simplified without MagicCard */}
-          <div
-            className="relative w-full max-w-3xl mx-auto bg-black/40 backdrop-blur-sm 
-                         border border-white/10 rounded-xl overflow-hidden"
-          >
-            <div className="grid md:grid-cols-2 gap-6 p-6">
-              {/* Image Container */}
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg group">
+        <div className="flex flex-col gap-8 max-w-7xl mx-auto">
+          {/* Advisory Row */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-md h-[400px] bg-black/20 rounded-xl overflow-hidden">
+              <div className="relative w-full h-full group">
                 <Image
                   src="/images/team/avval.webp"
                   alt="Avval Yadav"
                   fill
-                  className="object-cover brightness-110 group-hover:scale-105
-                           transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-              </div>
-
-              {/* Text Content */}
-              <div className="flex flex-col justify-center">
-                <h2
-                  className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-theme-primary 
-                             via-theme-accent to-theme-secondary bg-clip-text text-transparent"
-                >
-                  Avval Yadav
-                </h2>
-                <p className="text-white/80">Advisory Committee</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
+                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                  <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent">
+                    Avval Yadav
+                  </h3>
+                  <p className="text-sm text-white/80">Advisory Committee</p>
+                </div>
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </div>
           </div>
 
-          {/* Simplified Core Committee Cards Grid */}
+          {/* Core Committee Row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {coreMembers.map((member, index) => (
               <div
                 key={member.name}
                 className="h-[400px] bg-black/20 rounded-xl overflow-hidden"
               >
-                {/* Simple Card Structure */}
                 <div className="relative w-full h-full group">
-                  {/* Image */}
                   <Image
                     src={member.image}
                     alt={member.name}
@@ -119,32 +108,26 @@ export const OurTeam = () => {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     priority={index < 2}
                   />
-
-                  {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
-
-                  {/* Content */}
                   <div className="absolute inset-0 p-6 flex flex-col justify-end">
                     <h3 className="text-xl font-semibold text-white mb-2">
                       {member.name}
                     </h3>
                     <p className="text-sm text-white/80">{member.role}</p>
                   </div>
-
-                  {/* Hover Effects */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Updated View All Button */}
-          <motion.div className="flex justify-center mt-8">
-            <RainbowButton onClick={() => setDialogOpen(true)}>
-              View All Committees
-            </RainbowButton>
-          </motion.div>
         </div>
+
+        {/* View All Button */}
+        <motion.div className="flex justify-center mt-8">
+          <RainbowButton onClick={() => setDialogOpen(true)}>
+            View All Committees
+          </RainbowButton>
+        </motion.div>
       </div>
 
       {/* Committee Dialog */}
