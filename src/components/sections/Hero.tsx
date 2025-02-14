@@ -121,7 +121,7 @@ const AnimatedTitle = () => {
 
 export const Hero = () => {
   return (
-    <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center bg-black overflow-hidden">
+    <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center overflow-hidden">
       <SpaceElements />
 
       <div className="relative w-full flex flex-col items-center justify-center gap-6 sm:gap-8">
