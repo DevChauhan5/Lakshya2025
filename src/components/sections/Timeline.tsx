@@ -44,10 +44,35 @@ const posters = [
     id: 5,
     title: "Day 5",
     date: "Feb 26, 2025",
-    image: "/images/timeline/4.jpg",
-    description: "Sunidhee Chauhan",
+    image: "/images/timeline/mystery.jpg", // You'll need to add this placeholder image
+    description: "Revealing Soon",
+    isMystery: true,
   },
 ];
+
+// Add new mystery card animations
+const mysteryVariants = {
+  pulse: {
+    scale: [1, 1.05, 1],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+  glow: {
+    boxShadow: [
+      "0 0 0 rgba(244,137,82,0)",
+      "0 0 20px rgba(244,137,82,0.5)",
+      "0 0 0 rgba(244,137,82,0)",
+    ],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+};
 
 const PosterCard = ({ poster, index, containerProgress }) => {
   const cardRef = useRef(null);
@@ -84,6 +109,73 @@ const PosterCard = ({ poster, index, containerProgress }) => {
   // Direction-based animations
   const isLeftCard = index % 2 === 0;
   const xOffset = isLeftCard ? -50 : 50;
+
+  if (poster.isMystery) {
+    return (
+      <motion.div
+        ref={cardRef}
+        initial={{ opacity: 0, x: xOffset }}
+        animate={
+          isInView
+            ? {
+                opacity: 1,
+                x: 0,
+                transition: {
+                  type: "spring",
+                  stiffness: 50,
+                  damping: 20,
+                  mass: 1,
+                },
+              }
+            : {}
+        }
+        style={{ scale, opacity }}
+        className="w-full aspect-[4/5] relative max-h-[70vh] md:col-span-2 md:w-1/2 md:mx-auto"
+      >
+        <motion.div
+          className="relative w-full h-full rounded-xl overflow-hidden 
+                     backdrop-blur-sm bg-black/40 border border-white/10"
+          variants={mysteryVariants}
+          animate={["pulse", "glow"]}
+        >
+          {/* Mystery Content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 bg-gradient-conic from-theme-primary via-theme-accent to-theme-secondary opacity-10"
+            />
+
+            <motion.span
+              className="text-6xl mb-4 font-bold"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              ?
+            </motion.span>
+
+            <motion.h3
+              className="text-2xl font-bold bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary 
+                         bg-clip-text text-transparent mb-2"
+            >
+              {poster.title}
+            </motion.h3>
+
+            <p className="text-white/90 mb-2">{poster.date}</p>
+
+            <motion.p
+              className="text-sm text-white/70"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Get ready for a surprise...
+            </motion.p>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
