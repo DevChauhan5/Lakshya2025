@@ -18,21 +18,24 @@ export const Preloader = () => {
   const [messageIndex, setMessageIndex] = useState(0);
 
   useEffect(() => {
-    // First GIF for 4 seconds
     const gif1Duration = 4000;
-    // Second GIF for 3.8 seconds
     const gif2Duration = 3500;
     const totalDuration = gif1Duration + gif2Duration;
+    const messageDelay = 1000; // 1 second between messages
 
     // Switch GIFs after first duration
     const gifTimer = setTimeout(() => {
       setCurrentGif(2);
     }, gif1Duration);
 
-    // Change messages every second
-    const messageInterval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % loadingMessages.length);
-    }, 1000);
+    // Change messages with delays until the last message
+    const messageTimers = loadingMessages.map((_, index) => {
+      if (index < loadingMessages.length) {
+        return setTimeout(() => {
+          setMessageIndex(index);
+        }, index * messageDelay);
+      }
+    });
 
     // Total loading time
     const loadingTimer = setTimeout(() => {
@@ -42,7 +45,7 @@ export const Preloader = () => {
     return () => {
       clearTimeout(gifTimer);
       clearTimeout(loadingTimer);
-      clearInterval(messageInterval);
+      messageTimers.forEach((timer) => timer && clearTimeout(timer));
     };
   }, []);
 
@@ -75,16 +78,26 @@ export const Preloader = () => {
           </motion.div>
 
           {/* Enhanced Loading Message */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2
-                     flex flex-col items-center gap-2"
-          >
+          <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
             <motion.div
               key={messageIndex}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+              animate={{
+                opacity:
+                  messageIndex === loadingMessages.length - 1 ? [1, 0.5, 1] : 1,
+                y: 0,
+              }}
+              transition={
+                messageIndex === loadingMessages.length - 1
+                  ? {
+                      opacity: {
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }
+                  : { duration: 0.5 }
+              }
               className="text-white/80 text-lg sm:text-xl font-medium tracking-wider
                        bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary
                        bg-clip-text text-transparent"
@@ -92,33 +105,35 @@ export const Preloader = () => {
               {loadingMessages[messageIndex]}
             </motion.div>
 
-            {/* Loading dots */}
-            <motion.div
-              animate={{
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="flex gap-1"
-            >
-              {[...Array(3)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{
-                    scale: [1, 1.2, 1],
-                  }}
-                  transition={{
-                    duration: 1,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                  }}
-                  className="w-2 h-2 rounded-full bg-theme-primary"
-                />
-              ))}
-            </motion.div>
+            {/* Loading dots - only show if not on last message */}
+            {messageIndex < loadingMessages.length - 1 && (
+              <motion.div
+                animate={{
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="flex gap-1"
+              >
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{
+                      scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      delay: i * 0.2,
+                    }}
+                    className="w-2 h-2 rounded-full bg-theme-primary"
+                  />
+                ))}
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
       )}
