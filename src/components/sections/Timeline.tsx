@@ -236,7 +236,7 @@ const PosterCard = ({ poster, index, containerProgress }) => {
 
         {/* Adjusted content padding and spacing */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10"
+          className="absolute bottom-0 left-4 right-0 p-4 sm:p-5 z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={
             isInView
@@ -258,7 +258,7 @@ const PosterCard = ({ poster, index, containerProgress }) => {
           <motion.p className="text-sm sm:text-base text-white/90 mb-1">
             {poster.date}
           </motion.p>
-          <motion.p className="text-xs sm:text-sm text-white/70 line-clamp-2">
+          <motion.p className="text-xs sm:text-sm text-theme-secondary line-clamp-2">
             {poster.description}
           </motion.p>
         </motion.div>
