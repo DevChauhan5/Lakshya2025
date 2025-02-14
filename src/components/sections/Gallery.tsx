@@ -16,6 +16,18 @@ const galleryImages = Array.from({ length: 9 }, (_, i) => ({
   isLandscape: i % 2 === 0,
 }));
 
+const imageHoverVariants = {
+  initial: { scale: 1, rotate: 0 },
+  hover: {
+    scale: 1.1,
+    rotate: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.1, 0, 1],
+    },
+  },
+};
+
 export const Gallery = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -62,49 +74,53 @@ export const Gallery = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, margin: "-10%" }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`relative group overflow-hidden rounded-xl 
-                         ${
-                           image.isLandscape ? "h-[300px]" : "h-[400px]"
-                         } w-full`}
+                className="relative overflow-hidden rounded-xl aspect-[4/5] w-full group"
               >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={image.width}
-                  height={image.height}
-                  className="object-cover transition-all duration-700 
-                         brightness-110 contrast-105 saturate-105
-                         group-hover:scale-110 group-hover:rotate-1"
-                  sizes="(max-width: 640px) 100vw, 
-                         (max-width: 1024px) 50vw, 
-                         33vw"
-                  quality={95}
-                  priority={index < 3}
-                  loading={index < 3 ? "eager" : "lazy"}
-                />
-
-                {/* Lighter overlay with reduced opacity */}
+                {/* Image Container with Hover Effect */}
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 bg-gradient-to-t 
-                           from-black/70 via-black/20 to-transparent/0
-                           backdrop-blur-[1px]"
+                  className="absolute inset-0"
+                  initial="initial"
+                  whileHover="hover"
+                  variants={imageHoverVariants}
                 >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    quality={95}
+                    priority={index < 3}
+                  />
+                </motion.div>
+
+                {/* Enhanced Overlay Container */}
+                <div className="absolute inset-0 group">
                   <div
-                    className="absolute bottom-4 left-4 right-4 transform translate-y-4 opacity-0 
-                                group-hover:translate-y-0 group-hover:opacity-100 
-                                transition-all duration-300"
+                    className="absolute inset-0 bg-gradient-to-t 
+                               from-black/80 via-black/20 to-transparent 
+                               opacity-0 group-hover:opacity-100
+                               transition-all duration-300 ease-out"
+                  />
+                  <div
+                    className="absolute inset-x-0 bottom-0 p-4
+                               transform translate-y-full group-hover:translate-y-0
+                               transition-all duration-300 ease-out"
                   >
-                    <h3 className="text-white text-lg font-medium truncate drop-shadow-lg">
+                    <h3
+                      className="text-white text-lg font-medium 
+                               truncate drop-shadow-lg mb-1"
+                    >
                       Lakshya&apos;24
                     </h3>
-                    <p className="text-white/90 text-sm drop-shadow-md">
+                    <p
+                      className="text-white/90 text-sm drop-shadow-md 
+                              line-clamp-2 overflow-hidden"
+                    >
                       Moments captured during the event
                     </p>
                   </div>
-                </motion.div>
+                </div>
               </motion.div>
             </BlurFade>
           ))}
