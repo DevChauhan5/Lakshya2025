@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 
-const sportsEvents = Array.from({ length: 44 }, (_, i) => ({
+const sportsEvents = Array.from({ length: 46 }, (_, i) => ({
   id: i + 1,
 }));
 

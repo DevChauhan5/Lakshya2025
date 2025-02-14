@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 
-const edufunEvents = Array.from({ length: 30 }, (_, i) => ({
+const edufunEvents = Array.from({ length: 31 }, (_, i) => ({
   id: i + 1,
 }));
 
