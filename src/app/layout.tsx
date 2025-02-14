@@ -1,5 +1,6 @@
 import { AppWrapper } from "@/components/AppWrapper";
 import { Navbar } from "@/components/layout/Navbar";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
 import type { Metadata } from "next";
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${kanit.className}   antialiased`}
+        className={`${kanit.className} antialiased`}
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -37,16 +38,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <LoadingProvider> */}
           <SmoothScrollProvider>
-            {/* <PreLoader /> */}
             <AppWrapper>
               <Navbar />
               {children}
               <Footer />
+              <ScrollToTop />
             </AppWrapper>
           </SmoothScrollProvider>
-          {/* </LoadingProvider> */}
         </ThemeProvider>
       </body>
     </html>
