@@ -8,8 +8,9 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import { Footer } from "../components/layout/Footer";
 
-import "./globals.css";
 import { Preloader } from "@/components/PreLoader";
+import "./globals.css";
+import { AnimationWrapper } from "@/components/AnimationWrapper";
 
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
@@ -32,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${kanit.className} antialiased`}
+        className={`${kanit.className} antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -44,11 +45,13 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <AppWrapper>
               <Preloader />
-              <Background />
-              <Navbar />
-              {children}
-              <Footer />
-              <ScrollToTop />
+              <AnimationWrapper>
+                <Background />
+                <Navbar />
+                {children}
+                <Footer />
+                <ScrollToTop />
+              </AnimationWrapper>
             </AppWrapper>
           </SmoothScrollProvider>
         </ThemeProvider>
