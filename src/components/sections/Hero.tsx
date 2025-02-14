@@ -205,7 +205,7 @@ const AnimatedTitle = () => {
           className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl 
                     tracking-wide font-medium px-2 relative uppercase text-center
                     bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 
-                    bg-clip-text text-transparent mt-4 sm:mt-4"
+                    bg-clip-text text-transparent mt-6 sm:mt-4"
         >
           Euphoria: Orbit of Wonder
         </motion.div>

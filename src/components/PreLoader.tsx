@@ -20,7 +20,7 @@ export const Preloader = () => {
 
   useEffect(() => {
     const gif1Duration = 4000;
-    const gif2Duration = 4100;
+    const gif2Duration = 5000;
     const totalDuration = gif1Duration + gif2Duration;
     const messageDelay = 1000;
 
