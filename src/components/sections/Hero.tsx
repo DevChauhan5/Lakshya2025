@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
 import localFont from "next/font/local";
 import { useRef, useEffect, useState } from "react";
 import { Meteors } from "../magicui/meteors";
@@ -28,26 +29,28 @@ const SpaceElements = () => {
 
   return (
     <>
-      <div className="absolute inset-0 bg-black" />
-      {!isMobile && (
-        <>
-          <Particles
-            className="absolute inset-0"
-            quantity={160}
-            staticity={30}
-            size={0.4}
-            color="#ffce6b"
-          />
-          <div className="absolute inset-0">
-            <Meteors
-              number={6}
-              className="!bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 
-                        before:!bg-gradient-to-r before:!from-yellow-400 before:!via-red-500 before:!to-transparent"
-            />
-          </div>
-          <Rings />
-        </>
-      )}
+      {/* Replace stars with background image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/bg.webp"
+          alt="Space Background"
+          fill
+          className="object-cover object-center"
+          priority
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+      </div>
+
+      <div className="absolute inset-0">
+        <Meteors
+          number={6}
+          className="!bg-gradient-to-br from-yellow-400 via-red-500 to-purple-700 
+                    before:!bg-gradient-to-r before:!from-yellow-400 before:!via-red-500 before:!to-transparent"
+        />
+      </div>
+      <Rings />
+
       {isMobile && (
         <div className="absolute inset-0 bg-gradient-to-b from-black via-theme-dark/5 to-black" />
       )}

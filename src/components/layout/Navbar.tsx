@@ -138,8 +138,7 @@ export const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        style={{ backgroundColor: `rgba(0, 0, 0, ${bgOpacity.get()})` }}
-        className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-md"
+        className="fixed top-0 left-0 right-0 z-[100]" // Removed backdrop-blur-md and bg-opacity styling
       >
         <motion.div
           style={{ scale }}
