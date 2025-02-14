@@ -29,19 +29,6 @@ const SpaceElements = () => {
 
   return (
     <>
-      {/* Replace stars with background image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/bg.webp"
-          alt="Space Background"
-          fill
-          className="object-cover object-center"
-          priority
-          quality={90}
-        />
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
-      </div>
-
       <div className="absolute inset-0">
         <Meteors
           number={6}

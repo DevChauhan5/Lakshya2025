@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import { Footer } from "../components/layout/Footer";
 import "./globals.css";
+import { Background } from "@/components/layout/Background";
 
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
@@ -40,6 +41,7 @@ export default function RootLayout({
         >
           <SmoothScrollProvider>
             <AppWrapper>
+              <Background />
               <Navbar />
               {children}
               <Footer />
