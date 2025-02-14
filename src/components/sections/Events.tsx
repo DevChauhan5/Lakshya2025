@@ -120,73 +120,57 @@ const EventCard = ({ category, index }) => {
           transition: { duration: 0.3, ease: [0.23, 1, 0.32, 1] },
         }}
       >
-        {/* Optimized image container */}
-        <motion.div className="absolute inset-0">
+        {/* Image Container */}
+        <div className="absolute inset-0">
           <Image
             src={category.image}
             alt={category.title}
             fill
-            className="object-cover will-change-transform
-                     scale-[1.01] group-hover:scale-110 
-                     transition-transform duration-700 ease-out"
+            className="object-cover transition-all duration-700 
+                     group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={index < 2}
           />
-        </motion.div>
+        </div>
 
-        {/* Enhanced overlay with blur */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-b 
-                     from-black/20 via-black/50 to-black/90
-                     opacity-60 group-hover:opacity-90
-                     transition-opacity duration-500"
-        />
-
-        {/* Optimized content container */}
-        <motion.div
-          className="absolute inset-0 p-4 flex flex-col justify-end
-                     translate-y-2 group-hover:translate-y-0
-                     transition-transform duration-500 ease-out"
+        {/* Hover Overlay */}
+        <div
+          className="absolute inset-0 transition-all duration-500
+                     bg-gradient-to-b from-black/0 via-black/0 to-black/0
+                     group-hover:from-black/60 group-hover:via-black/60 group-hover:to-black/90"
         >
-          <motion.h3
-            className="text-xl font-bold text-white mb-2
-                       translate-y-4 group-hover:translate-y-0 
-                       transition-transform duration-500 ease-out"
-          >
-            {category.title}
-          </motion.h3>
-
-          <motion.p
-            className="text-sm text-white/80 line-clamp-2
-                       translate-y-4 opacity-0
+          <div className="absolute inset-0 p-6 flex flex-col justify-end">
+            {/* Title */}
+            <motion.h3
+              className="text-2xl font-bold text-white mb-3
+                       translate-y-8 opacity-0
                        group-hover:translate-y-0 group-hover:opacity-100
-                       transition-all duration-500 delay-[50ms] ease-out"
-          >
-            {category.description}
-          </motion.p>
-
-          <motion.button
-            className="self-start mt-3 px-4 py-1.5 rounded-full
-                     bg-white/10 backdrop-blur-sm
-                     border border-white/20 text-white/90
-                     translate-y-4 opacity-0 
-                     group-hover:translate-y-0 group-hover:opacity-100
-                     hover:bg-white/20 hover:border-white/40
-                     transition-all duration-500 delay-[100ms] ease-out
-                     text-sm flex items-center gap-2"
-            whileHover={{ x: 5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span>Explore Events</span>
-            <motion.span
-              initial={{ x: 0 }}
-              whileHover={{ x: 3 }}
-              transition={{ duration: 0.3 }}
+                       transition-all duration-500 ease-out"
             >
-              →
-            </motion.span>
-          </motion.button>
-        </motion.div>
+              {category.title}
+            </motion.h3>
+
+            {/* View Events Button */}
+            <motion.button
+              className="self-start px-4 py-2 rounded-full
+                       bg-white/10 backdrop-blur-sm
+                       border border-white/20 text-white
+                       translate-y-8 opacity-0
+                       group-hover:translate-y-0 group-hover:opacity-100
+                       hover:bg-white/20 transition-all duration-500 ease-out
+                       text-sm flex items-center gap-2"
+              style={{ transitionDelay: "100ms" }}
+            >
+              <span>View All Events</span>
+              <span
+                className="transform transition-transform duration-300 
+                           group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </motion.button>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );
