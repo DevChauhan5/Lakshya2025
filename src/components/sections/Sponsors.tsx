@@ -64,7 +64,7 @@ export const Sponsors = () => {
               }}
             >
               <div
-                className="relative backdrop-blur-sm bg-white/5 rounded-2xl p-8 md:p-12
+                className="relative backdrop-blur-sm bg-white/5 rounded-2xl p-6 md:p-8 
                             border border-white/10 overflow-hidden group"
               >
                 {/* Background Gradient */}
@@ -78,10 +78,10 @@ export const Sponsors = () => {
                 </div>
 
                 {/* Content Grid */}
-                <div className="relative grid md:grid-cols-2 gap-8 items-center">
+                <div className="relative grid md:grid-cols-[300px,1fr] gap-4 md:gap-6 items-center">
                   {/* Logo Container */}
                   <motion.div
-                    className="relative aspect-square w-full max-w-[300px] mx-auto md:mx-0"
+                    className="relative aspect-square w-full max-w-[260px] mx-auto md:mx-0"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.4 }}
                   >
@@ -91,19 +91,19 @@ export const Sponsors = () => {
                       alt={sponsor.name}
                       fill
                       className="object-contain p-6"
-                      sizes="(max-width: 768px) 80vw, 40vw"
+                      sizes="(max-width: 768px) 80vw, 300px"
                       priority={index === 0}
                       quality={90}
                     />
                   </motion.div>
 
                   {/* Text Content */}
-                  <div className="text-center md:text-left">
+                  <div className="text-center md:text-left md:pl-2">
                     <motion.h3
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.2 }}
-                      className="text-2xl md:text-3xl font-bold text-white mb-4 text-left"
+                      className="text-2xl md:text-3xl font-bold text-white mb-3 text-left"
                     >
                       {sponsor.name}
                     </motion.h3>
@@ -111,7 +111,7 @@ export const Sponsors = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.3 }}
-                      className="text-white/70 mb-6 leading-relaxed text-left"
+                      className="text-white/70 leading-relaxed text-left"
                     >
                       {sponsor.description}
                     </motion.p>
