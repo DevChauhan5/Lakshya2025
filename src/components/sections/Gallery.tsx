@@ -4,7 +4,7 @@ import { BlurFade } from "@/components/magicui/blur-fade";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react"; // Add useState
 
 // Define proper image dimensions and loading metadata
 const galleryImages = Array.from({ length: 9 }, (_, i) => ({
@@ -16,6 +16,7 @@ const galleryImages = Array.from({ length: 9 }, (_, i) => ({
   isLandscape: i % 2 === 0,
 }));
 
+// Updated image variants with blur transition
 const imageHoverVariants = {
   initial: { scale: 1, rotate: 0 },
   hover: {
@@ -30,6 +31,10 @@ const imageHoverVariants = {
 
 export const Gallery = () => {
   const containerRef = useRef(null);
+  const [imagesLoaded, setImagesLoaded] = useState<{ [key: number]: boolean }>(
+    {}
+  ); // Track loaded state for each image
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -70,11 +75,12 @@ export const Gallery = () => {
               inView
             >
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, margin: "-10%" }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative overflow-hidden rounded-lg aspect-[3/4] w-full group"
+                initial={{ filter: "blur(10px)" }}
+                animate={{
+                  filter: imagesLoaded[index] ? "blur(0px)" : "blur(10px)",
+                }}
+                transition={{ duration: 0.5 }}
+                className="relative overflow-hidden rounded-lg aspect-[3/4] w-full group bg-white/5"
               >
                 {/* Image Container with Hover Effect */}
                 <motion.div
@@ -87,10 +93,25 @@ export const Gallery = () => {
                     src={image.src}
                     alt={image.alt}
                     fill
-                    className="object-cover"
+                    className={`object-cover transition-all duration-500 ${
+                      imagesLoaded[index] ? "opacity-100" : "opacity-0"
+                    }`}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     quality={90}
-                    priority={index < 3}
+                    priority={index < 6} // Prioritize first 6 images
+                    onLoadingComplete={() => {
+                      setImagesLoaded((prev) => ({
+                        ...prev,
+                        [index]: true,
+                      }));
+                    }}
+                  />
+
+                  {/* Placeholder/Loading State */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br from-theme-primary/10 to-theme-accent/5 transition-opacity duration-500 ${
+                      imagesLoaded[index] ? "opacity-0" : "opacity-100"
+                    }`}
                   />
                 </motion.div>
 
@@ -109,7 +130,7 @@ export const Gallery = () => {
                     <h3 className="text-white text-base font-medium truncate drop-shadow-lg">
                       Lakshya&apos;24
                     </h3>
-                    <p className="text-white/90 text-xs drop-shadow-md line-clamp-2 overflow-hidden">
+                    <p className="text-white/90 text-xs drop-shadow-md line-clamp-2">
                       Moments captured during the event
                     </p>
                   </div>
