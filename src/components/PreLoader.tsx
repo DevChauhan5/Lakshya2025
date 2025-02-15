@@ -81,23 +81,27 @@ export const Preloader = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="absolute inset-0"
+              className="absolute inset-0 w-full h-full"
             >
               <motion.div
                 variants={exitVariants}
                 initial="initial"
                 animate={exitAnimation ? "exit" : "initial"}
-                className="w-full h-full"
+                className="relative w-full h-full" // Added relative positioning
               >
-                <Image
-                  src={`/gifs/${currentGif}.webp`}
-                  alt="Loading..."
-                  fill
-                  priority
-                  sizes="100vw"
-                  className="object-cover"
-                  style={{ objectPosition: "center" }}
-                />
+                <div className="relative w-full h-full">
+                  {" "}
+                  {/* Added container with relative position */}
+                  <Image
+                    src={`/gifs/${currentGif}.webp`}
+                    alt="Loading..."
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover"
+                    style={{ objectPosition: "center" }}
+                  />
+                </div>
               </motion.div>
             </motion.div>
           </AnimatePresence>
