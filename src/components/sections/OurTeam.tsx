@@ -156,6 +156,19 @@ const memberVariants = {
   },
 };
 
+// Add this new variant for primary committees
+const primaryCardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.25, 0.1, 0, 1],
+    },
+  },
+};
+
 export const OurTeam = () => {
   return (
     <section id="team" className="section-wrapper">
@@ -168,6 +181,106 @@ export const OurTeam = () => {
           </BlurFade>
         </div>
 
+        {/* Primary Committees Section */}
+        <div className="mb-12 space-y-6">
+          {/* Advisory Committee - Centered */}
+          {committeeData
+            .filter((committee) => committee.committee === "Advisory Committee")
+            .map((committee) => (
+              <motion.div
+                key={committee.committee}
+                variants={primaryCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="max-w-md mx-auto relative group p-8 rounded-xl
+                  bg-gradient-to-br from-theme-primary/20 to-theme-accent/20
+                  backdrop-blur-sm border-2 border-white/20
+                  hover:border-white/30 transition-all duration-300"
+              >
+                <div className="relative z-10 text-center">
+                  <h3
+                    className="text-2xl font-bold mb-4 text-transparent bg-clip-text 
+                    bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary"
+                  >
+                    {committee.committee}
+                  </h3>
+                  <motion.div
+                    variants={containerVariants}
+                    className="flex justify-center"
+                  >
+                    {committee.members.map((member) => (
+                      <motion.div
+                        key={member}
+                        variants={memberVariants}
+                        className="flex items-center gap-2"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-theme-accent" />
+                        <span className="text-lg text-white/90 hover:text-white transition-colors">
+                          {member}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+                <div
+                  className="absolute inset-0 rounded-xl bg-white/5 opacity-0 
+                  group-hover:opacity-100 transition-opacity duration-300"
+                />
+              </motion.div>
+            ))}
+
+          {/* Executive Core Committee - Full Width */}
+          {committeeData
+            .filter(
+              (committee) => committee.committee === "Executive Core Committee"
+            )
+            .map((committee) => (
+              <motion.div
+                key={committee.committee}
+                variants={primaryCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="relative group p-8 rounded-xl
+                  bg-gradient-to-br from-theme-primary/15 to-theme-accent/15
+                  backdrop-blur-sm border-2 border-white/15
+                  hover:border-white/25 transition-all duration-300"
+              >
+                <div className="relative z-10">
+                  <h3
+                    className="text-2xl font-bold mb-6 text-center text-transparent 
+                    bg-clip-text bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary"
+                  >
+                    {committee.committee}
+                  </h3>
+                  <motion.div
+                    variants={containerVariants}
+                    className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center"
+                  >
+                    {committee.members.map((member) => (
+                      <motion.div
+                        key={member}
+                        variants={memberVariants}
+                        className="flex items-center gap-2"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-theme-accent" />
+                        <span className="text-lg text-white/90 hover:text-white transition-colors">
+                          {member}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+                <div
+                  className="absolute inset-0 rounded-xl bg-white/5 opacity-0 
+                  group-hover:opacity-100 transition-opacity duration-300"
+                />
+              </motion.div>
+            ))}
+        </div>
+
+        {/* Regular Committees Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -175,61 +288,44 @@ export const OurTeam = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
         >
-          {committeeData.map((committee, index) => (
-            <motion.div
-              key={committee.committee}
-              variants={itemVariants}
-              className={`
-                relative group p-6 rounded-xl
-                ${
-                  committee.isPrimary
-                    ? "bg-gradient-to-br from-theme-primary/10 to-theme-accent/10"
-                    : "bg-white/5"
-                }
-                backdrop-blur-sm border border-white/10
-                hover:border-white/20 transition-all duration-300
-                ${committee.isPrimary ? "md:col-span-2 lg:col-span-3" : ""}
-              `}
-            >
-              <div className="relative z-10">
-                <h3
-                  className={`text-xl font-bold mb-4 
-                    ${
-                      committee.isPrimary
-                        ? "text-transparent bg-clip-text bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary"
-                        : "text-theme-primary"
-                    }`}
-                >
-                  {committee.committee}
-                </h3>
-                <motion.div
-                  variants={containerVariants}
-                  className={`grid gap-2
-                    ${
-                      committee.isPrimary
-                        ? "grid-cols-2 md:grid-cols-4"
-                        : "grid-cols-1"
-                    }`}
-                >
-                  {committee.members.map((member) => (
-                    <motion.div
-                      key={member}
-                      variants={memberVariants}
-                      className="flex items-center gap-2"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-theme-accent/50" />
-                      <span className="text-white/80 hover:text-white transition-colors">
-                        {member}
-                      </span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-
-              {/* Hover effect */}
-              <div className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </motion.div>
-          ))}
+          {committeeData
+            .filter((committee) => !committee.isPrimary)
+            .map((committee) => (
+              <motion.div
+                key={committee.committee}
+                variants={itemVariants}
+                className="relative group p-6 rounded-xl bg-white/5
+                  backdrop-blur-sm border border-white/10
+                  hover:border-white/20 transition-all duration-300"
+              >
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold mb-4 text-theme-primary">
+                    {committee.committee}
+                  </h3>
+                  <motion.div
+                    variants={containerVariants}
+                    className="grid gap-2 grid-cols-1"
+                  >
+                    {committee.members.map((member) => (
+                      <motion.div
+                        key={member}
+                        variants={memberVariants}
+                        className="flex items-center gap-2"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-theme-accent/50" />
+                        <span className="text-white/80 hover:text-white transition-colors">
+                          {member}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+                <div
+                  className="absolute inset-0 rounded-xl bg-white/5 opacity-0 
+                  group-hover:opacity-100 transition-opacity duration-300"
+                />
+              </motion.div>
+            ))}
         </motion.div>
       </div>
     </section>
