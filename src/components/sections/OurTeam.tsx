@@ -242,30 +242,35 @@ export const OurTeam = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="relative group p-8 rounded-xl
+                className="relative group p-4 sm:p-6 lg:p-8 rounded-xl
                   bg-gradient-to-br from-theme-primary/15 to-theme-accent/15
                   backdrop-blur-sm border-2 border-white/15
                   hover:border-white/25 transition-all duration-300"
               >
                 <div className="relative z-10">
                   <h3
-                    className="text-2xl font-bold mb-6 text-center text-transparent 
+                    className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-transparent 
                     bg-clip-text bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary"
                   >
                     {committee.committee}
                   </h3>
                   <motion.div
                     variants={containerVariants}
-                    className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center"
+                    className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 
+                    justify-items-start sm:justify-items-center max-w-4xl mx-auto"
                   >
                     {committee.members.map((member) => (
                       <motion.div
                         key={member}
                         variants={memberVariants}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 w-full px-2 py-1.5
+                        hover:bg-white/5 rounded-lg transition-colors"
                       >
-                        <span className="w-2 h-2 rounded-full bg-theme-accent" />
-                        <span className="text-lg text-white/90 hover:text-white transition-colors">
+                        <span className="w-2 h-2 flex-shrink-0 rounded-full bg-theme-accent" />
+                        <span
+                          className="text-base sm:text-lg text-white/90 hover:text-white 
+                        transition-colors truncate"
+                        >
                           {member}
                         </span>
                       </motion.div>
