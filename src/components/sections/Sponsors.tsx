@@ -70,22 +70,29 @@ export const Sponsors = () => {
                 {/* Background Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-theme-primary/5 to-transparent" />
 
-                {/* Sponsor Type Badge */}
-                <div className="absolute top-4 right-4 bg-theme-primary/10 px-4 py-1.5 rounded-full">
-                  <span className="text-theme-primary text-sm font-medium">
+                {/* Updated Sponsor Type Badge - Improved mobile visibility */}
+                <div
+                  className="absolute top-4 right-4 z-10 bg-black/40 backdrop-blur-sm 
+                              px-3 py-1.5 sm:px-4 sm:py-1.5 rounded-full 
+                              border border-theme-primary/20"
+                >
+                  <span
+                    className="text-theme-primary text-xs sm:text-sm font-medium 
+                                 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                  >
                     {sponsor.type}
                   </span>
                 </div>
 
-                {/* Content Grid */}
-                <div className="relative grid md:grid-cols-[300px,1fr] gap-4 md:gap-6 items-center">
+                {/* Content Grid - Added more spacing on mobile */}
+                <div className="relative grid md:grid-cols-[300px,1fr] gap-6 md:gap-6 items-center pt-4">
                   {/* Logo Container */}
                   <motion.div
                     className="relative aspect-square w-full max-w-[260px] mx-auto md:mx-0"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.4 }}
                   >
-                    <div className="absolute inset-0 bg-white/80 rounded-xl" />
+                    <div className="absolute inset-0 bg-white rounded-xl" />
                     <Image
                       src={sponsor.logo}
                       alt={sponsor.name}
