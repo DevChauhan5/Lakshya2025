@@ -1,212 +1,237 @@
 "use client";
 
 import { BlurFade } from "@/components/magicui/blur-fade";
-import { RainbowButton } from "@/components/magicui/rainbow-button";
 import { SectionTitle } from "@/components/ui/SectionTitle";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import Image from "next/image";
-import { useRef, useState } from "react";
-import { CommitteeDialog } from "./CommitteeDialog";
+import { motion } from "framer-motion";
 
-// Updated core members data with corrected image paths and dimensions
-const coreMembers = [
+const committeeData = [
   {
-    name: "Pranav Lata",
-    role: "Executive Core Committee",
-    image: "/images/team/68.webp",
+    committee: "Advisory Committee",
+    members: ["Avval Yadav"],
+    isPrimary: true,
   },
   {
-    name: "Jagrati Kumawat",
-    role: "Executive Core Committee",
-    image: "/images/team/69.webp",
+    committee: "Executive Core Committee",
+    members: [
+      "Pranav Lata",
+      "Jagrati Kumawat",
+      "Ashutosh Yadav",
+      "Kanishk Gupta",
+    ],
+    isPrimary: true,
   },
   {
-    name: "Ashutosh Yadav",
-    role: "Executive Core Committee",
-    image: "/images/team/70.webp",
+    committee: "Sponsorship & Vendorship",
+    members: [
+      "Shourya Mehra",
+      "Vanshaj Pradhan",
+      "Aman Krishna",
+      "Riddhi Khunteta",
+      "Somya Yadav",
+    ],
   },
   {
-    name: "Kanishk Gupta",
-    role: "Executive Core Committee",
-    image: "/images/team/71.webp",
+    committee: "Media & Promotion",
+    members: [
+      "Qamar Raza",
+      "Krish Kumawat",
+      "Mouli Pandey",
+      "Vartika Yadav",
+      "Yuvraj Singh",
+      "Kapil Saini",
+      "Divyansh Dudhani",
+    ],
+  },
+  {
+    committee: "Creative Design",
+    members: [
+      "Navya Bhatt",
+      "Kanishk Purohit",
+      "Arifa Khan",
+      "Vaibhav Vashishtha",
+      "Sakshi Singh",
+      "Sani Jain",
+      "Yug Pathak",
+    ],
+  },
+  {
+    committee: "Documentation",
+    members: ["Bhuwan Chhabra", "Bhelitriveda", "Agni Goswami"],
+  },
+  {
+    committee: "Logistics",
+    members: ["Anirudh Sharma", "Aditya Raj Singh Tanwar", "Saksham Verma"],
+  },
+  {
+    committee: "Technical",
+    members: ["Abhay Parmar", "Tushar Jangid"],
+  },
+  {
+    committee: "Stage Operations",
+    members: ["Pulkit Jain", "Tisha Oberoi", "Uma Todi"],
+  },
+  {
+    committee: "Marketing & Branding",
+    members: ["Karan Singh", "Mayank Khatri"],
+  },
+  {
+    committee: "Anchoring",
+    members: ["Akshara Choudhary", "Nikhil Indoria"],
+  },
+  {
+    committee: "Food & Accommodation",
+    members: ["Dhriti Arora", "Uttkarsh Singh"],
+  },
+  {
+    committee: "Cultural",
+    members: [
+      "Sharma Aryan Dinesh",
+      "Thrishanth Kumar S.",
+      "Lavya Lalwani",
+      "Sparsh Goyal",
+      "Alpita Singh",
+      "Suhani Agarwal",
+    ],
+  },
+  {
+    committee: "Edufun",
+    members: [
+      "Suhani Sharma",
+      "Vishesh Panwar",
+      "Lekhanshi Jhedu",
+      "Farhaan Mansoori",
+      "Yuvraj Singh Chouhan",
+      "Jahanvi Sharma",
+      "Kangna Kriplani",
+      "Amrita Soni",
+    ],
+  },
+  {
+    committee: "Sports",
+    members: [
+      "Prayag Vyas",
+      "Raman Singh",
+      "Pranjal Yadav",
+      "Bhavesh Khandelwal",
+      "Devansu Singh",
+      "Rishabh Tater",
+    ],
+  },
+  {
+    committee: "E-Sports",
+    members: ["Lakshya Tikkiwal", "Garv Verma"],
   },
 ];
 
-const cardVariants = {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1,
       duration: 0.5,
-      ease: [0.4, 0.0, 0.2, 1],
-    },
-  }),
-};
-
-const imageVariants = {
-  hover: {
-    scale: 1.1,
-    transition: { duration: 0.7, ease: [0.4, 0.0, 0.2, 1] },
-  },
-};
-
-const advisoryImageVariants = {
-  hidden: { scale: 1.2, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 0.1, 0, 1],
+      ease: "easeOut",
     },
   },
-  hover: {
-    scale: 1.1,
-    transition: { duration: 0.7, ease: [0.4, 0.0, 0.2, 1] },
-  },
 };
 
-const advisoryContentVariants = {
-  hidden: { y: 20, opacity: 0 },
+const memberVariants = {
+  hidden: { opacity: 0, x: -10 },
   visible: {
-    y: 0,
     opacity: 1,
+    x: 0,
     transition: {
-      delay: 0.3,
-      duration: 0.8,
-      ease: [0.25, 0.1, 0, 1],
+      duration: 0.3,
     },
   },
 };
 
 export const OurTeam = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.2], [0, 1]), {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   return (
-    <section ref={containerRef} id="team" className="section-wrapper">
-      {/* Background Effects */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black"
-        style={{ opacity }}
-      />
+    <section id="team" className="section-wrapper">
+      <div className="absolute inset-0 bg-gradient-radial from-theme-dark/20 via-black to-black" />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Centered Title */}
         <div className="flex justify-center mb-12">
           <BlurFade>
             <SectionTitle title="Our Team" />
           </BlurFade>
         </div>
 
-        <div className="flex flex-col gap-8 max-w-7xl mx-auto">
-          {/* Advisory Row */}
-          <div className="grid grid-cols-1 gap-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
+        >
+          {committeeData.map((committee, index) => (
             <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={cardVariants}
-              className="w-full sm:w-[400px] h-[440px] mx-auto bg-black/20 rounded-xl overflow-hidden"
+              key={committee.committee}
+              variants={itemVariants}
+              className={`
+                relative group p-6 rounded-xl
+                ${
+                  committee.isPrimary
+                    ? "bg-gradient-to-br from-theme-primary/10 to-theme-accent/10"
+                    : "bg-white/5"
+                }
+                backdrop-blur-sm border border-white/10
+                hover:border-white/20 transition-all duration-300
+                ${committee.isPrimary ? "md:col-span-2 lg:col-span-3" : ""}
+              `}
             >
-              <div className="relative w-full h-full group">
-                <motion.div
-                  className="absolute inset-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={advisoryImageVariants}
-                  whileHover="hover"
+              <div className="relative z-10">
+                <h3
+                  className={`text-xl font-bold mb-4 
+                    ${
+                      committee.isPrimary
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary"
+                        : "text-theme-primary"
+                    }`}
                 >
-                  <Image
-                    src="/images/team/avval.webp"
-                    alt="Avval Yadav"
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    priority
-                  />
-                </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
+                  {committee.committee}
+                </h3>
                 <motion.div
-                  className="absolute inset-0 p-6 flex flex-col justify-end"
-                  variants={advisoryContentVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
+                  variants={containerVariants}
+                  className={`grid gap-2
+                    ${
+                      committee.isPrimary
+                        ? "grid-cols-2 md:grid-cols-4"
+                        : "grid-cols-1"
+                    }`}
                 >
-                  <h3 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-theme-primary via-theme-accent to-theme-secondary bg-clip-text text-transparent">
-                    Avval Yadav
-                  </h3>
-                  <p className="text-md text-white/80">Advisory Committee</p>
+                  {committee.members.map((member) => (
+                    <motion.div
+                      key={member}
+                      variants={memberVariants}
+                      className="flex items-center gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-theme-accent/50" />
+                      <span className="text-white/80 hover:text-white transition-colors">
+                        {member}
+                      </span>
+                    </motion.div>
+                  ))}
                 </motion.div>
               </div>
+
+              {/* Hover effect */}
+              <div className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
-          </div>
-
-          {/* Core Committee Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {coreMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={index + 1}
-                variants={cardVariants}
-                className="h-[400px] bg-black/20 rounded-xl overflow-hidden"
-              >
-                <div className="relative w-full h-full group">
-                  <motion.div
-                    className="absolute inset-0"
-                    variants={imageVariants}
-                    whileHover="hover"
-                  >
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="object-cover object-top"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      priority={index < 2}
-                    />
-                  </motion.div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
-                  <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                    <h3 className="text-xl font-semibold text-white mb-2">
-                      {member.name}
-                    </h3>
-                    <p className="text-sm text-white/80">{member.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* View All Button */}
-        <motion.div className="flex justify-center mt-8">
-          <RainbowButton onClick={() => setDialogOpen(true)}>
-            View All Committees
-          </RainbowButton>
+          ))}
         </motion.div>
       </div>
-
-      {/* Committee Dialog */}
-      <CommitteeDialog open={dialogOpen} onOpenChange={setDialogOpen} />
     </section>
   );
 };
