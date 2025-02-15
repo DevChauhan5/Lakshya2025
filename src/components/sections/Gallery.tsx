@@ -54,7 +54,7 @@ export const Gallery = () => {
     <section
       ref={containerRef}
       id="gallery"
-      className="section-wrapper relative" // Added relative positioning
+      className="w-full min-h-screen  py-16 px-3 sm:px-4 md:px-6"
     >
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-center mb-12">
@@ -99,8 +99,7 @@ export const Gallery = () => {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     quality={90}
                     priority={index < 6} // Prioritize first 6 images
-                    onLoad={() => {
-                      // Changed from onLoadingComplete to onLoad
+                    onLoadingComplete={() => {
                       setImagesLoaded((prev) => ({
                         ...prev,
                         [index]: true,
