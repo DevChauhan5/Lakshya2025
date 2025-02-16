@@ -10,15 +10,21 @@ import { useRef } from "react";
 const sponsorsData = [
   {
     name: "Quick Smart wash",
-    type: "Sponsor",
+    type: "Associate Sponsor",
     description: `Established in 2013, Quick Smart Wash Private Limited (QSW) revolutionized the laundry industry in India with its professional linen management and laundry services.
 Operating from Jaipur, Rajasthan, QSW introduced the concept of 'Campus Laundromats' nationwide, offering eco-friendly cleaning through smart card-driven laundries and state-of-the-art technology`,
     logo: "/images/sponsors/1.webp",
   },
   {
-    name: "Red Bull",
-    type: "Energy Partner",
-    description: `Red Bull is a dynamic and innovative energy partner, fueling athletes and adventurers worldwide with its premium energy drinks. Known for its iconic blend of caffeine, taurine, and B-vitamins, Red Bull enhances focus and performance. Their commitment to pushing boundaries aligns with our drive for excellence and ambition. With Red Bull, we're powered for success, bringing energy to every challenge. Together, we elevate the spirit of adventure and achievement.`,
+    name: "College Brand Connect",
+    type: "Brand Partner",
+    description: `College Brand Connect is a tech platform that bridges colleges and brands for impactful collaborations. We help colleges secure sponsorships to elevate their festivals while enabling brands to engage with students effectively. Our strategic approach ensures brands become part of students' most cherished moments. By enhancing festival experiences and boosting brand visibility, we create meaningful connections. Join us in shaping the future of student and brand partnerships!`,
+    logo: "/images/sponsors/3.webp",
+  },
+  {
+    name: "Smart & Handsome",
+    type: "Self Care Partner",
+    description: `Smart And Handsome, formerly Fair And Handsome, has redefined men's grooming since 2005. Evolving beyond radiance, it now offers holistic skincare solutions for the modern, confident man. With innovations like the Brightening Range and Nature F1rst, it blends style with substance. Committed to quality and innovation, the brand continues to empower men with smarter skincare choices. Smart And Handsome is the symbol of modern masculinity and refined grooming.`,
     logo: "/images/sponsors/2.webp",
   },
 ];
