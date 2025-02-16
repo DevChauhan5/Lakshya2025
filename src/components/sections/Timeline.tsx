@@ -213,73 +213,74 @@ const PosterCard = ({ poster, index, containerProgress }) => {
           : {}
       }
       style={{ scale, opacity }}
-      className="w-full aspect-[4/5] relative max-h-[70vh]" // Adjusted aspect ratio and max height
+      className="w-full max-w-[500px] mx-auto relative" // Changed from aspect ratio to max-width
     >
-      <motion.div
-        className="relative w-full h-full rounded-xl overflow-hidden
-                   shadow-xl shadow-black/20"
-        whileHover={{
-          scale: 1.02,
-          transition: { duration: 0.3, ease: "easeOut" },
-        }}
-      >
-        {/* Image with dynamic blur effect */}
-        <motion.div className="absolute inset-0">
-          <Image
-            src={poster.image}
-            alt={poster.title}
-            fill
-            className="object-cover"
-            loading={index <= 1 ? "eager" : "lazy"} // Load first two images eagerly
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            quality={75}
-            priority={index < 2}
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRseHyAiJRwlKycuRDEwMTAxMUQzNjk7PjU1R0dKTU1NW3JbYFllZIGChXFwf7n/2wBDARUXFx4aHh4pISk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTn/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-          />
-        </motion.div>
-
-        {/* Enhanced gradient overlay */}
+      <div className="pb-[100%] relative">
+        {" "}
+        {/* Added padding-bottom wrapper for 1:1 aspect ratio */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-b 
-                     from-black/0 via-black/50 to-black"
-          style={{
-            opacity: useSpring(
-              useTransform(scrollYProgress, [0, 0.5], [0.5, 0.8]),
-              springConfig
-            ),
+          className="absolute inset-0 rounded-xl overflow-hidden
+                     shadow-xl shadow-black/20"
+          whileHover={{
+            scale: 1.02,
+            transition: { duration: 0.3, ease: "easeOut" },
           }}
-        />
-
-        {/* Adjusted content padding and spacing */}
-        <motion.div
-          className="absolute bottom-0 left-4 right-0 p-4 sm:p-5 z-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={
-            isInView
-              ? {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 0.5,
-                    delay: index * 0.1,
-                    ease: [0.23, 1, 0.32, 1],
-                  },
-                }
-              : {}
-          }
         >
-          <motion.h3 className="text-xl sm:text-2xl font-bold text-theme-primary mb-1.5">
-            {poster.title}
-          </motion.h3>
-          <motion.p className="text-sm sm:text-base text-white/90 mb-1">
-            {poster.date}
-          </motion.p>
-          <motion.p className="text-xs sm:text-sm text-theme-secondary line-clamp-2">
-            {poster.description}
-          </motion.p>
+          {/* Image container with background */}
+          <motion.div className="absolute inset-0 bg-black/20">
+            <Image
+              src={poster.image}
+              alt={poster.title}
+              fill
+              className="object-contain" // Always use contain to show full image
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={90}
+              priority={index < 2}
+            />
+          </motion.div>
+
+          {/* Enhanced gradient overlay */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-b 
+                     from-black/0 via-black/50 to-black"
+            style={{
+              opacity: useSpring(
+                useTransform(scrollYProgress, [0, 0.5], [0.5, 0.8]),
+                springConfig
+              ),
+            }}
+          />
+
+          {/* Adjusted content padding and spacing */}
+          <motion.div
+            className="absolute bottom-0 left-4 right-0 p-4 sm:p-5 z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={
+              isInView
+                ? {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.5,
+                      delay: index * 0.1,
+                      ease: [0.23, 1, 0.32, 1],
+                    },
+                  }
+                : {}
+            }
+          >
+            <motion.h3 className="text-xl sm:text-2xl font-bold text-theme-primary mb-1.5">
+              {poster.title}
+            </motion.h3>
+            <motion.p className="text-sm sm:text-base text-white/90 mb-1">
+              {poster.date}
+            </motion.p>
+            <motion.p className="text-xs sm:text-sm text-theme-secondary line-clamp-2">
+              {poster.description}
+            </motion.p>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Add connecting dot to timeline */}
       <motion.div
@@ -424,17 +425,16 @@ export const Timeline = () => {
           </motion.div>
 
           {/* Restructured grid layout */}
-          <div className="relative grid grid-cols-1 gap-8 md:gap-12 max-w-[1400px] mx-auto">
-            {/* Regular events (first 4) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="relative grid grid-cols-1 gap-12 md:gap-16 max-w-[1400px] mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
               {posters.slice(0, 4).map((poster, index) => (
                 <div
                   key={poster.id}
                   className={`${
                     index % 2 === 0
-                      ? "md:pr-8 md:translate-y-0"
-                      : "md:pl-8 md:translate-y-24"
-                  }`}
+                      ? "md:pr-12 md:translate-y-0"
+                      : "md:pl-12 md:translate-y-32"
+                  } py-4 sm:py-6`}
                 >
                   <PosterCard
                     poster={poster}
@@ -445,26 +445,15 @@ export const Timeline = () => {
               ))}
             </div>
 
-            {/* Mystery card (centered and larger) */}
-            <div className="w-full flex justify-center mt-12 md:mt-24">
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{
-                  type: "spring",
-                  stiffness: 50,
-                  damping: 20,
-                  mass: 1,
-                }}
-                className="w-full max-w-2xl mx-auto px-4"
-              >
+            {/* Mystery card with adjusted width */}
+            <div className="w-full flex justify-center mt-12 md:mt-32">
+              <div className="w-full max-w-[600px] mx-auto px-4">
                 <PosterCard
                   poster={posters[4]}
                   index={4}
                   containerProgress={scrollYProgress}
                 />
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
