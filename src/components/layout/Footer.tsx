@@ -51,10 +51,10 @@ const quickLinks = {
       route:
         "https://drive.google.com/drive/folders/1NpYOjIkTDva_QlPEgzHNoxZlAajdlQF3?usp=sharing",
     },
-    { name: "📅 Event Schedule", section: "timeline" },
     {
-      name: "📍 Event Venue",
-      route: "https://maps.app.goo.gl/9vieVUD3B8w5WBY1A",
+      name: "📅 Lakshya Itinerary",
+      route:
+        "https://drive.google.com/drive/folders/1rNsEnfW1kpuu9w1vVfNyklAwTzR4VFv1?usp=drive_link",
     },
   ],
 };
